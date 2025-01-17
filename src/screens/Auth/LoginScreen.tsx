@@ -1,30 +1,32 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../utils/types';
+
+type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const fadeAnim = new Animated.Value(0); // For button animation
+  const navigation = useNavigation<LoginScreenNavigationProp>(); 
 
   const handleLogin = () => {
     setLoading(true);
+
     // Simulate login process with a delay
     setTimeout(() => {
-      setLoading(false);
-      // Proceed with navigation or other logic
+      if (email === 'hot@mail' && password === 'pass') {
+        setLoading(false);
+        // Navigate to Home screen if credentials match
+        navigation.navigate('Home');
+      } else {
+        setLoading(false);
+        alert('Invalid email or password');
+      }
     }, 2000);
   };
-
-  // Fade in the button when the screen is loaded
-  React.useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  }, []);
 
   return (
     <View style={styles.container}>
@@ -43,17 +45,16 @@ const LoginScreen = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Animated.View style={{ opacity: fadeAnim }}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleLogin}
-          disabled={loading}
-        >
-          <Text style={styles.buttonText}>
-            {loading ? 'Logging in...' : 'Login'}
-          </Text>
-        </TouchableOpacity>
-      </Animated.View>
+    <TouchableOpacity
+        style={styles.button}
+        onPress={handleLogin}
+        disabled={loading}
+      >
+        <Text style={styles.buttonText}>
+          {loading ? 'Logging in...' : 'Login'}
+        </Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.registerLink}>
         <Text style={styles.registerText}>Don't have an account? Register</Text>
       </TouchableOpacity>
