@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/FontAwesome'; // Import the icon library
 import { RootStackParamList } from '../../utils/types';
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
@@ -10,6 +11,7 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false); // State to track password visibility
   const navigation = useNavigation<LoginScreenNavigationProp>(); 
 
   const handleLogin = () => {
@@ -30,36 +32,45 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome Back!</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
+    <Text style={styles.title}>Welcome Back!</Text>
+    <TextInput
+      style={styles.input}
+      placeholder="Email"
+      value={email}
+      onChangeText={setEmail}
+      keyboardType="email-address"
+    />
+    <View style={styles.passwordContainer}>
       <TextInput
         style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
+        secureTextEntry={!isPasswordVisible} // If isPasswordVisible is true, the password is visible
       />
-    <TouchableOpacity
-        style={styles.button}
-        onPress={handleLogin}
-        disabled={loading}
+      <TouchableOpacity
+        style={styles.eyeIcon}
+        onPress={() => setIsPasswordVisible(!isPasswordVisible)} // Toggle password visibility
       >
-        <Text style={styles.buttonText}>
-          {loading ? 'Logging in...' : 'Login'}
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.registerLink}>
-        <Text style={styles.registerText}>Don't have an account? Register</Text>
+        <Icon name={isPasswordVisible ? 'eye-slash' : 'eye'} size={20} color="#aaa" />
       </TouchableOpacity>
     </View>
-  );
+    
+    <TouchableOpacity
+      style={styles.button}
+      onPress={handleLogin}
+      disabled={loading}
+    >
+      <Text style={styles.buttonText}>
+        {loading ? 'Logging in...' : 'Login'}
+      </Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity style={styles.registerLink}>
+      <Text style={styles.registerText}>Don't have an account? Register</Text>
+    </TouchableOpacity>
+  </View>
+);
 };
 
 const styles = StyleSheet.create({
@@ -109,6 +120,15 @@ const styles = StyleSheet.create({
   registerText: {
     color: '#ff6347',
     fontSize: 16,
+  },
+  passwordContainer: {
+    position: 'relative',
+    width: '100%',
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: 15,
+    top: 15,
   },
 });
 
