@@ -30,6 +30,10 @@ const LoginScreen = () => {
     }, 2000);
   };
 
+  const handleRegisterPress = () => {
+    navigation.navigate('Register');
+  };
+
   return (
     <View style={styles.container}>
     <Text style={styles.title}>Welcome Back!</Text>
@@ -66,9 +70,12 @@ const LoginScreen = () => {
       </Text>
     </TouchableOpacity>
 
-    <TouchableOpacity style={styles.registerLink}>
-      <Text style={styles.registerText}>Don't have an account? Register</Text>
-    </TouchableOpacity>
+    <Text style={styles.registerText}>
+      Don't have an account? 
+      <TouchableOpacity onPress={handleRegisterPress}>
+        <Text style={styles.registerLink}> Register</Text>
+      </TouchableOpacity>
+    </Text>
   </View>
 );
 };
@@ -115,11 +122,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   registerLink: {
-    marginTop: 20,
+    color: 'blue',  
+    top:7,
   },
   registerText: {
     color: '#ff6347',
     fontSize: 16,
+    textAlign: 'center',
+    marginTop:10,
   },
   passwordContainer: {
     position: 'relative',
