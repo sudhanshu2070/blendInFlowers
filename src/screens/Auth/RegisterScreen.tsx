@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../utils/types';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+type RegisteScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Register'>;
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState('');
@@ -9,6 +14,9 @@ const RegisterScreen = () => {
 
   const fadeAnim = new Animated.Value(0); // For button animation
 
+  const navigation = useNavigation<RegisteScreenNavigationProp>(); 
+  
+
   const handleRegister = () => {
     setLoading(true);
     // Simulate registration process with a delay
@@ -16,6 +24,10 @@ const RegisterScreen = () => {
       setLoading(false);
       // Proceed with registration logic
     }, 2000);
+  };
+
+  const handleLoginPress = () => {
+    navigation.navigate('Login');  
   };
 
   // Fade in the button when the screen is loaded
@@ -61,9 +73,14 @@ const RegisterScreen = () => {
           </Text>
         </TouchableOpacity>
       </Animated.View>
-      <TouchableOpacity style={styles.loginLink}>
-        <Text style={styles.loginText}>Already have an account? Login</Text>
-      </TouchableOpacity>
+
+      <Text style={styles.loginText}>
+        Already have an account?
+        <TouchableOpacity onPress={handleLoginPress}>
+          <Text style={styles.loginLink}> Login</Text>
+        </TouchableOpacity>
+      </Text>
+
     </View>
   );
 };
@@ -110,11 +127,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   loginLink: {
-    marginTop: 20,
+    color:'blue',
+    top: 7,
   },
   loginText: {
     color: '#ff6347',
     fontSize: 16,
+    marginTop:10,
+    textAlign: 'center',
   },
 });
 
