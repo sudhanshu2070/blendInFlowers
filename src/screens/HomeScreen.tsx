@@ -35,7 +35,7 @@ const HomeScreen = () => {
       >
         {/* Profile Picture */}
         <Image
-          source={{ uri: 'https://via.placeholder.com/320x400' }} // Placeholder image for profile picture
+          source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }} // Sample image from RandomUser.me API
           style={styles.profileImage}
         />
         {/* Profile Bio */}
