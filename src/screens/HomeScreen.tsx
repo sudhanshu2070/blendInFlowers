@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Animated, Image } from 'react-native';
 
 const HomeScreen = () => {
   const [liked, setLiked] = useState(false);
@@ -17,16 +17,40 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.card, { transform: [{ translateX: cardAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 300] }) }] }]}>
-        <Text style={styles.cardText}>Profile Name</Text>
-        <Text style={styles.cardDescription}>Profile Description</Text>
+      {/* Animated Profile Card */}
+      <Animated.View
+        style={[
+          styles.card,
+          {
+            transform: [
+              {
+                translateX: cardAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, 300],
+                }),
+              },
+            ],
+          },
+        ]}
+      >
+        {/* Profile Picture */}
+        <Image
+          source={{ uri: 'https://via.placeholder.com/320x400' }} // Placeholder image for profile picture
+          style={styles.profileImage}
+        />
+        {/* Profile Bio */}
+        <View style={styles.bioContainer}>
+          <Text style={styles.bioText}>This is the bio</Text>
+        </View>
       </Animated.View>
+
+      {/* Buttons below the card */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleLike}>
-          <Text style={styles.buttonText}>Like</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={[styles.button, { backgroundColor: '#ff6347' }]}>
           <Text style={styles.buttonText}>Dislike</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, { backgroundColor: '#34b7f1' }]} onPress={handleLike}>
+          <Text style={styles.buttonText}>Like</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -41,8 +65,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   card: {
-    width: 320,
-    height: 400,
+    width: '100%',
+    height: '80%', // Profile card takes 80% of the height
     backgroundColor: '#fff',
     borderRadius: 20,
     padding: 20,
@@ -51,25 +75,37 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     elevation: 5,
     marginBottom: 30,
+    position: 'relative',
   },
-  cardText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
+  profileImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 20,
+    resizeMode: 'cover', // Ensures the image fits properly within the card
   },
-  cardDescription: {
+  bioContainer: {
+    position: 'absolute',
+    bottom: 10,
+    left: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background for bio
+    padding: 10,
+    borderRadius: 8,
+  },
+  bioText: {
+    color: '#fff',
     fontSize: 16,
-    color: '#666',
+    fontWeight: 'bold',
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
+    paddingHorizontal: 30,
+    marginBottom: 30,
   },
   button: {
     width: '45%',
     padding: 15,
-    backgroundColor: '#ff6347',
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',

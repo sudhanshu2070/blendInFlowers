@@ -19,7 +19,8 @@ const LoginScreen = () => {
 
     // Simulate login process with a delay
     setTimeout(() => {
-      if (email === 'hot@mail' && password === 'pass') {
+
+      if ((email === 'hot@mail' || email === 's') && (password === 'pass' || password === '1')) {
         setLoading(false);
         // Navigate to Home screen if credentials match
         navigation.navigate('Home');
