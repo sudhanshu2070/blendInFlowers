@@ -21,15 +21,14 @@ const RegisterScreen = () => {
 
   const handleRegister = () => {
 
-// Check if age is less than 18
+    // Check if age is less than 18
 
-if (parseInt(age) < 18) {
+    if (parseInt(age) < 18) {
 
-  Alert.alert("Age Restriction", "You must be at least 18 years old to register.");
-
-  return; // Prevent further registration if age is invalid
-
-}
+      Alert.alert("Age Restriction", "You must be at least 18 years old to register.");
+      return; // Prevent further registration if age is invalid
+    
+    }
 
     setLoading(true);
     // Simulate registration process with a delay
@@ -89,7 +88,6 @@ if (parseInt(age) < 18) {
         onChangeText={setPhoneNumber}
         keyboardType="phone-pad"
       />
-      <Animated.View style={{ opacity: fadeAnim }}>
         <TouchableOpacity
           style={styles.button}
           onPress={handleRegister}
@@ -99,7 +97,6 @@ if (parseInt(age) < 18) {
             {loading ? 'Registering...' : 'Register'}
           </Text>
         </TouchableOpacity>
-      </Animated.View>
 
       <Text style={styles.loginText}>
         Already have an account?
