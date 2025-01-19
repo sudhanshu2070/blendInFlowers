@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated, Image } from 'react-native';
 
 const HomeScreen = () => {
+  // Define the mock bio data for now
+  const bioData = {
+    name: 'John Doe',
+    hobby: 'Loves to code and create awesome apps!',
+  };
+
   const [liked, setLiked] = useState(false);
   const cardAnim = new Animated.Value(0); // For card swipe animation
 
@@ -40,7 +46,8 @@ const HomeScreen = () => {
         />
         {/* Profile Bio */}
         <View style={styles.bioContainer}>
-          <Text style={styles.bioText}>This is the bio</Text>
+          <Text style={styles.nameText}>{bioData.name}</Text>
+          <Text style={styles.hobbyText}>{bioData.hobby}</Text>
         </View>
       </Animated.View>
 
@@ -90,11 +97,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background for bio
     padding: 10,
     borderRadius: 8,
+    maxWidth: '80%', // Limit the bio text width
   },
-  bioText: {
+  nameText: {
+    color: '#FFD700', // Gold color for name
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  hobbyText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: 'normal',
+    lineHeight: 20,
   },
   buttonContainer: {
     flexDirection: 'row',

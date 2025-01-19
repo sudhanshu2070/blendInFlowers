@@ -10,6 +10,8 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(false);
 
   const fadeAnim = new Animated.Value(0); // For button animation
@@ -57,10 +59,24 @@ const RegisterScreen = () => {
       />
       <TextInput
         style={styles.input}
+        placeholder="Age"
+        value={age}
+        onChangeText={setAge}
+        keyboardType="number-pad"
+      />
+      <TextInput
+        style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Mobile Number"
+        value={phoneNumber}
+        onChangeText={setPhoneNumber}
+        keyboardType='phone-pad'
       />
       <Animated.View style={{ opacity: fadeAnim }}>
         <TouchableOpacity
