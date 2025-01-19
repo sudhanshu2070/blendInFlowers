@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, StyleSheet, Animated, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../utils/types';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -20,6 +20,17 @@ const RegisterScreen = () => {
   
 
   const handleRegister = () => {
+
+// Check if age is less than 18
+
+if (parseInt(age) < 18) {
+
+  Alert.alert("Age Restriction", "You must be at least 18 years old to register.");
+
+  return; // Prevent further registration if age is invalid
+
+}
+
     setLoading(true);
     // Simulate registration process with a delay
     setTimeout(() => {
@@ -76,7 +87,7 @@ const RegisterScreen = () => {
         placeholder="Mobile Number"
         value={phoneNumber}
         onChangeText={setPhoneNumber}
-        keyboardType='phone-pad'
+        keyboardType="phone-pad"
       />
       <Animated.View style={{ opacity: fadeAnim }}>
         <TouchableOpacity
