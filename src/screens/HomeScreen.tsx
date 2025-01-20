@@ -81,7 +81,7 @@ const HomeScreen = () => {
               {
                 translateX: cardAnim.interpolate({
                   inputRange: [-1, 0, 1],
-                  outputRange: [-300, 0, 300], // Swipe out and in the cards
+                  outputRange: [-50, 0, 50], // Swipe out and in the cards
                 }),
               },
             ],
