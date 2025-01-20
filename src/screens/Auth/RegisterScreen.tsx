@@ -3,6 +3,7 @@ import { View, TextInput, Text, TouchableOpacity, StyleSheet, Animated, Alert } 
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../utils/types';
 import { StackNavigationProp } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type RegisteScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Register'>;
 
@@ -18,17 +19,38 @@ const RegisterScreen = () => {
 
   const navigation = useNavigation<RegisteScreenNavigationProp>(); 
   
+    // Save data to AsyncStorage
+    const saveRegistrationData = async () => {
+
+      try {
+  
+        const userData = {
+          name,
+          email,
+          age,
+          password,
+          phoneNumber,
+        };
+  
+        // Save to AsyncStorage  
+        await AsyncStorage.setItem('userRegistrationData', JSON.stringify(userData));
+        Alert.alert('Success', 'Registration data saved locally!');
+        navigation.navigate('Home');  
+      } catch (error) {
+        console.error('Error saving data', error);
+        Alert.alert('Error', 'There was an issue saving your data.');
+      }
+    };
 
   const handleRegister = () => {
 
     // Check if age is less than 18
-
     if (parseInt(age) < 18) {
-
       Alert.alert("Age Restriction", "You must be at least 18 years old to register.");
       return; // Prevent further registration if age is invalid
-    
     }
+
+    saveRegistrationData();
 
     setLoading(true);
     // Simulate registration process with a delay
