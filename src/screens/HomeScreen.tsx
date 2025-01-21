@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '100%',
-    height: '80%', // Profile card takes 80% of the height
+    height: '90%', // Profile card takes 80% of the height
     backgroundColor: '#fff',
     borderRadius: 20,
     padding: 20,
