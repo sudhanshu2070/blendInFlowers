@@ -14,7 +14,11 @@ const AppNavigator = () => {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} />
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerShown: false }} // Remove header for the Home screen
+      />
       <Stack.Screen name="Profile" component={ProfileScreen} />
     </Stack.Navigator>
   );
