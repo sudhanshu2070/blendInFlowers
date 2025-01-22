@@ -5,6 +5,7 @@ import RegisterScreen from '../screens/Auth/RegisterScreen';
 import OTPVerificationScreen from '../screens/Auth/OTPVerificationScreen';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import UserDetailScreen from '../screens/UserDetailScreen';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ const AppNavigator = () => {
         },
       }}
       />
+      <Stack.Screen name="UserDetail" component={UserDetailScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
     </Stack.Navigator>
   );
