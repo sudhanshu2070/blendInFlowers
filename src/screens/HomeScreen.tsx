@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const HomeScreen = () => {
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../utils/types';
 
-  const navigation = useNavigation(); // To use navigation
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>; // Typing the navigation prop
 
+const HomeScreen: React.FC = () => {
+
+  const navigation = useNavigation<HomeScreenNavigationProp>(); // Typed navigation hook
   // Define the mock bio data for now
   const bioData = {
     name: 'John Doe',
@@ -74,12 +78,11 @@ const HomeScreen = () => {
 
   const currentProfile = profiles[currentIndex];
 
-  const goToUserDetail = () => {
-    // Navigate to the UserDetailScreen and pass the current profile data
+  const goToUserDetail = (profile: { name: string; hobby: string; image: string }) => {
     navigation.navigate('UserDetail', {
-      name: currentProfile.name,
-      hobby: currentProfile.hobby,
-      image: currentProfile.image,
+      name: profile.name,
+      hobby: profile.hobby,
+      image: profile.image,
     });
   };
 
@@ -101,7 +104,7 @@ const HomeScreen = () => {
           },
         ]}
       >
-        <TouchableOpacity onPress={goToUserDetail}>
+        <TouchableOpacity onPress={() => goToUserDetail(currentProfile)}>
         {/* Profile Picture */}
         <Image source={{ uri: currentProfile.image }} style={styles.profileImage} />
         </TouchableOpacity>
