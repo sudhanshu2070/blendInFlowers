@@ -6,8 +6,9 @@ import OTPVerificationScreen from '../screens/Auth/OTPVerificationScreen';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import UserDetailScreen from '../screens/UserDetailScreen';
+import { RootStackParamList } from '../utils/types';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const AppNavigator = () => {
   return (

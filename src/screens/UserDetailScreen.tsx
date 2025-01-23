@@ -3,12 +3,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-
-// Define the types for the navigation and route params
-type RootStackParamList = {
-  Home: undefined;
-  UserDetail: { name: string; hobby: string; image: string };
-};
+import { RootStackParamList } from '../utils/types';
 
 type UserDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'UserDetail'>;
 type UserDetailScreenRouteProp = RouteProp<RootStackParamList, 'UserDetail'>;
@@ -19,8 +14,8 @@ interface UserDetailScreenProps {
 }
 
 const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
+  // Access route params (name, hobby, image)
   const { name, hobby, image } = route.params;
-
   return (
     <View style={styles.container}>
       <Image source={{ uri: image }} style={styles.profileImage} />

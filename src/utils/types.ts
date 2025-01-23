@@ -4,5 +4,6 @@ export type RootStackParamList = {
     OTPVerification:undefined;
     Home: undefined;
     Profile:undefined;
+    UserDetail: { name: string; hobby: string; image: string };
   };
   

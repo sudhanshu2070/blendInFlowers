@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+
+  const navigation = useNavigation(); // To use navigation
+
   // Define the mock bio data for now
   const bioData = {
     name: 'John Doe',
@@ -70,6 +74,15 @@ const HomeScreen = () => {
 
   const currentProfile = profiles[currentIndex];
 
+  const goToUserDetail = () => {
+    // Navigate to the UserDetailScreen and pass the current profile data
+    navigation.navigate('UserDetail', {
+      name: currentProfile.name,
+      hobby: currentProfile.hobby,
+      image: currentProfile.image,
+    });
+  };
+
   return (
     <View style={styles.container}>
       {/* Animated Profile Card */}
@@ -88,8 +101,11 @@ const HomeScreen = () => {
           },
         ]}
       >
+        <TouchableOpacity onPress={goToUserDetail}>
         {/* Profile Picture */}
         <Image source={{ uri: currentProfile.image }} style={styles.profileImage} />
+        </TouchableOpacity>
+
         {/* Profile Bio */}
         <View style={styles.bioContainer}>
           <Text style={styles.nameText}>{currentProfile.name}</Text>
