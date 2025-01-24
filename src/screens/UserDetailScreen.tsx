@@ -30,7 +30,7 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
   },
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
-    marginBottom: 20,
+    marginTop: 20,
   },
   bioContainer: {
     alignItems: 'center',
