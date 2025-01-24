@@ -39,8 +39,10 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 75,
     marginTop: 20,
+    marginBottom:15,
   },
   bioContainer: {
+    width: 475,
     alignItems: 'center',
     padding: 20,
     backgroundColor: 'white',
