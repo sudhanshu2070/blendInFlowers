@@ -19,12 +19,18 @@ const LoginScreen = () => {
 
     // Simulate login process with a delay
     setTimeout(() => {
-
-      if ((email === 'hot@mail' || email === 's') && (password === 'pass' || password === '1')) {
+      
+      //Admin access
+      if (email === 'S'){
+        setLoading(false);
+        navigation.navigate('Home');
+      }
+      else if ((email === 'hot@mail' || email === 's') && (password === 'pass' || password === '1')) {
         setLoading(false);
         // Navigate to Home screen if credentials match
         navigation.navigate('Home');
-      } else {
+      } 
+      else {
         setLoading(false);
         alert('Invalid email or password');
       }
