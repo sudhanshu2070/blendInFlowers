@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableWithoutFeedback, Animated } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableWithoutFeedback, Animated, Dimensions } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../utils/types';
@@ -23,19 +23,19 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
   const [hearts, setHearts] = useState<any[]>([]);
   const [count, setCount] = useState(0);
 
+  // Get the screen dimensions to place the heart in the center
+  const { width, height } = Dimensions.get('window');
+
   // Function to handle double tap
-  const handleDoubleTap = (e: any) => {
+  const handleDoubleTap = () => {
     // Increase heart count
     setHeartCount(prev => prev + 1);
 
-    // Calculate the position of the heart where the user double tapped
-    const { pageX, pageY } = e.nativeEvent;
-
-    // Create an animated heart that will be positioned where the tap occurred
+    // Create an animated heart that will always appear in the center
     const newHeart = {
       id: count,
-      left: pageX - 30,  // Adjust to center the heart icon
-      top: pageY - 30,   // Adjust to center the heart icon
+      left: width / 2 - 30,  // Center horizontally
+      top: height / 2 - 30,  // Center vertically
       opacity: new Animated.Value(1),
     };
 
@@ -71,7 +71,7 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
       {/* Handle double tap anywhere on the screen (Below bio) */}
       <TouchableWithoutFeedback onPress={handleDoubleTap}>
         <View style={styles.tapArea}>
-          {/* Render animated hearts inside this area */}
+          {/* Render animated hearts at the center of the screen */}
           {hearts.map((heart) => (
             <Animated.View
               key={heart.id}
