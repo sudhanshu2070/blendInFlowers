@@ -19,41 +19,60 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
   // State to track heart count
   const [heartCount, setHeartCount] = useState(0);
 
-  // Animated value for heart animation
-  const heartAnimation = new Animated.Value(0);
+  // State and animated values for heart animation
+  const [hearts, setHearts] = useState<any[]>([]);
+  const [count, setCount] = useState(0);
 
   // Function to handle double tap
-  const handleDoubleTap = () => {
+  const handleDoubleTap = (e: any) => {
     // Increase heart count
     setHeartCount(prev => prev + 1);
 
-    // Trigger heart animation
-    Animated.sequence([
-      Animated.spring(heartAnimation, {
-        toValue: 1,
-        useNativeDriver: true,
-      }),
-      Animated.spring(heartAnimation, {
-        toValue: 0,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  };
+    // Calculate the position of the heart where the user double tapped
+    const { pageX, pageY } = e.nativeEvent;
 
-  // Interpolating scale for the heart animation
-  const heartScale = heartAnimation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 1.5],
-  });
+    // Create an animated heart that will be positioned where the tap occurred
+    const newHeart = {
+      id: count,
+      left: pageX - 30,  // Adjust to center the heart icon
+      top: pageY - 30,   // Adjust to center the heart icon
+      opacity: new Animated.Value(1),
+    };
+
+    // Add the new heart to the array
+    setHearts((prev) => [...prev, newHeart]);
+
+    // Start the fade-out animation for the heart
+    Animated.timing(newHeart.opacity, {
+      toValue: 0,
+      duration: 1500,
+      useNativeDriver: true,
+    }).start(() => {
+      // Remove heart from the screen after animation
+      setHearts((prev) => prev.filter((heart) => heart.id !== newHeart.id));
+    });
+
+    // Update count for unique heart ids
+    setCount(count + 1);
+  };
 
   return (
     <View style={styles.container}>
+      {/* Handle double tap anywhere on the screen */}
       <TouchableWithoutFeedback onPress={handleDoubleTap}>
         <View style={styles.tapArea}>
-          {/* Heart animation */}
-          <Animated.View style={[styles.heartIcon, { transform: [{ scale: heartScale }] }]}>
-            <Text style={styles.heartText}>❤️</Text>
-          </Animated.View>
+          {/* Render animated hearts */}
+          {hearts.map((heart) => (
+            <Animated.View
+              key={heart.id}
+              style={[
+                styles.heartIcon,
+                { left: heart.left, top: heart.top, opacity: heart.opacity },
+              ]}
+            >
+              <Text style={styles.heartText}>❤️</Text>
+            </Animated.View>
+          ))}
         </View>
       </TouchableWithoutFeedback>
 
@@ -77,8 +96,8 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
-    marginTop: 20,
-    marginBottom: 15,
+    // marginTop: 450,
+    // marginBottom: 15,
   },
   bioContainer: {
     width: 475,
@@ -112,8 +131,7 @@ const styles = StyleSheet.create({
   },
   heartIcon: {
     position: 'absolute',
-    bottom: 150, // Adjust the position based on your design
-    right: '40%',
+    transform: [{ scale: 1.5 }], // Slight scale effect
   },
   tapArea: {
     flex: 1,
