@@ -61,7 +61,7 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
       {/* Handle double tap anywhere on the screen */}
       <TouchableWithoutFeedback onPress={handleDoubleTap}>
         <View style={styles.tapArea}>
-          {/* Render animated hearts */}
+          {/* Render animated hearts inside bio */}
           {hearts.map((heart) => (
             <Animated.View
               key={heart.id}
@@ -76,7 +76,10 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
         </View>
       </TouchableWithoutFeedback>
 
+      {/* Profile Image */}
       <Image source={{ uri: image }} style={styles.profileImage} />
+
+      {/* Bio Section */}
       <View style={styles.bioContainer}>
         <Text style={styles.nameText}>{name}</Text>
         <Text style={styles.hobbyText}>{hobby}</Text>
@@ -91,16 +94,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
+    paddingTop: 20, // Add space for top status bar
   },
   profileImage: {
     width: 150,
     height: 150,
     borderRadius: 75,
-    // marginTop: 450,
-    // marginBottom: 15,
+    marginBottom: 20,  // Adjust margin to create space between image and bio
   },
   bioContainer: {
-    width: 475,
+    width: '90%',
     alignItems: 'center',
     padding: 20,
     backgroundColor: 'white',
