@@ -26,34 +26,45 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
   // Get the screen dimensions to place the heart in the center
   const { width, height } = Dimensions.get('window');
 
+  // State to handle the double-tap detection
+  const [lastTap, setLastTap] = useState(0);
+
   // Function to handle double tap
   const handleDoubleTap = () => {
-    // Increase heart count
-    setHeartCount(prev => prev + 1);
+    const now = Date.now();
+    const timeDifference = now - lastTap;
 
-    // Create an animated heart that will always appear in the center
-    const newHeart = {
-      id: count,
-      left: width / 2 - 30,  // Center horizontally
-      top: height / 2 - 30,  // Center vertically
-      opacity: new Animated.Value(1),
-    };
+    if (timeDifference < 400) { // 300ms threshold for double tap
+      // Increase heart count
+      setHeartCount(prev => prev + 1);
 
-    // Add the new heart to the array
-    setHearts((prev) => [...prev, newHeart]);
+      // Create an animated heart that will always appear in the center
+      const newHeart = {
+        id: count,
+        left: width / 2 - 30,  // Center horizontally
+        top: height / 2 - 30,  // Center vertically
+        opacity: new Animated.Value(1),
+      };
 
-    // Start the fade-out animation for the heart
-    Animated.timing(newHeart.opacity, {
-      toValue: 0,
-      duration: 1500,
-      useNativeDriver: true,
-    }).start(() => {
-      // Remove heart from the screen after animation
-      setHearts((prev) => prev.filter((heart) => heart.id !== newHeart.id));
-    });
+      // Add the new heart to the array
+      setHearts((prev) => [...prev, newHeart]);
 
-    // Update count for unique heart ids
-    setCount(count + 1);
+      // Start the fade-out animation for the heart
+      Animated.timing(newHeart.opacity, {
+        toValue: 0,
+        duration: 1500,
+        useNativeDriver: true,
+      }).start(() => {
+        // Remove heart from the screen after animation
+        setHearts((prev) => prev.filter((heart) => heart.id !== newHeart.id));
+      });
+
+      // Update count for unique heart ids
+      setCount(count + 1);
+    }
+
+    // Update last tap time
+    setLastTap(now);
   };
 
   return (
