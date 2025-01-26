@@ -58,10 +58,20 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      {/* Handle double tap anywhere on the screen */}
+      {/* Profile Image and Bio Section at the Top */}
+      <View style={styles.topContainer}>
+        <Image source={{ uri: image }} style={styles.profileImage} />
+        <View style={styles.bioContainer}>
+          <Text style={styles.nameText}>{name}</Text>
+          <Text style={styles.hobbyText}>{hobby}</Text>
+          <Text style={styles.heartCountText}>Hearts: {heartCount}</Text>
+        </View>
+      </View>
+
+      {/* Handle double tap anywhere on the screen (Below bio) */}
       <TouchableWithoutFeedback onPress={handleDoubleTap}>
         <View style={styles.tapArea}>
-          {/* Render animated hearts inside bio */}
+          {/* Render animated hearts inside this area */}
           {hearts.map((heart) => (
             <Animated.View
               key={heart.id}
@@ -75,16 +85,6 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
           ))}
         </View>
       </TouchableWithoutFeedback>
-
-      {/* Profile Image */}
-      <Image source={{ uri: image }} style={styles.profileImage} />
-
-      {/* Bio Section */}
-      <View style={styles.bioContainer}>
-        <Text style={styles.nameText}>{name}</Text>
-        <Text style={styles.hobbyText}>{hobby}</Text>
-        <Text style={styles.heartCountText}>Hearts: {heartCount}</Text>
-      </View>
     </View>
   );
 };
@@ -94,18 +94,21 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
-    paddingTop: 20, // Add space for top status bar
+    paddingTop: 20, // Space for the status bar
+  },
+  topContainer: {
+    alignItems: 'center',
+    marginBottom: 20,  // Space between top container and heart animation area
   },
   profileImage: {
     width: 150,
     height: 150,
     borderRadius: 75,
-    marginBottom: 20,  // Adjust margin to create space between image and bio
+    marginBottom: 10, // Space between image and bio
   },
   bioContainer: {
-    width: '90%',
     alignItems: 'center',
-    padding: 20,
+    padding: 15,
     backgroundColor: 'white',
     borderRadius: 15,
     shadowColor: '#000',
@@ -134,7 +137,7 @@ const styles = StyleSheet.create({
   },
   heartIcon: {
     position: 'absolute',
-    transform: [{ scale: 1.5 }], // Slight scale effect
+    transform: [{ scale: 1.5 }], // Slight scale effect for the heart icon
   },
   tapArea: {
     flex: 1,
