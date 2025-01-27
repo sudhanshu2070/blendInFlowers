@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
   heartText: {
     fontSize: 48,
     color: 'red',
+    bottom:200,
   },
   heartIcon: {
     position: 'absolute',
