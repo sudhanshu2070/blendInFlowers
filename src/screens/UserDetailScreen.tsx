@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableWithoutFeedback, Animated, Dimensions } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Animated, Dimensions, Easing } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../utils/types';
+import Icon from 'react-native-vector-icons/FontAwesome'; // Import FontAwesome icons
 
 type UserDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'UserDetail'>;
 type UserDetailScreenRouteProp = RouteProp<RootStackParamList, 'UserDetail'>;
@@ -11,6 +12,8 @@ interface UserDetailScreenProps {
   navigation: UserDetailScreenNavigationProp;
   route: UserDetailScreenRouteProp;
 }
+// Get the screen dimensions to place the heart in the center
+const { width, height } = Dimensions.get('window');
 
 const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
   // Access route params (name, hobby, image)
@@ -19,52 +22,21 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
   // State to track heart count
   const [heartCount, setHeartCount] = useState(0);
 
-  // State and animated values for heart animation
-  const [hearts, setHearts] = useState<any[]>([]);
-  const [count, setCount] = useState(0);
+  // Animated value for heart animation
+  const heartAnim = useRef(new Animated.Value(0)).current;
 
-  // Get the screen dimensions to place the heart in the center
-  const { width, height } = Dimensions.get('window');
-
-  // State to handle the double-tap detection
-  const [lastTap, setLastTap] = useState(0);
 
   // Function to handle double tap
   const handleDoubleTap = () => {
-    const now = Date.now();
-    const timeDifference = now - lastTap;
-
-    if (timeDifference < 400) { // 300ms threshold for double tap
-      // Increase heart count
-      setHeartCount(prev => prev + 1);
-
-      // Create an animated heart that will always appear in the center
-      const newHeart = {
-        id: count,
-        left: width / 2 - 30,  // Center horizontally
-        top: height / 2 - 30,  // Center vertically
-        opacity: new Animated.Value(1),
-      };
-
-      // Add the new heart to the array
-      setHearts((prev) => [...prev, newHeart]);
-
-      // Start the fade-out animation for the heart
-      Animated.timing(newHeart.opacity, {
-        toValue: 0,
-        duration: 1500,
-        useNativeDriver: true,
-      }).start(() => {
-        // Remove heart from the screen after animation
-        setHearts((prev) => prev.filter((heart) => heart.id !== newHeart.id));
-      });
-
-      // Update count for unique heart ids
-      setCount(count + 1);
-    }
-
-    // Update last tap time
-    setLastTap(now);
+    setHeartCount((prev) => prev + 1);
+    Animated.timing(heartAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+      easing: Easing.elastic(1.5),
+    }).start(() => {
+      heartAnim.setValue(0);
+    });
   };
 
   return (
@@ -80,22 +52,21 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
       </View>
 
       {/* Handle double tap anywhere on the screen (Below bio) */}
-      <TouchableWithoutFeedback onPress={handleDoubleTap}>
-        <View style={styles.tapArea}>
-          {/* Render animated hearts at the center of the screen */}
-          {hearts.map((heart) => (
-            <Animated.View
-              key={heart.id}
-              style={[
-                styles.heartIcon,
-                { left: heart.left, top: heart.top, opacity: heart.opacity },
-              ]}
-            >
-              <Text style={styles.heartText}>❤️</Text>
-            </Animated.View>
-          ))}
-        </View>
-      </TouchableWithoutFeedback>
+      <TouchableOpacity onPress={handleDoubleTap} style={styles.tapArea}>
+        <Animated.View
+          style={[
+            styles.heartIcon,
+            {
+              transform: [
+                { scale: heartAnim.interpolate({ inputRange: [0, 1], outputRange: [0.5, 1.5] }) },
+                { translateY: heartAnim.interpolate({ inputRange: [0, 1], outputRange: [0, -50] }) },
+              ],
+            },
+          ]}
+        >
+          <Icon name="heart" size={48} color="red" />
+        </Animated.View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -109,7 +80,7 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     alignItems: 'center',
-    marginBottom: 20,  // Space between top container and heart animation area
+    marginBottom: 20, // Space between top container and heart animation area
   },
   profileImage: {
     width: 150,
@@ -126,7 +97,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 5 },
     elevation: 5,
-    width:490,
+    width: 490,
   },
   nameText: {
     fontSize: 24,
@@ -143,14 +114,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10,
   },
-  heartText: {
-    fontSize: 48,
-    color: 'red',
-    bottom:200,
-  },
   heartIcon: {
     position: 'absolute',
-    transform: [{ scale: 1.5 }], // Slight scale effect for the heart icon
+    top: height / 2 - 30,
+    left: width / 2 - 30,
+    opacity: 0.8,
   },
   tapArea: {
     flex: 1,
