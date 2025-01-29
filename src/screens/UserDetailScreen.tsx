@@ -52,8 +52,10 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
         useNativeDriver: true,
         easing: Easing.elastic(1.5),
       }).start(() => {
-        setHeartVisible(false);
         heartAnim.setValue(0);
+        
+        // setHeartVisible(false);
+        setHeartVisible(false);
       });
     }
     // Update last tap time
@@ -62,33 +64,38 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
 
   return (
     <View style={styles.container}>
+
       {/* Profile Image and Bio Section at the Top */}
       <View style={styles.topContainer}>
         <Image source={{ uri: image }} style={styles.profileImage} />
-        <View style={styles.bioContainer}>
+      </View>
+
+      <View style={styles.bioContainer}>
           <Text style={styles.nameText}>{name}</Text>
           <Text style={styles.hobbyText}>{hobby}</Text>
           <Text style={styles.heartCountText}>Hearts: {heartCount}</Text>
-        </View>
+
+          {heartVisible && (
+            <Animated.View
+              style={[
+                styles.heartIcon,
+                {
+                  opacity: heartAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] }),
+
+                  transform: [
+                    { scale: heartAnim.interpolate({ inputRange: [0, 1], outputRange: [0.5, 1.5] }) },
+                    { translateY: heartAnim.interpolate({ inputRange: [0, 1], outputRange: [0, -50] }) },
+                  ],
+                },
+              ]}
+            >
+              <Icon name="heart" size={48} color="red" />
+            </Animated.View>
+          )}
       </View>
 
       {/* Handle double tap anywhere on the screen (Below bio) */}
-      <TouchableOpacity onPress={handleDoubleTap} style={styles.tapArea}>
-        <Animated.View
-          style={[
-            styles.heartIcon,
-            {
-              opacity: heartAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] }),
-              transform: [
-                { scale: heartAnim.interpolate({ inputRange: [0, 1], outputRange: [0.5, 1.5] }) },
-                { translateY: heartAnim.interpolate({ inputRange: [0, 1], outputRange: [0, -50] }) },
-              ],
-            },
-          ]}
-        >
-          <Icon name="heart" size={48} color="red" />
-        </Animated.View>
-      </TouchableOpacity>
+      <TouchableOpacity onPress={handleDoubleTap} style={styles.tapArea} />
     </View>
   );
 };
@@ -100,17 +107,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     paddingTop: 20, // Space for the status bar
   },
+
   topContainer: {
     alignItems: 'center',
-    marginBottom: 20, // Space between top container and heart animation area
+    justifyContent: 'center',
+    width: '100%',
+    height: '20%', 
   },
+
   profileImage: {
     width: 150,
     height: 150,
     borderRadius: 75,
-    marginBottom: 10, // Space between image and bio
+    marginBottom: 20, // Space between image and bio
   },
+
   bioContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
     padding: 15,
     backgroundColor: 'white',
@@ -119,34 +132,45 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 5 },
     elevation: 5,
-    width: 490,
-    height: 400,
+    width: '97%',
+    height: '79%', 
+    position: 'relative',
   },
+
   nameText: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#333',
+    textAlign: 'center',
   },
+
   hobbyText: {
     fontSize: 18,
     color: '#555',
     marginTop: 10,
+    textAlign: 'center',
   },
+
   heartCountText: {
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 10,
+    textAlign: 'center',
   },
+
   heartIcon: {
     position: 'absolute',
-    top: height / 3 - 30,
-    left: width / 2 - 30,
+    top: '50%', // Center vertically
+    left: '50%', // Center horizontally
+    transform: [{ translateX: -24 }, { translateY: -24 }], // Adjust for icon size
   },
+
   tapArea: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });
 
