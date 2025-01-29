@@ -22,6 +22,10 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
   // State to track heart count
   const [heartCount, setHeartCount] = useState(0);
 
+  // State to control the visibility of the heart
+  const [heartVisible, setHeartVisible] = useState(false);
+
+
   // Animated value for heart animation
   const heartAnim = useRef(new Animated.Value(0)).current;
 
@@ -39,12 +43,16 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
 
       setHeartCount((prev) => prev + 1);
 
+      // Show the heart and animate it
+      setHeartVisible(true);
+
       Animated.timing(heartAnim, {
         toValue: 1,
         duration: 750,
         useNativeDriver: true,
         easing: Easing.elastic(1.5),
       }).start(() => {
+        setHeartVisible(false);
         heartAnim.setValue(0);
       });
     }
@@ -70,6 +78,7 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
           style={[
             styles.heartIcon,
             {
+              opacity: heartAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] }),
               transform: [
                 { scale: heartAnim.interpolate({ inputRange: [0, 1], outputRange: [0.5, 1.5] }) },
                 { translateY: heartAnim.interpolate({ inputRange: [0, 1], outputRange: [0, -50] }) },
@@ -131,7 +140,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: height / 2 - 30,
     left: width / 2 - 30,
-    opacity: 0.8,
   },
   tapArea: {
     flex: 1,
