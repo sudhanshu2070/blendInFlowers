@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   },
   heartIcon: {
     position: 'absolute',
-    top: height / 2 - 30,
+    top: height / 3 - 30,
     left: width / 2 - 30,
   },
   tapArea: {
