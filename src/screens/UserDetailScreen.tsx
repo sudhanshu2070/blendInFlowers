@@ -25,9 +25,9 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
   // Animated value for heart animation
   const heartAnim = useRef(new Animated.Value(0)).current;
 
-    // State to handle the double-tap detection
+  // State to handle the double-tap detection
 
-    const lastTap = useRef(Date.now());
+  const lastTap = useRef(Date.now());
 
   // Function to handle double tap
   const handleDoubleTap = () => {
@@ -41,7 +41,7 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
 
       Animated.timing(heartAnim, {
         toValue: 1,
-        duration: 300,
+        duration: 750,
         useNativeDriver: true,
         easing: Easing.elastic(1.5),
       }).start(() => {
