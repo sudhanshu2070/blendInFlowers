@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     elevation: 5,
     width: 490,
+    height: 400,
   },
   nameText: {
     fontSize: 24,
