@@ -77,9 +77,11 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
         <View style={styles.hobbyContainer}>
           <Text style={styles.hobbyText}>{hobby}</Text>
                     {/* Horizontal lines */}
-                    {[...Array(23)].map((_, index) => (
-            <View key={index} style={styles.line} />
-          ))}
+            <View style={styles.linesContainer}>
+              {[...Array(23)].map((_, index) => (
+                <View key={index} style={styles.line} />
+              ))}
+            </View>
         </View>
           {heartVisible && (
             <Animated.View
@@ -170,8 +172,11 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginBottom: 10,
   },
+  linesContainer: {
+    marginTop: 10,
+  },
   line: {
-    height: 1.25,
+    height: 1,
     backgroundColor: '#000',
     marginVertical: 14,
   },
