@@ -71,10 +71,13 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
       </View>
 
       <View style={styles.bioContainer}>
+        <View style={styles.headerContainer}>
           <Text style={styles.nameText}>{name}</Text>
-          <Text style={styles.hobbyText}>{hobby}</Text>
           <Text style={styles.heartCountText}>Hearts: {heartCount}</Text>
-
+        </View>
+        <View style={styles.hobbyContainer}>
+          <Text style={styles.hobbyText}>{hobby}</Text>
+        </View>
           {heartVisible && (
             <Animated.View
               style={[
@@ -107,24 +110,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     paddingTop: 20, // Space for the status bar
   },
-
   topContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
     height: '20%', 
   },
-
   profileImage: {
     width: 150,
     height: 150,
     borderRadius: 75,
     marginBottom: 20, // Space between image and bio
   },
-
   bioContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 15,
     backgroundColor: 'white',
     borderRadius: 15,
@@ -136,35 +134,41 @@ const styles = StyleSheet.create({
     height: '79%', 
     position: 'relative',
   },
-
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
   nameText: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#333',
-    textAlign: 'center',
+    fontFamily: 'Arial', 
   },
-
-  hobbyText: {
-    fontSize: 18,
-    color: '#555',
-    marginTop: 10,
-    textAlign: 'center',
-  },
-
   heartCountText: {
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 10,
     textAlign: 'center',
   },
-
+  hobbyContainer: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    paddingBottom: 10,
+  },
+  hobbyText: {
+    fontSize: 18,
+    color: '#555',
+    lineHeight: 24, 
+  },
   heartIcon: {
     position: 'absolute',
     top: '50%', // Center vertically
     left: '50%', // Center horizontally
     transform: [{ translateX: -24 }, { translateY: -24 }], // Adjust for icon size
   },
-
   tapArea: {
     position: 'absolute',
     top: 0,
