@@ -17,7 +17,7 @@ const HomeScreen: React.FC = () => {
   };
 
     const profiles = [
-      { name: 'John Doe', hobby: 'Loves to code and create awesome apps!', image: 'https://randomuser.me/api/portraits/men/1.jpg' },
+      { name: 'John Doe', hobby: 'Loves to code and create awesome apps la la la la la la ala ala alala al ala la al aala la ala al aal al a!', image: 'https://randomuser.me/api/portraits/men/1.jpg' },
       { name: 'Jane Smith', hobby: 'Enjoys hiking and photography.', image: 'https://randomuser.me/api/portraits/women/2.jpg' },
       { name: 'Mark Johnson', hobby: 'Passionate about graphic design and digital art.', image: 'https://randomuser.me/api/portraits/men/3.jpg' },
       { name: 'Emily Davis', hobby: 'Cooking and exploring new cuisines.', image: 'https://randomuser.me/api/portraits/women/4.jpg' },

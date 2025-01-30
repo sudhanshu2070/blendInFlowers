@@ -18,7 +18,6 @@ const { width, height } = Dimensions.get('window');
 const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
   // Access route params (name, hobby, image)
   const { name, hobby, image } = route.params;
-
   // State to track heart count
   const [heartCount, setHeartCount] = useState(0);
 
@@ -77,6 +76,10 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
         </View>
         <View style={styles.hobbyContainer}>
           <Text style={styles.hobbyText}>{hobby}</Text>
+                    {/* Horizontal lines */}
+                    {[...Array(23)].map((_, index) => (
+            <View key={index} style={styles.line} />
+          ))}
         </View>
           {heartVisible && (
             <Animated.View
@@ -154,14 +157,23 @@ const styles = StyleSheet.create({
   },
   hobbyContainer: {
     flex: 1,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    paddingBottom: 10,
+    position: 'relative',
   },
   hobbyText: {
     fontSize: 18,
     color: '#555',
-    lineHeight: 24, 
+    lineHeight: 24, // Adjust line height for notebook effect
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    textAlign: 'left',
+    marginBottom: 10,
+  },
+  line: {
+    height: 1.25,
+    backgroundColor: '#000',
+    marginVertical: 14,
   },
   heartIcon: {
     position: 'absolute',
