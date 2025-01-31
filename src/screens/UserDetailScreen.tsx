@@ -76,7 +76,7 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
         </View>
         <View style={styles.hobbyContainer}>
           <Text style={styles.hobbyText}>{hobby}</Text>
-                    {/* Horizontal lines */}
+            {/* Horizontal lines */}
             <View style={styles.linesContainer}>
               {[...Array(23)].map((_, index) => (
                 <View key={index} style={styles.line} />
