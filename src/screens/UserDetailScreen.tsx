@@ -4,6 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../utils/types';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Import FontAwesome icons
+import { globalStyles } from '../styles/globalStyles';
 
 type UserDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'UserDetail'>;
 type UserDetailScreenRouteProp = RouteProp<RootStackParamList, 'UserDetail'>;
@@ -75,13 +76,14 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
           <Text style={styles.heartCountText}>&hearts;: {heartCount}</Text>
         </View>
         <View style={styles.hobbyContainer}>
-          <Text style={styles.hobbyText}>{hobby}</Text>
+          {/* <Text style={[styles.hobbyText, globalStyles.fontChristmas]}>{hobby}</Text> */}
+          <Text style={[globalStyles.fontPlaywrite]}>{hobby}</Text>
             {/* Horizontal lines */}
-            <View style={styles.linesContainer}>
+            {/* <View style={styles.linesContainer}>
               {[...Array(23)].map((_, index) => (
                 <View key={index} style={styles.line} />
               ))}
-            </View>
+            </View> */}
         </View>
           {heartVisible && (
             <Animated.View
