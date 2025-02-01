@@ -72,7 +72,7 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
       <View style={styles.bioContainer}>
         <View style={styles.headerContainer}>
           <Text style={styles.nameText}>{name}</Text>
-          <Text style={styles.heartCountText}>Hearts: {heartCount}</Text>
+          <Text style={styles.heartCountText}>&hearts;: {heartCount}</Text>
         </View>
         <View style={styles.hobbyContainer}>
           <Text style={styles.hobbyText}>{hobby}</Text>
