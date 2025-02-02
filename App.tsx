@@ -15,6 +15,14 @@ const App = () => {
         'Christmas': require('./assets/fonts/Christmas.ttf'),
         'ClashGrotesk': require('./assets/fonts/ClashGrotesk.ttf'),
         'Rosaline-Regular': require('./assets/fonts/Rosaline-Regular.ttf'),
+        'Comico-Regular': require('./assets/fonts/Comico-Regular.ttf'),
+        'Stardom-Regular': require('./assets/fonts/Stardom-Regular.ttf'),
+        'Telma-Variable': require('./assets/fonts/Telma-Variable.ttf'),
+        'Pencerio-Hairline': require('./assets/fonts/Pencerio-Hairline.ttf'),
+        'BespokeSerif-Variable': require('./assets/fonts/BespokeSerif-Variable.ttf'),
+        'BespokeSerif-VariableItalic': require('./assets/fonts/BespokeSerif-VariableItalic.ttf'),
+        'BespokeStencil-Variable': require('./assets/fonts/BespokeStencil-Variable.ttf'),
+        'BespokeStencil-VariableItalic': require('./assets/fonts/BespokeStencil-VariableItalic.ttf'),
       });
       setFontsLoaded(true);
     };

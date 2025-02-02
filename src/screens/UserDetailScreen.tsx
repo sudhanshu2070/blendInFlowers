@@ -144,8 +144,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     // fontWeight: 'bold',
     color: '#333',
-    fontFamily: 'Rosaline-Regular', 
-    // fontFamily: 'Arial', 
+    fontFamily: 'Stardom-Regular', 
+    // fontFamily: 'Comico-Regular', 
   },
   heartCountText: {
     fontSize: 18,

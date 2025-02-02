@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Import the icon library
 import { RootStackParamList } from '../../utils/types';
+import { encryptText } from '../../utils/encrypt'; 
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -14,14 +15,19 @@ const LoginScreen = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false); // State to track password visibility
   const navigation = useNavigation<LoginScreenNavigationProp>(); 
 
+  const checkEmailChange = (text: string) => {
+    const encryptedText = encryptText(text);
+    setEmail(encryptedText);
+  };
+
   const handleLogin = () => {
     setLoading(true);
 
     // Simulate login process with a delay
     setTimeout(() => {
       
-      //Admin access
-      if (email === 'S'){
+      //Admin access(since "S" is replaced with "*")
+      if (email === '*'){
         setLoading(false);
         navigation.navigate('Home');
       }
@@ -48,7 +54,7 @@ const LoginScreen = () => {
       style={styles.input}
       placeholder="Email"
       value={email}
-      onChangeText={setEmail}
+      onChangeText={checkEmailChange}
       keyboardType="email-address"
     />
     <View style={styles.passwordContainer}>

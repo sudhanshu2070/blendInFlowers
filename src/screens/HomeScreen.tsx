@@ -175,6 +175,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'normal',
     lineHeight: 20,
+    fontFamily: 'Comico-Regular',  
   },
   buttonContainer: {
     flexDirection: 'row',
