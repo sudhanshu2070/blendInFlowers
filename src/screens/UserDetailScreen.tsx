@@ -76,14 +76,7 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
           <Text style={styles.heartCountText}>&hearts;: {heartCount}</Text>
         </View>
         <View style={styles.hobbyContainer}>
-          {/* <Text style={[styles.hobbyText, globalStyles.fontChristmas]}>{hobby}</Text> */}
-          <Text style={[globalStyles.fontPlaywrite]}>{hobby}</Text>
-            {/* Horizontal lines */}
-            {/* <View style={styles.linesContainer}>
-              {[...Array(23)].map((_, index) => (
-                <View key={index} style={styles.line} />
-              ))}
-            </View> */}
+          <Text style={styles.hobbyText}>{hobby}</Text>
         </View>
           {heartVisible && (
             <Animated.View
@@ -164,29 +157,17 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   hobbyText: {
-    fontSize: 18,
     color: '#555',
-    lineHeight: 24, // Adjust line height for notebook effect
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
+    fontSize: 18,
+    fontFamily: 'Playwrite',
     textAlign: 'left',
     marginBottom: 10,
-  },
-  linesContainer: {
-    marginTop: 10,
-  },
-  line: {
-    height: 1,
-    backgroundColor: '#000',
-    marginVertical: 14,
   },
   heartIcon: {
     position: 'absolute',
     top: '50%', // Center vertically
     left: '50%', // Center horizontally
-    transform: [{ translateX: -24 }, { translateY: -24 }], // Adjust for icon size
+    transform: [{ translateX: -24 }, { translateY: -24 }], 
   },
   tapArea: {
     position: 'absolute',
