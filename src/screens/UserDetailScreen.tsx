@@ -142,9 +142,10 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: 24,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     color: '#333',
-    fontFamily: 'Arial', 
+    fontFamily: 'ClashGrotesk', 
+    // fontFamily: 'Arial', 
   },
   heartCountText: {
     fontSize: 18,

@@ -13,6 +13,7 @@ const App = () => {
       await Font.loadAsync({
         'Playwrite': require('./assets/fonts/Playwrite.ttf'),
         'Christmas': require('./assets/fonts/Christmas.ttf'),
+        'ClashGrotesk': require('./assets/fonts/ClashGrotesk.ttf'),
       });
       setFontsLoaded(true);
     };
