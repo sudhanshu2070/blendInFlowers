@@ -14,6 +14,7 @@ const App = () => {
         'Playwrite': require('./assets/fonts/Playwrite.ttf'),
         'Christmas': require('./assets/fonts/Christmas.ttf'),
         'ClashGrotesk': require('./assets/fonts/ClashGrotesk.ttf'),
+        'Rosaline-Regular': require('./assets/fonts/Rosaline-Regular.ttf'),
       });
       setFontsLoaded(true);
     };
