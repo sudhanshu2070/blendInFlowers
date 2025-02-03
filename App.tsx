@@ -4,7 +4,7 @@ import * as Font from 'expo-font';
 import { AuthProvider } from './src/contexts/AuthContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import LoadingScreen from './src/screens/LoadingScreen';
-import { useFontLoader } from './src/utils/FontLoader';
+import { useFontLoader } from './src/utils/fontLoader';
 
 const App = () => {
   const fontsLoaded = useFontLoader();
