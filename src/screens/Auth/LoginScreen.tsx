@@ -10,14 +10,16 @@ type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
+  const [displayEmail, setDisplayEmail] = useState(''); // Display value with encryption
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false); // State to track password visibility
   const navigation = useNavigation<LoginScreenNavigationProp>(); 
 
-  const checkEmailChange = (text: string) => {
-    const encryptedText = encryptText(text);
-    setEmail(encryptedText);
+  const handleTextChange = (text: string) => {
+    setEmail(text); // Update the actual email value
+    const displayText = encryptText(text); // Encrypting the email
+    setDisplayEmail(displayText); // Update the display value
   };
 
   const handleLogin = () => {
@@ -26,8 +28,8 @@ const LoginScreen = () => {
     // Simulate login process with a delay
     setTimeout(() => {
       
-      //Admin access(since "S" is replaced with "*")
-      if (email === '*'){
+      //Admin access
+      if (email === 'S'){
         setLoading(false);
         navigation.navigate('Home');
       }
@@ -53,8 +55,8 @@ const LoginScreen = () => {
     <TextInput
       style={styles.input}
       placeholder="Email"
-      value={email}
-      onChangeText={checkEmailChange}
+      value={displayEmail}
+      onChangeText={handleTextChange}
       keyboardType="email-address"
     />
     <View style={styles.passwordContainer}>
