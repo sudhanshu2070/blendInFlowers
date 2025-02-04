@@ -9,6 +9,6 @@ export type RootStackParamList = {
     HelpSupport: undefined;
     ReferWin: undefined;
     AppGuide: undefined;
-    LoggedInUserProfile: undefined;
+    LoggedInUserProfileScreen: undefined;
   };
   

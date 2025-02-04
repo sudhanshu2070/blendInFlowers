@@ -8,6 +8,7 @@ import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import UserDetailScreen from '../screens/UserDetailScreen';
 import { RootStackParamList } from '../utils/types';
+import LoggedInUserProfileScreen from '../screens/User/LoggedInUserProfileScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -26,7 +27,7 @@ const AppNavigator = () => {
               fontStyle: 'italic',
             },
             headerRight: () => (
-              <TouchableOpacity onPress={() => navigation.navigate('LoggedInUserProfile')}>
+              <TouchableOpacity onPress={() => navigation.navigate('LoggedInUserProfileScreen')}>
                 <Image
                   source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }}
                   style={styles.profileImage}
@@ -35,6 +36,7 @@ const AppNavigator = () => {
             ),
           })}
         />
+      <Stack.Screen name="LoggedInUserProfileScreen" component={LoggedInUserProfileScreen} />
       <Stack.Screen name="UserDetail" component={UserDetailScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="ProfileSettings" component={ProfileScreen} />

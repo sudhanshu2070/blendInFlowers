@@ -6,14 +6,14 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 const { width } = Dimensions.get('window');
 
-type SidebarNavigationProp = StackNavigationProp<RootStackParamList, 'Sidebar'>; 
+type SidebarNavigationProp = StackNavigationProp<RootStackParamList>;
 
 const Sidebar: React.FC = () => {
-    const navigation = useNavigation<SidebarNavigationProp>(); // Typed navigation hook
+  const navigation = useNavigation<SidebarNavigationProp>();
 
-    const navigateToScreen = (screenName: string) => {
-        navigation.navigate(screenName);
-      };
+  const navigateToScreen = (screenName: Exclude<keyof RootStackParamList, 'UserDetail'>) => {
+    navigation.navigate(screenName);
+  };
 
   return (
     <View style={styles.sidebarContainer}>
