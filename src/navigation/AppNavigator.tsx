@@ -37,6 +37,10 @@ const AppNavigator = () => {
         />
       <Stack.Screen name="UserDetail" component={UserDetailScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="ProfileSettings" component={ProfileScreen} />
+      <Stack.Screen name="HelpSupport" component={ProfileScreen} />
+      <Stack.Screen name="ReferWin" component={ProfileScreen} />
+      <Stack.Screen name="AppGuide" component={ProfileScreen} />
     </Stack.Navigator>
   );
 };
