@@ -29,7 +29,6 @@ const HomeScreen: React.FC = () => {
   };
 
   const handleDislike = () => {
-    // Similar action to dislike
     setLiked(false);
     Animated.spring(cardAnim, {
       toValue: -1,
