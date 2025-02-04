@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/Auth/LoginScreen';
 import RegisterScreen from '../screens/Auth/RegisterScreen';
@@ -16,18 +17,38 @@ const AppNavigator = () => {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} />
-      <Stack.Screen name="Home" component={HomeScreen} 
-      options={{
-        headerShown: true,  // Show the header
-        headerTitleStyle: {
-          fontStyle: 'italic', // Apply italic style to the title
-        },
-      }}
-      />
+      <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={({ navigation }) => ({
+            headerShown: true,
+            headerTitleStyle: {
+              fontStyle: 'italic',
+            },
+            headerRight: () => (
+              <TouchableOpacity onPress={() => navigation.navigate('LoggedInUserProfile')}>
+                <Image
+                  source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }}
+                  style={styles.profileImage}
+                />
+              </TouchableOpacity>
+            ),
+          })}
+        />
       <Stack.Screen name="UserDetail" component={UserDetailScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
     </Stack.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    resizeMode: 'cover',
+    marginRight: 10,
+  },
+});
 
 export default AppNavigator;

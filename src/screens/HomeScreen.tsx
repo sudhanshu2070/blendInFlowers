@@ -5,7 +5,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../utils/types';
 import {profiles} from '../utils/data/profileData';
 
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>; // Typing the navigation prop
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>; 
 
 const HomeScreen: React.FC = () => {
 
@@ -16,7 +16,7 @@ const HomeScreen: React.FC = () => {
 
   const handleLike = () => {
     setLiked(true);
-    // Add more animation effects or transition to next card
+    // Adding animation effects or transition to next card
     Animated.spring(cardAnim, {
       toValue: 1,
       friction: 3,
