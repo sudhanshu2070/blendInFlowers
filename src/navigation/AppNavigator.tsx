@@ -14,7 +14,6 @@ import Sidebar from '../components/Sidebar';
 const Stack = createStackNavigator<RootStackParamList>();
 
 const AppNavigator = () => {
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Function to close the sidebar
@@ -24,11 +23,11 @@ const AppNavigator = () => {
 
   return (
     <>
-    <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
-      <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} />
-      <Stack.Screen
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} />
+        <Stack.Screen
           name="Home"
           component={HomeScreen}
           options={({ navigation }) => ({
@@ -37,9 +36,7 @@ const AppNavigator = () => {
               fontStyle: 'italic',
             },
             headerRight: () => (
-              <TouchableOpacity onPress={() => {
-                setIsSidebarOpen(true)
-                }}>
+              <TouchableOpacity onPress={() => setIsSidebarOpen(true)}>
                 <Image
                   source={{ uri: 'https://i.imgur.com/HNZ7DSm.png' }}
                   style={styles.profileImage}
@@ -48,52 +45,50 @@ const AppNavigator = () => {
             ),
           })}
         />
-      {/* <Stack.Screen name="LoggedInUserProfileScreen" component={LoggedInUserProfileScreen} /> */}
-      <Stack.Screen 
-        name="UserDetail" 
-        component={UserDetailScreen} 
-        options={{
-          title: 'User Detail', 
-        }}/>
-      <Stack.Screen name="Profile" component={ProfileScreen} />
-      <Stack.Screen
-        name="ProfileSettings"
-        component={ProfileScreen}
-        options={{
-            title: 'Profile Settings', 
+        {/* <Stack.Screen name="LoggedInUserProfileScreen" component={LoggedInUserProfileScreen} /> */}
+        <Stack.Screen
+          name="UserDetail"
+          component={UserDetailScreen}
+          options={{
+            title: 'User Detail',
           }}
-        />      
-      <Stack.Screen 
-        name="HelpSupport" 
-        component={ProfileScreen} 
-        options={{
+        />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen
+          name="ProfileSettings"
+          component={ProfileScreen}
+          options={{
+            title: 'Profile Settings',
+          }}
+        />
+        <Stack.Screen
+          name="HelpSupport"
+          component={ProfileScreen}
+          options={{
             title: 'Help & Support',
           }}
-      />
-      <Stack.Screen 
-        name="ReferWin" 
-        component={ProfileScreen} 
-        options={{
-          title: 'Refer & Win',
-        }}
-      />
-      <Stack.Screen 
-        name="AppGuide" 
-        component={ProfileScreen} 
-        options={{
-        title: 'App Guide',
-        }}
-      />
-      
-    </Stack.Navigator>
-    
+        />
+        <Stack.Screen
+          name="ReferWin"
+          component={ProfileScreen}
+          options={{
+            title: 'Refer & Win',
+          }}
+        />
+        <Stack.Screen
+          name="AppGuide"
+          component={ProfileScreen}
+          options={{
+            title: 'App Guide',
+          }}
+        />
+      </Stack.Navigator>
+
       {/* Sidebar Overlay */}
       {isSidebarOpen && (
-        <Sidebar
-          closeSidebar={() => setIsSidebarOpen(false)}
-        />
+        <Sidebar closeSidebar={() => setIsSidebarOpen(false)} />
       )}
-      </>
+    </>
   );
 };
 

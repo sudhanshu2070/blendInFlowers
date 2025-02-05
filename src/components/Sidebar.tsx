@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions, Animated, 
 import { RootStackParamList } from '../utils/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 type SidebarProps = {
   closeSidebar: () => void;
