@@ -35,16 +35,14 @@ const LoginScreen = () => {
         (user) => user.email === email && user.password === password
       );
 
-      console.log(matchedUser);
-      
       //Admin access
       // if (email === 'S'){
       //   setLoading(false);
       //   navigation.navigate('Home', { userId: matchedUser._id }); // Pass userId for further use
       // }
+      
       if (matchedUser){
         setLoading(false);
-        console.log("id from Login page", matchedUser._id);
         await AsyncStorage.setItem('userId', matchedUser._id);
         // Navigate to Home screen if credentials match
         navigation.navigate('Home'); // Pass userId for further use
