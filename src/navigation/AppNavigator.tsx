@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginScreen from '../screens/Auth/LoginScreen';
 import RegisterScreen from '../screens/Auth/RegisterScreen';
 import OTPVerificationScreen from '../screens/Auth/OTPVerificationScreen';
@@ -12,17 +13,37 @@ import Sidebar from '../components/Sidebar';
 import HelpSupport from '../screens/pop-up/HelpSupport';
 import ReferWin from '../screens/pop-up/ReferWin';
 import AppGuide from '../screens/pop-up/AppGuide';
+import { profiles } from '../utils/data/profiles';
 // import LoggedInUserProfileScreen from '../screens/User/LoggedInUserProfileScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const AppNavigator = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
   // Function to close the sidebar
   const closeSidebar = () => {
     setIsSidebarOpen(false);
   };
+
+    // Fetch userId and profile image on component mount
+    useEffect(() => {
+      const fetchProfileImage = async () => {
+        try {
+          const userId = await AsyncStorage.getItem('userId');
+          if (userId) {
+            const loggedUser = profiles.find((user) => user.userId === userId);
+            if (loggedUser) {
+              setProfileImage(loggedUser.image); // Set profile image in state
+            }
+          }
+        } catch (error) {
+          console.error('Failed to fetch profile image:', error);
+        }
+      };  
+      fetchProfileImage();
+    }, []);
 
   return (
     <>
@@ -41,7 +62,7 @@ const AppNavigator = () => {
             headerRight: () => (
               <TouchableOpacity onPress={() => setIsSidebarOpen(true)}>
                 <Image
-                  source={{ uri: 'https://i.imgur.com/HNZ7DSm.png' }}
+                  source={{ uri: profileImage || 'https://images.unsplash.com/photo-1635107510862-53886e926b74' }}
                   style={styles.profileImage}
                 />
               </TouchableOpacity>
