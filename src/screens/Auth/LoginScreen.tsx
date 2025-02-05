@@ -10,7 +10,11 @@ import { users } from '../../utils/data/users';
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
-const LoginScreen = () => {
+type LoginScreenProps = {
+  onLoginSuccess: () => void; // Callback to trigger refresh
+};
+
+const LoginScreen = ({ onLoginSuccess }: LoginScreenProps) => {
   const [email, setEmail] = useState('');
   const [displayEmail, setDisplayEmail] = useState(''); // Display value with encryption
   const [password, setPassword] = useState('');

@@ -63,8 +63,15 @@ const AppNavigator = () => {
 
   return (
     <>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen} />
+      {/* Conditional Rendering Based on Login State */}
+      <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Login'}>
+        {/* Login Screen */}
+        <Stack.Screen
+          name="Login"
+          children={(props) => (
+            <LoginScreen {...props} onLoginSuccess={refreshUserId} />
+          )}
+        />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} />
         <Stack.Screen
