@@ -2,7 +2,7 @@ export type RootStackParamList = {
     Login: undefined;
     Register: undefined;
     OTPVerification: undefined;
-    Home: undefined;
+    Home: {userId: string | undefined};
     Profile: undefined;
     UserDetail: { name: string; hobby: string; image: string };
     ProfileSettings: undefined;

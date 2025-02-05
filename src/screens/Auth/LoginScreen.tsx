@@ -5,6 +5,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Import the icon library
 import { RootStackParamList } from '../../utils/types';
 import { encryptText } from '../../utils/encrypt'; 
+import { users } from '../../utils/data/profile'; 
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -28,15 +29,20 @@ const LoginScreen = () => {
     // Simulate login process with a delay
     setTimeout(() => {
       
+      // Find the user with matching email and password
+      const matchedUser = users.find(
+        (user) => user.email === email && user.password === password
+      );
+      
       //Admin access
-      if (email === 'S'){
-        setLoading(false);
-        navigation.navigate('Home');
-      }
-      else if ((email === 'hot@mail' || email === 's') && (password === 'pass' || password === '1')) {
+      // if (email === 'S'){
+      //   setLoading(false);
+      //   navigation.navigate('Home', { userId: matchedUser._id }); // Pass userId for further use
+      // }
+      if (matchedUser){
         setLoading(false);
         // Navigate to Home screen if credentials match
-        navigation.navigate('Home');
+        navigation.navigate('Home', { userId: matchedUser._id }); // Pass userId for further use
       } 
       else {
         setLoading(false);
