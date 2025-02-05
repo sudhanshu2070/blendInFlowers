@@ -1,4 +1,5 @@
 export const profiles = [
+    { id: 1, name: 'Demy Salvatore', hobby: 'Football, and God knows what not', image: 'https://i.imgur.com/HNZ7DSm.png' },
     { id: 1, name: 'John Doe', hobby: 'Loves to code and create awesome apps la la la la la la ala ala alala al ala la al aala la ala al aal al a!', image: 'https://randomuser.me/api/portraits/men/1.jpg' },
     { id: 2, name: 'Jane Smith', hobby: 'Enjoys hiking and photography.', image: 'https://randomuser.me/api/portraits/women/2.jpg' },
     { id: 3, name: 'Mark Johnson', hobby: 'Passionate about graphic design and digital art.', image: 'https://randomuser.me/api/portraits/men/3.jpg' },

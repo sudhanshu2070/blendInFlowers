@@ -11,10 +11,9 @@ type SidebarProps = {
 };
 
 const Sidebar = ({ closeSidebar }: SidebarProps) => {
-  
-  const sidebarWidth = width * 0.5; // Sidebar takes 60% of screen width
+  const sidebarWidth = width * 0.5; // Sidebar takes 50% of screen width
   const animation = new Animated.Value(0); // For slide-in animation
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>(); 
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   // Gesture handling for swipe-to-close
   const panResponder = PanResponder.create({
@@ -52,53 +51,71 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
   };
 
   return (
-    <Animated.View
-      style={[styles.sidebarContainer, { width: sidebarWidth, transform: [{ translateX }] }]}
-      {...panResponder.panHandlers}
-    >
-      {/* Close Button */}
-      <TouchableOpacity onPress={closeSidebar} style={styles.closeButton}>
-        <Text style={styles.closeButtonText}>×</Text>
-      </TouchableOpacity>
+    <>
+      {/* Backdrop */}
+      <TouchableOpacity
+        style={styles.backdrop}
+        activeOpacity={1} // Prevent opacity change on press
+        onPress={closeSidebar} // Close sidebar when tapping outside
+      />
 
-      {/* Profile Section */}
-      <View style={styles.profileContainer}>
-        <Image
-          source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }}
-          style={styles.profileImage}
-        />
-        <Text style={styles.profileName}>John Doe</Text>
-      </View>
+      {/* Sidebar */}
+      <Animated.View
+        style={[styles.sidebarContainer, { width: sidebarWidth, transform: [{ translateX }] }]}
+        {...panResponder.panHandlers}
+      >
+        {/* Close Button */}
+        <TouchableOpacity onPress={closeSidebar} style={styles.closeButton}>
+          <Text style={styles.closeButtonText}>×</Text>
+        </TouchableOpacity>
 
-      {/* Menu Items */}
-      <TouchableOpacity onPress={() => navigateToScreen('ProfileSettings')} style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Profile Settings</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigateToScreen('HelpSupport')} style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Help & Support</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigateToScreen('ReferWin')} style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Refer & Win</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigateToScreen('AppGuide')} style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Your App Guide</Text>
-      </TouchableOpacity>
+        {/* Profile Section */}
+        <View style={styles.profileContainer}>
+          <Image
+            source={{ uri: 'https://i.imgur.com/HNZ7DSm.png' }}
+            style={styles.profileImage}
+          />
+          <Text style={styles.profileName}>John Doe</Text>
+        </View>
 
-      {/* Additional Features */}
-      <TouchableOpacity onPress={() => console.log('Dark Mode Toggled')} style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Toggle Dark Mode</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => console.log('Logout Pressed')} style={styles.logoutButton}>
-        <Text style={styles.logoutButtonText}>Logout</Text>
-      </TouchableOpacity>
-    </Animated.View>
+        {/* Menu Items */}
+        <TouchableOpacity onPress={() => navigateToScreen('ProfileSettings')} style={styles.menuItem}>
+          <Text style={styles.menuItemText}>Profile Settings</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigateToScreen('HelpSupport')} style={styles.menuItem}>
+          <Text style={styles.menuItemText}>Help & Support</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigateToScreen('ReferWin')} style={styles.menuItem}>
+          <Text style={styles.menuItemText}>Refer & Win</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigateToScreen('AppGuide')} style={styles.menuItem}>
+          <Text style={styles.menuItemText}>Your App Guide</Text>
+        </TouchableOpacity>
+
+        {/* Additional Features */}
+        <TouchableOpacity onPress={() => console.log('Dark Mode Toggled')} style={styles.menuItem}>
+          <Text style={styles.menuItemText}>Toggle Dark Mode</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => console.log('Logout Pressed')} style={styles.logoutButton}>
+          <Text style={styles.logoutButtonText}>Logout</Text>
+        </TouchableOpacity>
+      </Animated.View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  backdrop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black
+    zIndex: 999, 
+  },
   sidebarContainer: {
     backgroundColor: '#2C3E50', // Modern dark blue background
-    // height: height,
     height: '100%',
     position: 'absolute',
     top: 0,
@@ -112,7 +129,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   closeButtonText: {
-    fontSize: 24,
+    fontSize: 40,
     color: '#ECF0F1',
   },
   profileContainer: {

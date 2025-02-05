@@ -17,6 +17,11 @@ const AppNavigator = () => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  // Function to close the sidebar
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
   return (
     <>
     <Stack.Navigator initialRouteName="Login">
@@ -32,9 +37,11 @@ const AppNavigator = () => {
               fontStyle: 'italic',
             },
             headerRight: () => (
-              <TouchableOpacity onPress={() => setIsSidebarOpen(true)}>
+              <TouchableOpacity onPress={() => {
+                setIsSidebarOpen(true)
+                }}>
                 <Image
-                  source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }}
+                  source={{ uri: 'https://i.imgur.com/HNZ7DSm.png' }}
                   style={styles.profileImage}
                 />
               </TouchableOpacity>
