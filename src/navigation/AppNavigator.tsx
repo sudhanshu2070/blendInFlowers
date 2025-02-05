@@ -22,6 +22,7 @@ const AppNavigator = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0); // Key to force re-fetching
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
 
 
   // Function to close the sidebar
@@ -34,7 +35,9 @@ const AppNavigator = () => {
     const fetchProfileImage = async () => {
       try {
         const userId = await AsyncStorage.getItem('userId');
+        console.log('Fetched userId from AppNav:', userId); // Debugging log
         if (userId) {
+          setIsLoggedIn(true); // User is logged in
           const loggedUser = profiles.find((user) => user.userId === userId);
           if (loggedUser) {
             setProfileImage(loggedUser.image); // Set profile image in state
@@ -42,7 +45,8 @@ const AppNavigator = () => {
             setProfileImage(null); // Clear profile image if no user is found
           }
         } else {
-          setProfileImage(null); // Clear profile image if no userId is found
+          setIsLoggedIn(false); // User is not logged in
+          setProfileImage(null); // Clear profile image
         }
       } catch (error) {
         console.error('Failed to fetch profile image:', error);

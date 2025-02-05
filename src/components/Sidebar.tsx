@@ -21,10 +21,12 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [profileData, setProfileData] = useState<any | null>(null);
 
-  // Function to refresh userId
-  const refreshUserId = async () => {
+  // Function to fetch userId from AsyncStorage
+  const fetchUserId = async () => {
     try {
       const storedUserId = await AsyncStorage.getItem('userId');
+      console.log('Fetched userId in Sidebar:', storedUserId); // Debugging log
+
       if (storedUserId) {
         setUserId(storedUserId); // Set userId in state
       } else {
@@ -35,21 +37,8 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
     }
   };
 
-  // Fetch userId from AsyncStorage on component mount
+  // Fetch userId on component mount
   useEffect(() => {
-    const fetchUserId = async () => {
-      try {
-        const storedUserId = await AsyncStorage.getItem('userId');
-        if (storedUserId) {
-          setUserId(storedUserId); // Set userId in state
-        } else {
-          console.log('No user ID found');
-        }
-      } catch (error) {
-        console.error('Failed to fetch userId:', error);
-      }
-    };
-
     fetchUserId();
   }, []);
 
@@ -64,6 +53,16 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
       }
     }
   }, [userId]);
+
+    // Logout logic
+    const handleLogout = async () => {
+      await AsyncStorage.removeItem('userId'); // Clear userId
+      await AsyncStorage.clear();
+      console.log('Clearing AsyncStorage from Sidebar.tsx'); // Debugging log
+      
+      fetchUserId(); // Refresh userId
+      navigation.navigate('Login'); // Navigate to Login screen
+    };
 
   // Gesture handling for swipe-to-close
   const panResponder = PanResponder.create({
@@ -124,7 +123,7 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
           {profileData ? (
             <>
               <Image
-                source={{ uri: profileData.image }}
+                source={{ uri: profileData.image || 'https://i.imgur.com/HNZ7DSm.png' }}
                 style={styles.profileImage}
               />
               <Text style={styles.profileName}>{profileData.name}</Text>
@@ -154,14 +153,7 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
         </TouchableOpacity>
 
         {/* Logout Button */}
-        <TouchableOpacity
-          onPress={async () => {
-            await AsyncStorage.removeItem('userId'); // Clear userId
-            refreshUserId(); // Trigger refresh
-            navigation.navigate('Login'); // Navigate to Login screen
-          }}
-          style={styles.logoutButton}
-        >
+         <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
           <Text style={styles.logoutButtonText}>Logout</Text>
         </TouchableOpacity>
       </Animated.View>

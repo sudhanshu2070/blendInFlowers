@@ -40,10 +40,14 @@ const LoginScreen = () => {
       //   setLoading(false);
       //   navigation.navigate('Home', { userId: matchedUser._id }); // Pass userId for further use
       // }
-      
+
       if (matchedUser){
         setLoading(false);
+        await AsyncStorage.clear();
+
         await AsyncStorage.setItem('userId', matchedUser._id);
+        console.log('UserId stored:', matchedUser._id); // Debugging log
+
         // Navigate to Home screen if credentials match
         navigation.navigate('Home'); // Pass userId for further use
       } 
