@@ -75,7 +75,7 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
             source={{ uri: 'https://i.imgur.com/HNZ7DSm.png' }}
             style={styles.profileImage}
           />
-          <Text style={styles.profileName}>John Doe</Text>
+          <Text style={styles.profileName}>Demy Salvatore</Text>
         </View>
 
         {/* Menu Items */}
@@ -119,13 +119,13 @@ const styles = StyleSheet.create({
     height: '100%',
     position: 'absolute',
     top: 0,
-    left: 0,
+    right: 0,
     zIndex: 1000,
     padding: 20,
     justifyContent: 'flex-start',
   },
   closeButton: {
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-start',
     marginBottom: 10,
   },
   closeButtonText: {
