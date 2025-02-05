@@ -10,5 +10,6 @@ export type RootStackParamList = {
     ReferWin: undefined;
     AppGuide: undefined;
     LoggedInUserProfileScreen: undefined;
+    Sidebar: undefined;
   };
   

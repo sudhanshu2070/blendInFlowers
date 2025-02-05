@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/Auth/LoginScreen';
@@ -8,12 +8,17 @@ import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import UserDetailScreen from '../screens/UserDetailScreen';
 import { RootStackParamList } from '../utils/types';
+import Sidebar from '../components/Sidebar';
 // import LoggedInUserProfileScreen from '../screens/User/LoggedInUserProfileScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const AppNavigator = () => {
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
+    <>
     <Stack.Navigator initialRouteName="Login">
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
@@ -27,9 +32,7 @@ const AppNavigator = () => {
               fontStyle: 'italic',
             },
             headerRight: () => (
-              <TouchableOpacity 
-              // onPress={() => navigation.navigate('UserDetail')}
-              >
+              <TouchableOpacity onPress={() => setIsSidebarOpen(true)}>
                 <Image
                   source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }}
                   style={styles.profileImage}
@@ -46,6 +49,14 @@ const AppNavigator = () => {
       <Stack.Screen name="ReferWin" component={ProfileScreen} />
       <Stack.Screen name="AppGuide" component={ProfileScreen} />
     </Stack.Navigator>
+    
+      {/* Sidebar Overlay */}
+      {isSidebarOpen && (
+        <Sidebar
+          closeSidebar={() => setIsSidebarOpen(false)}
+        />
+      )}
+      </>
   );
 };
 
