@@ -21,29 +21,41 @@ const Stack = createStackNavigator<RootStackParamList>();
 const AppNavigator = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0); // Key to force re-fetching
+
 
   // Function to close the sidebar
   const closeSidebar = () => {
     setIsSidebarOpen(false);
   };
 
-    // Fetch userId and profile image on component mount
-    useEffect(() => {
-      const fetchProfileImage = async () => {
-        try {
-          const userId = await AsyncStorage.getItem('userId');
-          if (userId) {
-            const loggedUser = profiles.find((user) => user.userId === userId);
-            if (loggedUser) {
-              setProfileImage(loggedUser.image); // Set profile image in state
-            }
+  // Fetch userId and profile image on component mount or refresh
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      try {
+        const userId = await AsyncStorage.getItem('userId');
+        if (userId) {
+          const loggedUser = profiles.find((user) => user.userId === userId);
+          if (loggedUser) {
+            setProfileImage(loggedUser.image); // Set profile image in state
+          } else {
+            setProfileImage(null); // Clear profile image if no user is found
           }
-        } catch (error) {
-          console.error('Failed to fetch profile image:', error);
+        } else {
+          setProfileImage(null); // Clear profile image if no userId is found
         }
-      };  
-      fetchProfileImage();
-    }, []);
+      } catch (error) {
+        console.error('Failed to fetch profile image:', error);
+      }
+    };
+
+    fetchProfileImage();
+  }, [refreshKey]); // Re-run when refreshKey changes
+
+  // Function to update userId and refresh the profile image
+  const refreshUserId = () => {
+    setRefreshKey((prevKey) => prevKey + 1); // Increment refreshKey to trigger re-fetch
+  };
 
   return (
     <>

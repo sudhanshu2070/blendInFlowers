@@ -21,6 +21,20 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [profileData, setProfileData] = useState<any | null>(null);
 
+  // Function to refresh userId
+  const refreshUserId = async () => {
+    try {
+      const storedUserId = await AsyncStorage.getItem('userId');
+      if (storedUserId) {
+        setUserId(storedUserId); // Set userId in state
+      } else {
+        console.log('No user ID found');
+      }
+    } catch (error) {
+      console.error('Failed to fetch userId:', error);
+    }
+  };
+
   // Fetch userId from AsyncStorage on component mount
   useEffect(() => {
     const fetchUserId = async () => {
@@ -143,6 +157,7 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
         <TouchableOpacity
           onPress={async () => {
             await AsyncStorage.removeItem('userId'); // Clear userId
+            refreshUserId(); // Trigger refresh
             navigation.navigate('Login'); // Navigate to Login screen
           }}
           style={styles.logoutButton}
