@@ -12,7 +12,7 @@ type SidebarProps = {
 
 const Sidebar = ({ closeSidebar }: SidebarProps) => {
   
-  const sidebarWidth = width * 0.6; // Sidebar takes 60% of screen width
+  const sidebarWidth = width * 0.5; // Sidebar takes 60% of screen width
   const animation = new Animated.Value(0); // For slide-in animation
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>(); 
 
@@ -98,7 +98,8 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
 const styles = StyleSheet.create({
   sidebarContainer: {
     backgroundColor: '#2C3E50', // Modern dark blue background
-    height: height,
+    // height: height,
+    height: '100%',
     position: 'absolute',
     top: 0,
     left: 0,

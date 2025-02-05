@@ -11,6 +11,7 @@ const ProfileScreen = () => {
       <Text style={styles.name}>John Doe</Text>
       <Text style={styles.bio}>
         Enthusiast traveler, food lover, and tech geek. Let's connect and explore new places!
+        Hey there! I am on Instagram as @johndoe. Follow me for more updates.
       </Text>
       <TouchableOpacity style={styles.editButton}>
         <Text style={styles.editText}>Edit Profile</Text>
