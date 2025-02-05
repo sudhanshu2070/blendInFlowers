@@ -7,20 +7,21 @@ import Icon from 'react-native-vector-icons/FontAwesome'; // Import the icon lib
 import { RootStackParamList } from '../../utils/types';
 import { encryptText } from '../../utils/encrypt'; 
 import { users } from '../../utils/data/users'; 
+import { useDispatch } from 'react-redux';
+import { login } from '../../store/authSlice';
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
-type LoginScreenProps = {
-  onLoginSuccess: () => void; // Callback to trigger refresh
-};
-
-const LoginScreen = ({ onLoginSuccess }: LoginScreenProps) => {
+const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [displayEmail, setDisplayEmail] = useState(''); // Display value with encryption
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false); // State to track password visibility
   const navigation = useNavigation<LoginScreenNavigationProp>(); 
+
+  const dispatch = useDispatch();
+
 
   const handleTextChange = (text: string) => {
     setEmail(text); // Update the actual email value
@@ -47,9 +48,8 @@ const LoginScreen = ({ onLoginSuccess }: LoginScreenProps) => {
 
       if (matchedUser){
         setLoading(false);
-        await AsyncStorage.clear();
-
         await AsyncStorage.setItem('userId', matchedUser._id);
+        dispatch(login({ userId: matchedUser._id, profileData: matchedUser }));
         console.log('UserId stored:', matchedUser._id); // Debugging log
 
         // Navigate to Home screen if credentials match

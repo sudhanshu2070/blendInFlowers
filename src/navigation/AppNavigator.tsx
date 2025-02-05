@@ -14,6 +14,8 @@ import HelpSupport from '../screens/pop-up/HelpSupport';
 import ReferWin from '../screens/pop-up/ReferWin';
 import AppGuide from '../screens/pop-up/AppGuide';
 import { profiles } from '../utils/data/profiles';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 // import LoggedInUserProfileScreen from '../screens/User/LoggedInUserProfileScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -21,44 +23,14 @@ const Stack = createStackNavigator<RootStackParamList>();
 const AppNavigator = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
-  const [refreshKey, setRefreshKey] = useState(0); // Key to force re-fetching
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
+
+  const dispatch = useDispatch();
+  const { isLoggedIn, profileData } = useSelector((state: RootState) => state.auth);
 
 
   // Function to close the sidebar
   const closeSidebar = () => {
     setIsSidebarOpen(false);
-  };
-
-  // Fetch userId and profile image on component mount or refresh
-  useEffect(() => {
-    const fetchProfileImage = async () => {
-      try {
-        const userId = await AsyncStorage.getItem('userId');
-        console.log('Fetched userId from AppNav:', userId); // Debugging log
-        if (userId) {
-          setIsLoggedIn(true); // User is logged in
-          const loggedUser = profiles.find((user) => user.userId === userId);
-          if (loggedUser) {
-            setProfileImage(loggedUser.image); // Set profile image in state
-          } else {
-            setProfileImage(null); // Clear profile image if no user is found
-          }
-        } else {
-          setIsLoggedIn(false); // User is not logged in
-          setProfileImage(null); // Clear profile image
-        }
-      } catch (error) {
-        console.error('Failed to fetch profile image:', error);
-      }
-    };
-
-    fetchProfileImage();
-  }, [refreshKey]); // Re-run when refreshKey changes
-
-  // Function to update userId and refresh the profile image
-  const refreshUserId = () => {
-    setRefreshKey((prevKey) => prevKey + 1); // Increment refreshKey to trigger re-fetch
   };
 
   return (
@@ -68,9 +40,7 @@ const AppNavigator = () => {
         {/* Login Screen */}
         <Stack.Screen
           name="Login"
-          children={(props) => (
-            <LoginScreen {...props} onLoginSuccess={refreshUserId} />
-          )}
+          component={LoginScreen}
         />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} />

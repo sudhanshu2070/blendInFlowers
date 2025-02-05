@@ -6,6 +6,8 @@ import AppNavigator from './src/navigation/AppNavigator';
 import LoadingScreen from './src/screens/LoadingScreen';
 import { useFontLoader } from './src/utils/fontLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Provider } from 'react-redux';
+import store from './src/store/store';
 
 const App = () => {
 
@@ -16,11 +18,13 @@ const App = () => {
   }
 
   return (
+    <Provider store={store}>
     <AuthProvider>
       <NavigationContainer>
         <AppNavigator />
       </NavigationContainer>
     </AuthProvider>
+    </Provider>
   );
 };
 
