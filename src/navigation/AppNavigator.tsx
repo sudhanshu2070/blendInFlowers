@@ -1,49 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 import LoginScreen from '../screens/Auth/LoginScreen';
 import RegisterScreen from '../screens/Auth/RegisterScreen';
 import OTPVerificationScreen from '../screens/Auth/OTPVerificationScreen';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/pop-up/ProfileScreen';
 import UserDetailScreen from '../screens/UserDetailScreen';
-import { RootStackParamList } from '../utils/types';
 import Sidebar from '../components/Sidebar';
 import HelpSupport from '../screens/pop-up/HelpSupport';
 import ReferWin from '../screens/pop-up/ReferWin';
 import AppGuide from '../screens/pop-up/AppGuide';
+import { RootStackParamList } from '../utils/types';
 import { profiles } from '../utils/data/profiles';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store/store';
-// import LoggedInUserProfileScreen from '../screens/User/LoggedInUserProfileScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const AppNavigator = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [profileImage, setProfileImage] = useState<string | null>(null);
-
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const dispatch = useDispatch();
   const { isLoggedIn, profileData } = useSelector((state: RootState) => state.auth);
+  let imageUri = null;
 
+  console.log('Profile Data:', profileData);
 
   // Function to close the sidebar
   const closeSidebar = () => {
     setIsSidebarOpen(false);
   };
 
+  if (profileData && profileData._id) {
+    const loggedUserId = profileData._id;
+    imageUri = profiles.find((profile) => profile.id === loggedUserId)?.image;
+  }
+
   return (
     <>
       {/* Conditional Rendering Based on Login State */}
       <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Login'}>
         {/* Login Screen */}
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-        />
+        <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} />
+
+        {/* Home Screen */}
         <Stack.Screen
           name="Home"
           component={HomeScreen}
@@ -55,14 +57,17 @@ const AppNavigator = () => {
             headerRight: () => (
               <TouchableOpacity onPress={() => setIsSidebarOpen(true)}>
                 <Image
-                  source={{ uri: profileImage || 'https://images.unsplash.com/photo-1635107510862-53886e926b74' }}
+                  source={{
+                    uri: imageUri || 'https://images.unsplash.com/photo-1635107510862-53886e926b74',
+                  }}
                   style={styles.profileImage}
                 />
               </TouchableOpacity>
             ),
           })}
         />
-        {/* <Stack.Screen name="LoggedInUserProfileScreen" component={LoggedInUserProfileScreen} /> */}
+
+        {/* User Detail Screen */}
         <Stack.Screen
           name="UserDetail"
           component={UserDetailScreen}
@@ -70,7 +75,8 @@ const AppNavigator = () => {
             title: 'User Detail',
           }}
         />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+
+        {/* Profile Settings Screen */}
         <Stack.Screen
           name="ProfileSettings"
           component={ProfileScreen}
@@ -78,6 +84,8 @@ const AppNavigator = () => {
             title: 'Profile Settings',
           }}
         />
+
+        {/* Help & Support Screen */}
         <Stack.Screen
           name="HelpSupport"
           component={HelpSupport}
@@ -85,13 +93,17 @@ const AppNavigator = () => {
             title: 'Help & Support',
           }}
         />
+
+        {/* Refer & Win Screen */}
         <Stack.Screen
           name="ReferWin"
-          component={ReferWin }
+          component={ReferWin}
           options={{
             title: 'Refer & Win',
           }}
         />
+
+        {/* App Guide Screen */}
         <Stack.Screen
           name="AppGuide"
           component={AppGuide}
@@ -102,9 +114,7 @@ const AppNavigator = () => {
       </Stack.Navigator>
 
       {/* Sidebar Overlay */}
-      {isSidebarOpen && (
-        <Sidebar closeSidebar={() => setIsSidebarOpen(false)} />
-      )}
+      {isSidebarOpen && <Sidebar closeSidebar={closeSidebar} />}
     </>
   );
 };

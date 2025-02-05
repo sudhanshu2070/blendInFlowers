@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { logout as reduxLogout } from '../store/authSlice';
+import { profiles } from '../utils/data/profiles';
 
 const { width } = Dimensions.get('window');
 
@@ -19,6 +20,9 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
   const animation = new Animated.Value(0); // For slide-in animation
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const dispatch = useDispatch();
+
+  let imageUri = null;
+  let name = '';
 
   // Fetch user data from Redux global state
   const { isLoggedIn, profileData } = useSelector((state: RootState) => state.auth);
@@ -68,6 +72,12 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
     navigation.navigate('Login'); // Navigate to Login screen
   };
 
+  if (profileData && profileData._id) {
+
+    const loggedUserId = profileData._id;
+     imageUri = profiles.find((profile) => profile.userId === loggedUserId)?.image;
+     name = profiles.find((profile) => profile.userId === loggedUserId)?.name || '';
+  }
   return (
     <>
       {/* Backdrop */}
@@ -92,10 +102,10 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
           {profileData ? (
             <>
               <Image
-                source={{ uri: profileData.image || 'https://i.imgur.com/HNZ7DSm.png' }}
+                source={{ uri: imageUri || 'https://i.imgur.com/HNZ7DSm.png' }}
                 style={styles.profileImage}
               />
-              <Text style={styles.profileName}>{profileData.name}</Text>
+              <Text style={styles.profileName}>{name}</Text>
             </>
           ) : (
             <Text style={styles.profileName}>Loading...</Text>
