@@ -49,12 +49,42 @@ const AppNavigator = () => {
           })}
         />
       {/* <Stack.Screen name="LoggedInUserProfileScreen" component={LoggedInUserProfileScreen} /> */}
-      <Stack.Screen name="UserDetail" component={UserDetailScreen} />
+      <Stack.Screen 
+        name="UserDetail" 
+        component={UserDetailScreen} 
+        options={{
+          title: 'User Detail', 
+        }}/>
       <Stack.Screen name="Profile" component={ProfileScreen} />
-      <Stack.Screen name="ProfileSettings" component={ProfileScreen} />
-      <Stack.Screen name="HelpSupport" component={ProfileScreen} />
-      <Stack.Screen name="ReferWin" component={ProfileScreen} />
-      <Stack.Screen name="AppGuide" component={ProfileScreen} />
+      <Stack.Screen
+        name="ProfileSettings"
+        component={ProfileScreen}
+        options={{
+            title: 'Profile Settings', 
+          }}
+        />      
+      <Stack.Screen 
+        name="HelpSupport" 
+        component={ProfileScreen} 
+        options={{
+            title: 'Help & Support',
+          }}
+      />
+      <Stack.Screen 
+        name="ReferWin" 
+        component={ProfileScreen} 
+        options={{
+          title: 'Refer & Win',
+        }}
+      />
+      <Stack.Screen 
+        name="AppGuide" 
+        component={ProfileScreen} 
+        options={{
+        title: 'App Guide',
+        }}
+      />
+      
     </Stack.Navigator>
     
       {/* Sidebar Overlay */}
