@@ -1,14 +1,16 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../utils/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-const { width } = Dimensions.get('window');
+type SidebarProps = {
+  closeSidebar: () => void;
+};
 
 type SidebarNavigationProp = StackNavigationProp<RootStackParamList>;
 
-const Sidebar: React.FC = () => {
+const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
   const navigation = useNavigation<SidebarNavigationProp>();
 
   const navigateToScreen = (screenName: Exclude<keyof RootStackParamList, 'UserDetail'>) => {
@@ -17,6 +19,9 @@ const Sidebar: React.FC = () => {
 
   return (
     <View style={styles.sidebarContainer}>
+      <TouchableOpacity onPress={closeSidebar} style={styles.closeButton}>
+        <Text style={styles.closeButtonText}>Close</Text>
+      </TouchableOpacity>
       <View style={styles.profileContainer}>
         <Image
           source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }}
@@ -42,14 +47,22 @@ const Sidebar: React.FC = () => {
 
 const styles = StyleSheet.create({
   sidebarContainer: {
-    width: width / 2,
+    width: '50%',
+    height: '100%',
     backgroundColor: '#fff',
     padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    elevation: 5,
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    padding: 10,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 20,
+  },
+  closeButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   profileContainer: {
     alignItems: 'center',
