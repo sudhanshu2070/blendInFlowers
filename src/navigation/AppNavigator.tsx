@@ -5,10 +5,13 @@ import LoginScreen from '../screens/Auth/LoginScreen';
 import RegisterScreen from '../screens/Auth/RegisterScreen';
 import OTPVerificationScreen from '../screens/Auth/OTPVerificationScreen';
 import HomeScreen from '../screens/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import ProfileScreen from '../screens/pop-up/ProfileScreen';
 import UserDetailScreen from '../screens/UserDetailScreen';
 import { RootStackParamList } from '../utils/types';
 import Sidebar from '../components/Sidebar';
+import HelpSupport from '../screens/pop-up/HelpSupport';
+import ReferWin from '../screens/pop-up/ReferWin';
+import AppGuide from '../screens/pop-up/AppGuide';
 // import LoggedInUserProfileScreen from '../screens/User/LoggedInUserProfileScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -63,21 +66,21 @@ const AppNavigator = () => {
         />
         <Stack.Screen
           name="HelpSupport"
-          component={ProfileScreen}
+          component={HelpSupport}
           options={{
             title: 'Help & Support',
           }}
         />
         <Stack.Screen
           name="ReferWin"
-          component={ProfileScreen}
+          component={ReferWin }
           options={{
             title: 'Refer & Win',
           }}
         />
         <Stack.Screen
           name="AppGuide"
-          component={ProfileScreen}
+          component={AppGuide}
           options={{
             title: 'App Guide',
           }}
