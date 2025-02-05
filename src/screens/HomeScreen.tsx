@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Animated, Image } from 'react
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../utils/types';
-import {profiles} from '../utils/data/user';
+import {profiles} from '../utils/data/profiles';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>; 
 

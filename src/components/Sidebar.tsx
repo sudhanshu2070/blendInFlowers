@@ -1,8 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions, Animated, PanResponder } from 'react-native';
 import { RootStackParamList } from '../utils/types';
 import { StackNavigationProp } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { profiles } from '../utils/data/profiles';
 
 const { width } = Dimensions.get('window');
 
@@ -14,6 +16,40 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
   const sidebarWidth = width * 0.5; // Sidebar takes 50% of screen width
   const animation = new Animated.Value(0); // For slide-in animation
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+  // State for user data
+  const [userId, setUserId] = useState<string | null>(null);
+  const [profileData, setProfileData] = useState<any | null>(null);
+
+  // Fetch userId from AsyncStorage on component mount
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem('userId');
+        if (storedUserId) {
+          setUserId(storedUserId); // Set userId in state
+        } else {
+          console.log('No user ID found');
+        }
+      } catch (error) {
+        console.error('Failed to fetch userId:', error);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
+  // Fetch profile data based on userId
+  useEffect(() => {
+    if (userId) {
+      const loggedUser = profiles.find((user) => user.userId === userId);
+      if (loggedUser) {
+        setProfileData(loggedUser); // Set profile data in state
+      } else {
+        console.log('No profile found for userId:', userId);
+      }
+    }
+  }, [userId]);
 
   // Gesture handling for swipe-to-close
   const panResponder = PanResponder.create({
@@ -71,11 +107,17 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
 
         {/* Profile Section */}
         <View style={styles.profileContainer}>
-          <Image
-            source={{ uri: 'https://i.imgur.com/HNZ7DSm.png' }}
-            style={styles.profileImage}
-          />
-          <Text style={styles.profileName}>Demy Salvatore</Text>
+          {profileData ? (
+            <>
+              <Image
+                source={{ uri: profileData.image }}
+                style={styles.profileImage}
+              />
+              <Text style={styles.profileName}>{profileData.name}</Text>
+            </>
+          ) : (
+            <Text style={styles.profileName}>Loading...</Text>
+          )}
         </View>
 
         {/* Menu Items */}
@@ -96,7 +138,15 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
         <TouchableOpacity onPress={() => console.log('Dark Mode Toggled')} style={styles.menuItem}>
           <Text style={styles.menuItemText}>Toggle Dark Mode</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => console.log('Logout Pressed')} style={styles.logoutButton}>
+
+        {/* Logout Button */}
+        <TouchableOpacity
+          onPress={async () => {
+            await AsyncStorage.removeItem('userId'); // Clear userId
+            navigation.navigate('Login'); // Navigate to Login screen
+          }}
+          style={styles.logoutButton}
+        >
           <Text style={styles.logoutButtonText}>Logout</Text>
         </TouchableOpacity>
       </Animated.View>
@@ -112,7 +162,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black
-    zIndex: 999, 
+    zIndex: 999,
   },
   sidebarContainer: {
     backgroundColor: '#2C3E50', // Modern dark blue background

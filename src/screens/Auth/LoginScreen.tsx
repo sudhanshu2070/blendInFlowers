@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Import the icon library
 import { RootStackParamList } from '../../utils/types';
 import { encryptText } from '../../utils/encrypt'; 
-import { users } from '../../utils/data/profile'; 
+import { users } from '../../utils/data/users'; 
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -23,16 +24,18 @@ const LoginScreen = () => {
     setDisplayEmail(displayText); // Update the display value
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setLoading(true);
 
     // Simulate login process with a delay
-    setTimeout(() => {
+    setTimeout(async () => {
       
       // Find the user with matching email and password
       const matchedUser = users.find(
         (user) => user.email === email && user.password === password
       );
+
+      console.log(matchedUser);
       
       //Admin access
       // if (email === 'S'){
@@ -41,8 +44,10 @@ const LoginScreen = () => {
       // }
       if (matchedUser){
         setLoading(false);
+        console.log("id from Login page", matchedUser._id);
+        await AsyncStorage.setItem('userId', matchedUser._id);
         // Navigate to Home screen if credentials match
-        navigation.navigate('Home', { userId: matchedUser._id }); // Pass userId for further use
+        navigation.navigate('Home'); // Pass userId for further use
       } 
       else {
         setLoading(false);
