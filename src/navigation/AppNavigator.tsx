@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,19 +22,22 @@ const AppNavigator = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const dispatch = useDispatch();
   const { isLoggedIn, profileData } = useSelector((state: RootState) => state.auth);
-  let imageUri = null;
-
-  console.log('Profile Data:', profileData);
 
   // Function to close the sidebar
   const closeSidebar = () => {
     setIsSidebarOpen(false);
   };
 
-  if (profileData && profileData._id) {
-    const loggedUserId = profileData._id;
-    imageUri = profiles.find((profile) => profile.id === loggedUserId)?.image;
-  }
+  // Get profile image dynamically based on Redux state
+  const getProfileImage = () => {
+    if (profileData && profileData._id) {
+      const loggedUser = profiles.find((profile) => profile.userId === profileData._id);
+      return loggedUser?.image || 'https://images.unsplash.com/photo-1635107510862-53886e926b74';
+    }
+    return 'https://images.unsplash.com/photo-1635107510862-53886e926b74'; // Default image
+  };
+
+  const profileImageUri = getProfileImage();
 
   return (
     <>
@@ -57,9 +60,7 @@ const AppNavigator = () => {
             headerRight: () => (
               <TouchableOpacity onPress={() => setIsSidebarOpen(true)}>
                 <Image
-                  source={{
-                    uri: imageUri || 'https://images.unsplash.com/photo-1635107510862-53886e926b74',
-                  }}
+                  source={{ uri: profileImageUri }}
                   style={styles.profileImage}
                 />
               </TouchableOpacity>
