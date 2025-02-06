@@ -29,7 +29,7 @@ const AppNavigator = () => {
     setIsSidebarOpen(false);
   };
 
-  // Get profile image dynamically based on Redux state
+  // Getting profile image dynamically based on Redux state
   const getProfileImage = () => {
     if (profileData && profileData._id) {
       const loggedUser = profiles.find((profile) => profile.userId === profileData._id);
@@ -45,8 +45,25 @@ const AppNavigator = () => {
       {/* Conditional Rendering Based on Login State */}
       <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Login'}>
         {/* Login Screen */}
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
+
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{
+            headerShown: true,
+            headerTitle: 'Login',
+            headerLeft: () => null, // Keeping it blank
+          }}
+        />        
+        <Stack.Screen 
+          name="Register" 
+          component={RegisterScreen} 
+          options={{
+            headerShown: true,
+            headerTitle: 'Register',
+            headerLeft: () => null, // Keeping it blank
+          }}
+          />
         <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} />
 
         {/* Home Screen */}
