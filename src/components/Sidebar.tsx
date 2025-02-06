@@ -63,7 +63,6 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
   const handleLogout = async () => {
     await AsyncStorage.removeItem('userId'); // Clear userId from AsyncStorage
     await AsyncStorage.clear(); // Clear all AsyncStorage data
-    console.log('Clearing AsyncStorage from Sidebar.tsx'); // Debugging log
 
     dispatch(reduxLogout()); // Dispatch Redux logout action
     navigation.navigate('Login'); // Navigate to Login screen

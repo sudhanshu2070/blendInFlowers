@@ -50,7 +50,6 @@ const LoginScreen = () => {
         setLoading(false);
         await AsyncStorage.setItem('userId', matchedUser._id);
         dispatch(login({ userId: matchedUser._id, profileData: matchedUser }));
-        console.log('UserId stored:', matchedUser._id); // Debugging log
 
         // Navigate to Home screen if credentials match
         navigation.navigate('Home'); // Pass userId for further use
