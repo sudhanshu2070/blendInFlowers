@@ -9,11 +9,14 @@ import {
   StyleSheet,
   Animated,
   ScrollView,
+  Modal,
+  Dimensions,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { logout as reduxLogout } from '../../store/authSlice';
 import { RootStackParamList } from '../../utils/types';
+const { width, height } = Dimensions.get('window');
 
 type ProfileSettingsRouteProp = RouteProp<
   { params: { image: string; name: string } },
@@ -26,6 +29,7 @@ const ProfileSettings = () => {
   const [fadeAnim] = useState(new Animated.Value(0)); // For fade-in animation
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const dispatch = useDispatch();
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   // Fade-in animation when the screen loads
   useEffect(() => {
@@ -44,14 +48,38 @@ const ProfileSettings = () => {
     navigation.navigate('Login'); // Navigate to Login screen
   };
 
+    // Function to handle opening the modal
+    const openModal = () => {
+      setIsModalVisible(true);
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    };
+  
+    // Function to handle closing the modal
+    const closeModal = () => {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => setIsModalVisible(false));
+    };
+
   return (
+    <>
     <ScrollView contentContainerStyle={styles.container}>
       {/* Header Section */}
       <Animated.View style={[styles.header, { opacity: fadeAnim }]}>
+
+      <TouchableOpacity onPress={openModal}>
         <Image
           source={{ uri: image }}
           style={styles.profileImage}
         />
+        </TouchableOpacity>
+        
         <Text style={styles.profileName}>{name}</Text>
         <Text style={styles.profileBio}>Software Engineer | Tech Enthusiast</Text>
       </Animated.View>
@@ -112,7 +140,39 @@ const ProfileSettings = () => {
           <Text style={styles.logoutButtonText}>Logout</Text>
         </TouchableOpacity>
       </Animated.View>
+
+          {/* Modal for Full-Screen Image */}
+      <Modal visible={isModalVisible} transparent={true} onRequestClose={closeModal}>
+        <View style={styles.modalContainer}>
+          {/* Background Overlay */}
+          <TouchableOpacity
+            style={styles.modalBackground}
+            activeOpacity={1}
+            onPress={closeModal}
+          />
+
+          {/* Full-Screen Image */}
+          <Animated.Image
+            source={{ uri: image }}
+            style={[
+              styles.fullScreenImage,
+              {
+                transform: [
+                  {
+                    scale: fadeAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [1, 1.2], // Slight zoom-in effect
+                    }),
+                  },
+                ],
+              },
+            ]}
+          />
+        </View>
+      </Modal>
+
     </ScrollView>
+    </>
   );
 };
 
@@ -224,6 +284,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.9)', // Semi-transparent black background
+  },
+  modalBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  fullScreenImage: {
+    width: width * 0.8, // 80% of screen width
+    height: height * 0.6, // 60% of screen height
+    resizeMode: 'contain', // Ensures the image fits within the container
+  }, 
 });
 
 export default ProfileSettings;
