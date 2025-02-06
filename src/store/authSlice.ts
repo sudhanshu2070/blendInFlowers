@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// Define the type for the auth state
+// the type for the auth state
 interface AuthState {
   isLoggedIn: boolean;
   userId: string | null;
@@ -14,7 +14,7 @@ const initialState: AuthState = {
   profileData: null,
 };
 
-// Create the auth slice
+// the auth slice
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -32,7 +32,7 @@ const authSlice = createSlice({
   },
 });
 
-// Export actions and reducer
+// Exporting actions and reducer
 export const { login, logout } = authSlice.actions;
 
 export default authSlice.reducer;

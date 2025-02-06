@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   biometricButton: {
-    backgroundColor: '#B6FFFA', // Green color for biometric login
+    backgroundColor: '#B6FFFA', // color for biometric login
   },
   buttonText: {
     color: '#191825',
