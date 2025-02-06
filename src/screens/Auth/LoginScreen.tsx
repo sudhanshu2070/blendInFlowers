@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StackNavigationProp } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Import the icon library
+import RNBiometrics from 'react-native-biometrics'; // Import biometrics library
+import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../utils/types';
-import { encryptText } from '../../utils/encrypt'; 
-import { users } from '../../utils/data/users'; 
+import { encryptText } from '../../utils/encrypt';
+import { users } from '../../utils/data/users';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/authSlice';
 
@@ -18,10 +19,8 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false); // State to track password visibility
-  const navigation = useNavigation<LoginScreenNavigationProp>(); 
-
+  const navigation = useNavigation<LoginScreenNavigationProp>();
   const dispatch = useDispatch();
-
 
   const handleTextChange = (text: string) => {
     setEmail(text); // Update the actual email value
@@ -34,29 +33,19 @@ const LoginScreen = () => {
 
     // Simulate login process with a delay
     setTimeout(async () => {
-      
       // Find the user with matching email and password
       const matchedUser = users.find(
         (user) => user.email === email && user.password === password
       );
 
-      //Admin access
-      // if (email === 'S'){
-      //   setLoading(false);
-      //   navigation.navigate('Home', { userId: matchedUser._id }); // Pass userId for further use
-      // }
-
-      if (matchedUser){
+      if (matchedUser) {
         setLoading(false);
         await AsyncStorage.setItem('userId', matchedUser._id);
         dispatch(login({ userId: matchedUser._id, profileData: matchedUser }));
-
-        // Navigate to Home screen if credentials match
-        navigation.navigate('Home'); // Pass userId for further use
-      } 
-      else {
+        navigation.navigate('Home'); // Navigate to Home screen
+      } else {
         setLoading(false);
-        alert('Invalid email or password');
+        Alert.alert('Invalid email or password');
       }
     }, 2000);
   };
@@ -65,50 +54,104 @@ const LoginScreen = () => {
     navigation.navigate('Register');
   };
 
+  // Biometric Authentication Handler
+  const handleBiometricLogin = async () => {
+    try {
+      const rnBiometrics = new RNBiometrics();
+      const isSensorAvailable = await rnBiometrics.isSensorAvailable();
+
+      if (isSensorAvailable.available) {
+        const authResult = await rnBiometrics.simplePrompt({
+          promptMessage: 'Authenticate with your fingerprint',
+        });
+
+        if (authResult.success) {
+          // Fetch the stored userId from AsyncStorage
+          const storedUserId = await AsyncStorage.getItem('userId');
+
+          if (storedUserId) {
+            const matchedUser = users.find((user) => user._id === storedUserId);
+
+            if (matchedUser) {
+              dispatch(login({ userId: matchedUser._id, profileData: matchedUser }));
+              navigation.navigate('Home'); // Navigate to Home screen
+            } else {
+              Alert.alert('No user found for biometric login.');
+            }
+          } else {
+            Alert.alert('No user logged in previously.');
+          }
+        } else {
+          Alert.alert('Biometric authentication failed.');
+        }
+      } else {
+        Alert.alert('Biometric authentication is not available on this device.');
+      }
+    } catch (error) {
+      console.error('Error during biometric authentication:', error);
+      Alert.alert('An error occurred during biometric authentication.');
+    }
+  };
+
   return (
     <View style={styles.container}>
-    <Text style={styles.title}>Welcome Back!</Text>
-    <TextInput
-      style={styles.input}
-      placeholder="Email"
-      value={displayEmail}
-      onChangeText={handleTextChange}
-      keyboardType="email-address"
-    />
-    <View style={styles.passwordContainer}>
+      <Text style={styles.title}>Welcome Back!</Text>
+
+      {/* Email Input */}
       <TextInput
         style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry={!isPasswordVisible} // If isPasswordVisible is true, the password is visible
+        placeholder="Email"
+        value={displayEmail}
+        onChangeText={handleTextChange}
+        keyboardType="email-address"
       />
-      <TouchableOpacity
-        style={styles.eyeIcon}
-        onPress={() => setIsPasswordVisible(!isPasswordVisible)} // Toggle password visibility
-      >
-        <Icon name={isPasswordVisible ? 'eye-slash' : 'eye'} size={20} color="#aaa" />
-      </TouchableOpacity>
-    </View>
-    
-    <TouchableOpacity
-      style={styles.button}
-      onPress={handleLogin}
-      disabled={loading}
-    >
-      <Text style={styles.buttonText}>
-        {loading ? 'Logging in...' : 'Login'}
-      </Text>
-    </TouchableOpacity>
 
-    <Text style={styles.registerText}>
-      Don't have an account? 
-      <TouchableOpacity onPress={handleRegisterPress}>
-        <Text style={styles.registerLink}> Register</Text>
+      {/* Password Input */}
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!isPasswordVisible} // If isPasswordVisible is true, the password is visible
+        />
+        <TouchableOpacity
+          style={styles.eyeIcon}
+          onPress={() => setIsPasswordVisible(!isPasswordVisible)} // Toggle password visibility
+        >
+          <Icon name={isPasswordVisible ? 'eye-slash' : 'eye'} size={20} color="#aaa" />
+        </TouchableOpacity>
+      </View>
+
+      {/* Login Button */}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleLogin}
+        disabled={loading}
+      >
+        <Text style={styles.buttonText}>
+          {loading ? 'Logging in...' : 'Login'}
+        </Text>
       </TouchableOpacity>
-    </Text>
-  </View>
-);
+
+      {/* Biometric Login Button */}
+      <TouchableOpacity
+        style={[styles.button, styles.biometricButton]}
+        onPress={handleBiometricLogin}
+        disabled={loading}
+      >
+        <Text style={styles.buttonText}>Login with Fingerprint</Text>
+      </TouchableOpacity>
+
+      {/* Register Link */}
+      <Text style={styles.registerText}>
+        Don't have an account?{' '}
+        <TouchableOpacity onPress={handleRegisterPress}>
+          <Text style={styles.registerLink}>Register</Text>
+        </TouchableOpacity>
+      </Text>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -146,21 +189,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 5 },
     elevation: 5,
+    marginBottom: 10,
+  },
+  biometricButton: {
+    backgroundColor: '#B6FFFA', // Green color for biometric login
   },
   buttonText: {
-    color: '#fff',
+    color: '#191825',
     fontSize: 18,
     fontWeight: '600',
   },
   registerLink: {
-    color: 'blue',  
-    top:7,
+    color: 'blue',
+    top: 7,
   },
   registerText: {
     color: '#ff6347',
     fontSize: 16,
     textAlign: 'center',
-    marginTop:10,
+    marginTop: 10,
   },
   passwordContainer: {
     position: 'relative',
