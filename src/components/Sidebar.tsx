@@ -66,6 +66,7 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
 
     dispatch(reduxLogout()); // Dispatch Redux logout action
     navigation.navigate('Login'); // Navigate to Login screen
+    closeSidebar(); // Closing sidebar
   };
 
   // Get profile details from `profiles` array
