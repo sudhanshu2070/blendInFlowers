@@ -21,9 +21,6 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const dispatch = useDispatch();
 
-  let imageUri = null;
-  let name = '';
-
   // Fetch user data from Redux global state
   const { isLoggedIn, profileData } = useSelector((state: RootState) => state.auth);
 
@@ -72,12 +69,23 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
     navigation.navigate('Login'); // Navigate to Login screen
   };
 
-  if (profileData && profileData._id) {
+  // Get profile details from `profiles` array
+  const getProfileDetails = () => {
+    if (profileData && profileData._id) {
+      const loggedUser = profiles.find((profile) => profile.userId === profileData._id);
+      return {
+        image: loggedUser?.image || 'https://i.imgur.com/HNZ7DSm.png',
+        name: loggedUser?.name || 'Guest',
+      };
+    }
+    return {
+      image: 'https://i.imgur.com/HNZ7DSm.png',
+      name: 'Guest',
+    };
+  };
 
-    const loggedUserId = profileData._id;
-     imageUri = profiles.find((profile) => profile.userId === loggedUserId)?.image;
-     name = profiles.find((profile) => profile.userId === loggedUserId)?.name || '';
-  }
+  const { image, name } = getProfileDetails();
+
   return (
     <>
       {/* Backdrop */}
@@ -99,17 +107,8 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
 
         {/* Profile Section */}
         <View style={styles.profileContainer}>
-          {profileData ? (
-            <>
-              <Image
-                source={{ uri: imageUri || 'https://i.imgur.com/HNZ7DSm.png' }}
-                style={styles.profileImage}
-              />
-              <Text style={styles.profileName}>{name}</Text>
-            </>
-          ) : (
-            <Text style={styles.profileName}>Loading...</Text>
-          )}
+          <Image source={{ uri: image }} style={styles.profileImage} />
+          <Text style={styles.profileName}>{name}</Text>
         </View>
 
         {/* Menu Items */}
