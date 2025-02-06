@@ -1,3 +1,4 @@
+import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -12,7 +13,14 @@ import {
 
 const { width, height } = Dimensions.get('window');
 
-const ProfileScreen = () => {
+type ProfileSettingsRouteProp = RouteProp<
+  { params: { image: string; name: string } },
+  'params'
+>;
+
+const ProfileSettings = () => {
+  const route = useRoute<ProfileSettingsRouteProp>();
+  const { image, name } = route.params;
   const [fadeAnim] = useState(new Animated.Value(0)); // For fade-in animation
 
   // Fade-in animation when the screen loads
@@ -29,10 +37,10 @@ const ProfileScreen = () => {
       {/* Header Section */}
       <Animated.View style={[styles.header, { opacity: fadeAnim }]}>
         <Image
-          source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }}
+          source={{ uri: image }}
           style={styles.profileImage}
         />
-        <Text style={styles.profileName}>John Doe</Text>
+        <Text style={styles.profileName}>{name}</Text>
         <Text style={styles.profileBio}>Software Engineer | Tech Enthusiast</Text>
       </Animated.View>
 
@@ -206,4 +214,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;
+export default ProfileSettings;

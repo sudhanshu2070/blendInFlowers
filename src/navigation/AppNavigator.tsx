@@ -7,7 +7,7 @@ import LoginScreen from '../screens/Auth/LoginScreen';
 import RegisterScreen from '../screens/Auth/RegisterScreen';
 import OTPVerificationScreen from '../screens/Auth/OTPVerificationScreen';
 import HomeScreen from '../screens/HomeScreen';
-import ProfileScreen from '../screens/pop-up/ProfileScreen';
+import ProfileScreen from '../screens/pop-up/ProfileSettings';
 import UserDetailScreen from '../screens/UserDetailScreen';
 import Sidebar from '../components/Sidebar';
 import HelpSupport from '../screens/pop-up/HelpSupport';
@@ -15,6 +15,7 @@ import ReferWin from '../screens/pop-up/ReferWin';
 import AppGuide from '../screens/pop-up/AppGuide';
 import { RootStackParamList } from '../utils/types';
 import { profiles } from '../utils/data/profiles';
+import ProfileSettings from '../screens/pop-up/ProfileSettings';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -80,7 +81,7 @@ const AppNavigator = () => {
         {/* Profile Settings Screen */}
         <Stack.Screen
           name="ProfileSettings"
-          component={ProfileScreen}
+          component={ProfileSettings}
           options={{
             title: 'Profile Settings',
           }}

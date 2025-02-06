@@ -55,7 +55,13 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
 
   // Function to navigate to different screens
   const navigateToScreen = (screenName: Exclude<keyof RootStackParamList, 'UserDetail'>) => {
+
+    if (screenName === 'ProfileSettings') {
+      // Pass image and name as params for ProfileSettings
+      navigation.navigate(screenName, { image, name });
+    } else {
     navigation.navigate(screenName);
+    }
     closeSidebar();
   };
 
