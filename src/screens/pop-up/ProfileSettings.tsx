@@ -1,4 +1,5 @@
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -6,12 +7,13 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  Dimensions,
   Animated,
   ScrollView,
 } from 'react-native';
-
-const { width, height } = Dimensions.get('window');
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { logout as reduxLogout } from '../../store/authSlice';
+import { RootStackParamList } from '../../utils/types';
 
 type ProfileSettingsRouteProp = RouteProp<
   { params: { image: string; name: string } },
@@ -22,6 +24,8 @@ const ProfileSettings = () => {
   const route = useRoute<ProfileSettingsRouteProp>();
   const { image, name } = route.params;
   const [fadeAnim] = useState(new Animated.Value(0)); // For fade-in animation
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const dispatch = useDispatch();
 
   // Fade-in animation when the screen loads
   useEffect(() => {
@@ -31,6 +35,14 @@ const ProfileSettings = () => {
       useNativeDriver: true,
     }).start();
   }, [fadeAnim]);
+  
+  const handleLogoutProfileSetting = async () => {
+    await AsyncStorage.removeItem('userId'); // Clear userId from AsyncStorage
+    await AsyncStorage.clear(); // Clear all AsyncStorage data
+  
+    dispatch(reduxLogout()); // Dispatch Redux logout action
+    navigation.navigate('Login'); // Navigate to Login screen
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -96,7 +108,7 @@ const ProfileSettings = () => {
 
       {/* Logout Button */}
       <Animated.View style={[styles.logoutButtonContainer, { opacity: fadeAnim }]}>
-        <TouchableOpacity style={styles.logoutButton}>
+        <TouchableOpacity onPress={handleLogoutProfileSetting} style={styles.logoutButton}>
           <Text style={styles.logoutButtonText}>Logout</Text>
         </TouchableOpacity>
       </Animated.View>

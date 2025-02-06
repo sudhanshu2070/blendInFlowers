@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import * as Font from 'expo-font';
 import { AuthProvider } from './src/contexts/AuthContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import LoadingScreen from './src/screens/LoadingScreen';
 import { useFontLoader } from './src/utils/fontLoader';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Provider } from 'react-redux';
 import store from './src/store/store';
 
