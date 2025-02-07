@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
-  View,
   Text,
-  TouchableOpacity,
   StyleSheet,
-  Dimensions,
   Animated,
   ScrollView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const { width, height } = Dimensions.get('window');
 
 const AppGuide = () => {
   const [fadeAnim] = useState(new Animated.Value(0));
