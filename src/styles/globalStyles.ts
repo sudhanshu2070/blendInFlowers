@@ -18,3 +18,20 @@ export const getGlobalStyles = (theme: ThemeType) => StyleSheet.create({
     margin: 10,
   },
 });
+
+export const getGlobalColors = (theme: ThemeType) => ({
+  backgroundColor: themes[theme].backgroundColor,
+  textColor: themes[theme].color,
+  primaryColor: themes[theme].primaryColor,
+  cardColor: themes[theme].cardColor,
+});
+
+export const globalFonts = {
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  body: {
+    fontSize: 16,
+  },
+};
