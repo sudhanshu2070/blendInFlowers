@@ -16,6 +16,7 @@ import AppGuide from '../screens/pop-up/AppGuide';
 import { RootStackParamList } from '../utils/types';
 import { profiles } from '../utils/data/profiles';
 import ProfileSettings from '../screens/pop-up/ProfileSettings';
+import ThemeSelectionScreen from '../screens/ThemeSelectionScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -128,6 +129,14 @@ const AppNavigator = () => {
           component={AppGuide}
           options={{
             title: 'App Guide',
+          }}
+        />
+        {/* App Guide Screen */}
+        <Stack.Screen
+          name="ThemeSelector"
+          component={ThemeSelectionScreen}
+          options={{
+            title: 'Theme Selctor',
           }}
         />
       </Stack.Navigator>

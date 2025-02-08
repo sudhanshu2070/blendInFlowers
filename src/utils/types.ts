@@ -10,7 +10,8 @@ export type RootStackParamList = {
     AppGuide: undefined;
     LoggedInUserProfileScreen: undefined;
     Sidebar: undefined;
-    ProfileSettings: { image: string; name: string }; // Add params for ProfileSettings
+    ProfileSettings: { image: string; name: string }; // Adding params for ProfileSettings
+    ThemeSelector: undefined; 
   };
   
   // store/types.ts

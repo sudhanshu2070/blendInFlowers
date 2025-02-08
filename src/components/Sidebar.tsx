@@ -132,7 +132,7 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
         </TouchableOpacity>
 
         {/* Additional Features */}
-        <TouchableOpacity onPress={() => console.log('Dark Mode Toggled')} style={styles.menuItem}>
+        <TouchableOpacity onPress={() => navigateToScreen('ThemeSelector')} style={styles.menuItem}>
           <Text style={styles.menuItemText}>Toggle Dark Mode</Text>
         </TouchableOpacity>
 
