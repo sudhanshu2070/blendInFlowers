@@ -13,3 +13,5 @@ export type RootStackParamList = {
     ProfileSettings: { image: string; name: string }; // Add params for ProfileSettings
   };
   
+  // store/types.ts
+export type ThemeType = 'light' | 'dark' | 'custom';

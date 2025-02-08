@@ -1,22 +1,24 @@
-// screens/ThemeSelectionScreen.tsx
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { RootState } from '../store/store';
 import { setTheme } from '../store/themeSlice';
+import { themes } from '../utils/themes';
+import { ThemeType } from '../utils/types';
 
 const ThemeSelectionScreen = () => {
   const dispatch = useDispatch();
-  const currentTheme = useSelector((state: RootState) => state.theme.theme);
+  const theme = useSelector((state: RootState) => state.theme.theme) as ThemeType;
 
-  const handleThemeChange = (newTheme: string) => {
+  const handleThemeChange = (newTheme: ThemeType) => {
     dispatch(setTheme(newTheme));
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: themes[currentTheme]?.background }]}>
-      <Text style={[styles.title, { color: themes[currentTheme]?.text }]}>Select Theme</Text>
+    <View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+      {/* Title */}
+      <Text style={[styles.title, { color: themes[theme].color }]}>Select Theme</Text>
 
       {/* Theme Options */}
       <View style={styles.themeOptions}>
@@ -24,8 +26,8 @@ const ThemeSelectionScreen = () => {
         <TouchableOpacity
           style={[
             styles.themeOption,
-            { backgroundColor: themes.light.background },
-            currentTheme === 'light' && styles.selectedTheme,
+            { backgroundColor: themes.light.backgroundColor },
+            theme === 'light' && styles.selectedTheme,
           ]}
           onPress={() => handleThemeChange('light')}
         >
@@ -37,8 +39,8 @@ const ThemeSelectionScreen = () => {
         <TouchableOpacity
           style={[
             styles.themeOption,
-            { backgroundColor: themes.dark.background },
-            currentTheme === 'dark' && styles.selectedTheme,
+            { backgroundColor: themes.dark.backgroundColor },
+            theme === 'dark' && styles.selectedTheme,
           ]}
           onPress={() => handleThemeChange('dark')}
         >
@@ -50,8 +52,8 @@ const ThemeSelectionScreen = () => {
         <TouchableOpacity
           style={[
             styles.themeOption,
-            { backgroundColor: themes.custom.background },
-            currentTheme === 'custom' && styles.selectedTheme,
+            { backgroundColor: themes.custom.backgroundColor },
+            theme === 'custom' && styles.selectedTheme,
           ]}
           onPress={() => handleThemeChange('custom')}
         >
@@ -86,11 +88,11 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: '#000', // iOS shadow
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 5, // Android shadow
   },
   selectedTheme: {
     transform: [{ scale: 1.2 }],
