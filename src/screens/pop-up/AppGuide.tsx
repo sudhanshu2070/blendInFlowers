@@ -4,12 +4,17 @@ import {
   StyleSheet,
   Animated,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons'; // For icons
+import { Dimensions } from 'react-native';
 
+const { width, height } = Dimensions.get('window');
 
 const AppGuide = () => {
   const [fadeAnim] = useState(new Animated.Value(0));
+  const scrollY = new Animated.Value(0);
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -20,28 +25,105 @@ const AppGuide = () => {
   }, [fadeAnim]);
 
   return (
-    <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.gradient}>
-      <ScrollView contentContainerStyle={styles.container}>
-        {/* Header */}
+    <LinearGradient colors={['#1e3c72', '#2a5298']} style={styles.gradient}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true }
+        )}
+        scrollEventThrottle={16}
+      >
+        {/* Header Section */}
         <Animated.View style={[styles.header, { opacity: fadeAnim }]}>
           <Text style={styles.title}>App Guide</Text>
           <Text style={styles.subtitle}>Learn how to use the app like a pro!</Text>
         </Animated.View>
 
-        {/* Step-by-Step Guide */}
-        <Animated.View style={[styles.card, { opacity: fadeAnim }]}>
+        {/* Getting Started Section */}
+        <Animated.View
+          style={[
+            styles.card,
+            {
+              transform: [
+                {
+                  translateY: scrollY.interpolate({
+                    inputRange: [0, 100],
+                    outputRange: [0, -20],
+                    extrapolate: 'clamp',
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
           <Text style={styles.sectionTitle}>Getting Started</Text>
-          <Text style={styles.guideText}>1. Sign up or log in to your account.</Text>
-          <Text style={styles.guideText}>2. Complete your profile details.</Text>
-          <Text style={styles.guideText}>3. Explore the app's features.</Text>
+          <TouchableOpacity style={styles.guideItem}>
+            <Icon name="person-add-outline" size={24} color="#fff" />
+            <Text style={styles.guideText}>Sign up or log in to your account.</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.guideItem}>
+            <Icon name="create-outline" size={24} color="#fff" />
+            <Text style={styles.guideText}>Complete your profile details.</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.guideItem}>
+            <Icon name="compass-outline" size={24} color="#fff" />
+            <Text style={styles.guideText}>Explore the app's features.</Text>
+          </TouchableOpacity>
         </Animated.View>
 
-        {/* Tips Section */}
-        <Animated.View style={[styles.card, { opacity: fadeAnim }]}>
+        {/* Pro Tips Section */}
+        <Animated.View
+          style={[
+            styles.card,
+            {
+              transform: [
+                {
+                  translateY: scrollY.interpolate({
+                    inputRange: [0, 100],
+                    outputRange: [0, -40],
+                    extrapolate: 'clamp',
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
           <Text style={styles.sectionTitle}>Pro Tips</Text>
-          <Text style={styles.guideText}>- Use dark mode for better battery life.</Text>
-          <Text style={styles.guideText}>- Refer friends to earn rewards.</Text>
-          <Text style={styles.guideText}>- Check settings for customization options.</Text>
+          <TouchableOpacity style={styles.guideItem}>
+            <Icon name="moon-outline" size={24} color="#fff" />
+            <Text style={styles.guideText}>Use dark mode for better battery life.</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.guideItem}>
+            <Icon name="people-outline" size={24} color="#fff" />
+            <Text style={styles.guideText}>Refer friends to earn rewards.</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.guideItem}>
+            <Icon name="settings-outline" size={24} color="#fff" />
+            <Text style={styles.guideText}>Check settings for customization options.</Text>
+          </TouchableOpacity>
+        </Animated.View>
+
+        {/* Call-to-Action Button */}
+        <Animated.View
+          style={[
+            styles.ctaButtonContainer,
+            {
+              opacity: fadeAnim,
+              transform: [
+                {
+                  scale: fadeAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0.8, 1],
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
+          <TouchableOpacity style={styles.ctaButton}>
+            <Text style={styles.ctaButtonText}>Start Exploring Now</Text>
+          </TouchableOpacity>
         </Animated.View>
       </ScrollView>
     </LinearGradient>
@@ -63,9 +145,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: 'bold',
     color: '#fff',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 5,
   },
   subtitle: {
     fontSize: 18,
@@ -74,26 +159,52 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '90%',
-    backgroundColor: '#fff',
-    borderRadius: 10,
+    backgroundColor: '#2b4f8b',
+    borderRadius: 20,
     padding: 20,
     marginBottom: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5,
+    shadowRadius: 6,
+    elevation: 8,
   },
   sectionTitle: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 10,
+    color: '#fff',
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  guideItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
   },
   guideText: {
     fontSize: 16,
-    color: '#666',
-    marginBottom: 10,
+    color: '#fff',
+    marginLeft: 10,
+  },
+  ctaButtonContainer: {
+    width: '80%',
+    marginBottom: 40,
+  },
+  ctaButton: {
+    backgroundColor: '#ff6f61',
+    paddingVertical: 15,
+    borderRadius: 25,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
+  },
+  ctaButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
   },
 });
 
