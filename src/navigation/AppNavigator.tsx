@@ -7,7 +7,6 @@ import LoginScreen from '../screens/Auth/LoginScreen';
 import RegisterScreen from '../screens/Auth/RegisterScreen';
 import OTPVerificationScreen from '../screens/Auth/OTPVerificationScreen';
 import HomeScreen from '../screens/HomeScreen';
-import ProfileScreen from '../screens/pop-up/ProfileSettings';
 import UserDetailScreen from '../screens/UserDetailScreen';
 import Sidebar from '../components/Sidebar';
 import HelpSupport from '../screens/pop-up/HelpSupport';

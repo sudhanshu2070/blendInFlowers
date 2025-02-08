@@ -130,8 +130,6 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
         <TouchableOpacity onPress={() => navigateToScreen('AppGuide')} style={styles.menuItem}>
           <Text style={styles.menuItemText}>Your App Guide</Text>
         </TouchableOpacity>
-
-        {/* Additional Features */}
         <TouchableOpacity onPress={() => navigateToScreen('ThemeSelector')} style={styles.menuItem}>
           <Text style={styles.menuItemText}>Toggle Dark Mode</Text>
         </TouchableOpacity>
