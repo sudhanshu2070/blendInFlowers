@@ -14,5 +14,4 @@ export type RootStackParamList = {
     ThemeSelector: undefined; 
   };
   
-  // store/types.ts
-export type ThemeType = 'light' | 'dark' | 'custom';
+export type ThemeType = 'light' | 'dark' | 'custom'; // for theme slice
