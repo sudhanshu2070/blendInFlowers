@@ -7,12 +7,9 @@ import { useFontLoader } from './src/utils/fontLoader';
 import { Provider, useSelector } from 'react-redux';
 import store, { RootState } from './src/store/store';
 import ThemeProvider from './src/components/ThemeProvider'; 
-import { StatusBar } from 'react-native';
-import { themes } from './src/utils/themes';
 
 const App = () => {
   const fontsLoaded = useFontLoader();
-  // const theme = useSelector((state: RootState) => state.theme.theme);
 
   if (!fontsLoaded) {
     return <LoadingScreen />;
