@@ -1,14 +1,19 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
+import { themes } from '../utils/themes';
 
-export const globalStyles = StyleSheet.create({
-  fontPlaywrite: {
-    fontFamily: "Playwrite",
-    fontSize: 24,
-    color: "#333333",
+export const getGlobalStyles = (theme: string) => StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: themes[theme].backgroundColor,
   },
-  fontChristmas: {
-    fontFamily: "Christmas",
+  text: {
+    color: themes[theme].color,
     fontSize: 16,
-    color: "#333333",
+  },
+  card: {
+    backgroundColor: themes[theme].cardColor,
+    padding: 10,
+    borderRadius: 8,
+    margin: 10,
   },
 });
