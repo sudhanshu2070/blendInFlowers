@@ -1,13 +1,13 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
-// Define the shape of the context
+// Defining the shape of the context
 interface AuthContextType {
-  user: any; // Replace `any` with the actual user type if you have one
+  user: any;
   login: (userData: any) => void;
   logout: () => void;
 }
 
-// Create the context with a default value of null (which we’ll later replace with proper types)
+// the context with a default value of null (which we’ll later replace with proper types)
 const AuthContext = createContext<AuthContextType | null>(null);
 
 interface AuthProviderProps {
@@ -15,7 +15,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<any>(null); // Replace `any` with your user type
+  const [user, setUser] = useState<any>(null); 
 
   const login = (userData: any) => {
     setUser(userData);

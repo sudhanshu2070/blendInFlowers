@@ -3,7 +3,7 @@ import authReducer from './authSlice';
 import themeReducer from './themeSlice';
 import { persistThemeMiddleware } from './themeSlice';
 
-// Configuring the Redux store
+// the Redux store
 const store = configureStore({
   reducer: {
     auth: authReducer, // Adding the auth slice to the store
