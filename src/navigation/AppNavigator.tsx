@@ -77,7 +77,7 @@ const AppNavigator = () => {
           name="Home"
           component={HomeScreen}
           options={({ navigation }) => ({
-            headerShown: true,
+            title: 'Home',
             headerStyle: {
               height: 100,
               backgroundColor: colors.backgroundColor,
@@ -86,6 +86,7 @@ const AppNavigator = () => {
             headerTitleStyle: {
               fontStyle: 'italic',
             },
+            headerLeft: () => null, // Keeping it blank to remove the back button
             headerRight: () => (
               <TouchableOpacity onPress={() => setIsSidebarOpen(true)}>
                 <Image
