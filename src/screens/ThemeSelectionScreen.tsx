@@ -45,7 +45,7 @@ const ThemeSelectionScreen = () => {
           onPress={() => handleThemeChange('dark')}
         >
           <Icon name="moon" size={30} color="#BB86FC" />
-          <Text style={styles.themeLabel}>Dark</Text>
+          <Text style={[styles.themeLabel, {color:'#ffffff'}]}>Dark</Text>
         </TouchableOpacity>
 
         {/* Custom Theme */}
