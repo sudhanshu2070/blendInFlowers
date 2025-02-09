@@ -1,3 +1,4 @@
+// src/utils/globalStyles.ts
 import { StyleSheet } from 'react-native';
 import { defaultTheme, themes } from '../utils/themes';
 import { ThemeType } from '../utils/types';
@@ -8,7 +9,7 @@ export const getGlobalStyles = (theme: ThemeType) => StyleSheet.create({
     backgroundColor: themes[theme].backgroundColor,
   },
   text: {
-    color: themes[theme].color,
+    color: themes[theme].textColor,
     fontSize: 16,
   },
   card: {
@@ -20,15 +21,17 @@ export const getGlobalStyles = (theme: ThemeType) => StyleSheet.create({
 });
 
 export const getGlobalColors = (theme: ThemeType) => {
-  
-  const selectedTheme = themes[theme] || defaultTheme; // Fallback to defaultTheme if the selected theme is not found
+  if (theme === 'default') {
+    return themes.default; // Using the hardcoded default theme
+  }
 
+  const selectedTheme = themes[theme] || defaultTheme; // Fallback to defaultTheme if the selected theme is not found
   return {
-    backgroundColor: themes[theme].backgroundColor,
-    textColor: themes[theme].color,
-    primaryColor: themes[theme].primaryColor,
-    cardColor: themes[theme].cardColor,
-};
+    backgroundColor: selectedTheme.backgroundColor,
+    textColor: selectedTheme.textColor,
+    primaryColor: selectedTheme.primaryColor,
+    cardColor: selectedTheme.cardColor,
+  };
 };
 
 export const globalFonts = {

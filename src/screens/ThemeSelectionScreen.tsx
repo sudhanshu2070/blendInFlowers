@@ -18,7 +18,7 @@ const ThemeSelectionScreen = () => {
   return (
     <View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
       {/* Title */}
-      <Text style={[styles.title, { color: themes[theme].color }]}>Select Theme</Text>
+      <Text style={[styles.title, { color: themes[theme].textColor }]}>Select Theme</Text>
 
       {/* Theme Options */}
       <View style={styles.themeOptions}>
@@ -45,7 +45,7 @@ const ThemeSelectionScreen = () => {
           onPress={() => handleThemeChange('dark')}
         >
           <Icon name="moon" size={30} color="#BB86FC" />
-          <Text style={[styles.themeLabel, {color:'#ffffff'}]}>Dark</Text>
+          <Text style={[styles.themeLabel, { color: '#ffffff' }]}>Dark</Text>
         </TouchableOpacity>
 
         {/* Custom Theme */}
@@ -59,6 +59,19 @@ const ThemeSelectionScreen = () => {
         >
           <Icon name="color-palette" size={30} color="#FF4500" />
           <Text style={styles.themeLabel}>Custom</Text>
+        </TouchableOpacity>
+
+        {/* Default Theme */}
+        <TouchableOpacity
+          style={[
+            styles.themeOption,
+            { backgroundColor: '#2C3E50' }, // Hardcoded default background color
+            theme === 'default' && styles.selectedTheme,
+          ]}
+          onPress={() => handleThemeChange('default')}
+        >
+          <Icon name="refresh-circle" size={30} color="#FFFFFF" /> {/* Reset icon */}
+          <Text style={[styles.themeLabel, { color: '#ffffff' }]}>Default</Text>
         </TouchableOpacity>
       </View>
     </View>

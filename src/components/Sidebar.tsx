@@ -57,12 +57,11 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
 
   // Function to navigate to different screens
   const navigateToScreen = (screenName: Exclude<keyof RootStackParamList, 'UserDetail'>) => {
-
     if (screenName === 'ProfileSettings') {
       // Pass image and name as params for ProfileSettings
       navigation.navigate(screenName, { image, name });
     } else {
-    navigation.navigate(screenName);
+      navigation.navigate(screenName);
     }
     closeSidebar();
   };
@@ -71,7 +70,6 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
   const handleLogout = async () => {
     await AsyncStorage.removeItem('userId'); // Clear userId from AsyncStorage
     await AsyncStorage.clear(); // Clear all AsyncStorage data
-
     dispatch(reduxLogout()); // Dispatch Redux logout action
     navigation.navigate('Login'); // Navigate to Login screen
     closeSidebar(); // Closing sidebar
@@ -102,38 +100,41 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
         activeOpacity={1} // Prevent opacity change on press
         onPress={closeSidebar} // Close sidebar when tapping outside
       />
-
       {/* Sidebar */}
       <Animated.View
-        style={[styles.sidebarContainer, {backgroundColor:colors.backgroundColor},{ width: sidebarWidth, transform: [{ translateX }] }]}
+        style={[
+          styles.sidebarContainer,
+          { backgroundColor: colors.backgroundColor }, // Dynamic background color
+          { width: sidebarWidth, transform: [{ translateX }] },
+        ]}
         {...panResponder.panHandlers}
       >
         {/* Close Button */}
         <TouchableOpacity onPress={closeSidebar} style={styles.closeButton}>
-          <Text style={styles.closeButtonText}>×</Text>
+          <Text style={[styles.closeButtonText, { color: colors.textColor }]}>×</Text>
         </TouchableOpacity>
 
         {/* Profile Section */}
         <View style={styles.profileContainer}>
           <Image source={{ uri: image }} style={styles.profileImage} />
-          <Text style={[styles.profileName, {color:colors.textColor}]}>{name}</Text>
+          <Text style={[styles.profileName, { color: colors.textColor }]}>{name}</Text>
         </View>
 
         {/* Menu Items */}
         <TouchableOpacity onPress={() => navigateToScreen('ProfileSettings')} style={styles.menuItem}>
-        <Text style={[styles.menuItemText,{color:colors.textColor}]}>Profile Settings</Text>
+          <Text style={[styles.menuItemText, { color: colors.textColor }]}>Profile Settings</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigateToScreen('HelpSupport')} style={styles.menuItem}>
-          <Text style={[styles.menuItemText,{color:colors.textColor}]}>Help & Support</Text>
+          <Text style={[styles.menuItemText, { color: colors.textColor }]}>Help & Support</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigateToScreen('ReferWin')} style={styles.menuItem}>
-        <Text style={[styles.menuItemText,{color:colors.textColor}]}>Refer & Win</Text>
+          <Text style={[styles.menuItemText, { color: colors.textColor }]}>Refer & Win</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigateToScreen('AppGuide')} style={styles.menuItem}>
-        <Text style={[styles.menuItemText,{color:colors.textColor}]}>Your App Guide</Text>
+          <Text style={[styles.menuItemText, { color: colors.textColor }]}>Your App Guide</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigateToScreen('ThemeSelector')} style={styles.menuItem}>
-        <Text style={[styles.menuItemText,{color:colors.textColor}]}>Change Theme</Text>
+          <Text style={[styles.menuItemText, { color: colors.textColor }]}>Change Theme</Text>
         </TouchableOpacity>
 
         {/* Logout Button */}
@@ -156,7 +157,6 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   sidebarContainer: {
-    backgroundColor: '#2C3E50', // Modern dark blue background
     height: '100%',
     position: 'absolute',
     top: 0,
@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
   },
   closeButtonText: {
     fontSize: 40,
-    color: '#ECF0F1',
   },
   profileContainer: {
     alignItems: 'center',
@@ -184,7 +183,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   profileName: {
-    color: '#ECF0F1',
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -194,7 +192,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#34495E',
   },
   menuItemText: {
-    color: '#ECF0F1',
     fontSize: 16,
   },
   logoutButton: {

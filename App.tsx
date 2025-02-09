@@ -42,11 +42,11 @@ const MainApp = () => {
         if (savedTheme) {
           dispatch(setTheme(savedTheme)); // Dispatch the saved theme to the Redux store
         } else {
-          dispatch(setTheme('light')); // Set default theme if none is saved
+          dispatch(setTheme('default')); // Set default theme if none is saved
         }
       } catch (error) {
         console.error('Error loading theme:', error);
-        dispatch(setTheme('light')); // Fallback to default theme on error
+        dispatch(setTheme('default')); // Fallback to default theme on error
       } finally {
         setIsThemeLoaded(true); // Mark theme as loaded
       }
