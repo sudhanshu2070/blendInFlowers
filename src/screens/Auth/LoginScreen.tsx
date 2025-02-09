@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Import the icon library
@@ -10,6 +10,7 @@ import { encryptText } from '../../utils/encrypt';
 import { users } from '../../utils/data/users';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/authSlice';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -21,6 +22,9 @@ const LoginScreen = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false); // State to track password visibility
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const dispatch = useDispatch();
+
+  const screenHeight = Dimensions.get('window').height;
+  const insets = useSafeAreaInsets();
 
   const handleTextChange = (text: string) => {
     setEmail(text); // Update the actual email value

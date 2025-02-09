@@ -55,7 +55,7 @@ const AppNavigator = () => {
           options={{
             headerShown: true,
             headerStyle: {
-              height: 90,
+              height: 100,
             },
             headerTitle: 'Login',
             headerLeft: () => null, // Keeping it blank
@@ -79,7 +79,7 @@ const AppNavigator = () => {
           options={({ navigation }) => ({
             headerShown: true,
             headerStyle: {
-              height: 90,
+              height: 100,
             },
             headerTitleStyle: {
               fontStyle: 'italic',
@@ -102,7 +102,7 @@ const AppNavigator = () => {
           options={{
             title: 'User Detail',
             headerStyle: {
-              height: 90,
+              height: 100,
             },
           }}
         />
@@ -114,7 +114,7 @@ const AppNavigator = () => {
           options={{
             title: 'Profile Settings',
             headerStyle: {
-              height: 90,
+              height: 100,
             },
           }}
         />
@@ -126,7 +126,7 @@ const AppNavigator = () => {
           options={{
             title: 'Help & Support',
             headerStyle: {
-              height: 90,
+              height: 100,
             },
           }}
         />
@@ -138,7 +138,7 @@ const AppNavigator = () => {
           options={{
             title: 'Refer & Win',
             headerStyle: {
-              height: 90,
+              height: 100,
             },
           }}
         />
@@ -150,7 +150,7 @@ const AppNavigator = () => {
           options={{
             title: 'App Guide',
             headerStyle: {
-              height: 90,
+              height: 100,
             },
           }}
         />
@@ -161,7 +161,7 @@ const AppNavigator = () => {
           options={{
             title: 'Theme Selctor',
             headerStyle: {
-              height: 90,
+              height: 100,
             },
           }}
         />
