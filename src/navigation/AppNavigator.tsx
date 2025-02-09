@@ -16,10 +16,13 @@ import { RootStackParamList } from '../utils/types';
 import { profiles } from '../utils/data/profiles';
 import ProfileSettings from '../screens/pop-up/ProfileSettings';
 import ThemeSelectionScreen from '../screens/ThemeSelectionScreen';
+import { useGlobalStyles } from '../hooks/useGlobalStyles';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const AppNavigator = () => {
+
+  const { colors } = useGlobalStyles();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const dispatch = useDispatch();
   const { isLoggedIn, profileData } = useSelector((state: RootState) => state.auth);
@@ -51,6 +54,9 @@ const AppNavigator = () => {
           component={LoginScreen}
           options={{
             headerShown: true,
+            headerStyle: {
+              height: 90,
+            },
             headerTitle: 'Login',
             headerLeft: () => null, // Keeping it blank
           }}
@@ -72,6 +78,9 @@ const AppNavigator = () => {
           component={HomeScreen}
           options={({ navigation }) => ({
             headerShown: true,
+            headerStyle: {
+              height: 90,
+            },
             headerTitleStyle: {
               fontStyle: 'italic',
             },
@@ -92,6 +101,9 @@ const AppNavigator = () => {
           component={UserDetailScreen}
           options={{
             title: 'User Detail',
+            headerStyle: {
+              height: 90,
+            },
           }}
         />
 
@@ -101,6 +113,9 @@ const AppNavigator = () => {
           component={ProfileSettings}
           options={{
             title: 'Profile Settings',
+            headerStyle: {
+              height: 90,
+            },
           }}
         />
 
@@ -110,6 +125,9 @@ const AppNavigator = () => {
           component={HelpSupport}
           options={{
             title: 'Help & Support',
+            headerStyle: {
+              height: 90,
+            },
           }}
         />
 
@@ -119,6 +137,9 @@ const AppNavigator = () => {
           component={ReferWin}
           options={{
             title: 'Refer & Win',
+            headerStyle: {
+              height: 90,
+            },
           }}
         />
 
@@ -128,6 +149,9 @@ const AppNavigator = () => {
           component={AppGuide}
           options={{
             title: 'App Guide',
+            headerStyle: {
+              height: 90,
+            },
           }}
         />
         {/* App Guide Screen */}
@@ -136,6 +160,9 @@ const AppNavigator = () => {
           component={ThemeSelectionScreen}
           options={{
             title: 'Theme Selctor',
+            headerStyle: {
+              height: 90,
+            },
           }}
         />
       </Stack.Navigator>
@@ -152,7 +179,8 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     resizeMode: 'cover',
-    marginRight: 10,
+    marginRight: 15,
+    marginBottom: 10,
   },
 });
 

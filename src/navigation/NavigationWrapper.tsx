@@ -15,7 +15,7 @@ const NavigationWrapper = () => {
       if (savedTheme) {
         dispatch(setTheme(savedTheme as ThemeType));
       } else {
-        dispatch(setTheme('light')); // Set default theme if none is saved
+        dispatch(setTheme('light')); // Setting default theme if none is saved
       }
     };
     loadTheme();
