@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { logout as reduxLogout } from '../store/authSlice';
 import { profiles } from '../utils/data/profiles';
+import { useGlobalStyles } from '../hooks/useGlobalStyles';
 
 const { width } = Dimensions.get('window');
 
@@ -20,6 +21,7 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
   const animation = new Animated.Value(0); // For slide-in animation
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const dispatch = useDispatch();
+  const { colors } = useGlobalStyles();
 
   // Fetch user data from Redux global state
   const { isLoggedIn, profileData } = useSelector((state: RootState) => state.auth);
@@ -103,7 +105,7 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
 
       {/* Sidebar */}
       <Animated.View
-        style={[styles.sidebarContainer, { width: sidebarWidth, transform: [{ translateX }] }]}
+        style={[styles.sidebarContainer, {backgroundColor:colors.backgroundColor},{ width: sidebarWidth, transform: [{ translateX }] }]}
         {...panResponder.panHandlers}
       >
         {/* Close Button */}
@@ -114,24 +116,24 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
         {/* Profile Section */}
         <View style={styles.profileContainer}>
           <Image source={{ uri: image }} style={styles.profileImage} />
-          <Text style={styles.profileName}>{name}</Text>
+          <Text style={[styles.profileName, {color:colors.textColor}]}>{name}</Text>
         </View>
 
         {/* Menu Items */}
         <TouchableOpacity onPress={() => navigateToScreen('ProfileSettings')} style={styles.menuItem}>
-          <Text style={styles.menuItemText}>Profile Settings</Text>
+        <Text style={[styles.menuItemText,{color:colors.textColor}]}>Profile Settings</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigateToScreen('HelpSupport')} style={styles.menuItem}>
-          <Text style={styles.menuItemText}>Help & Support</Text>
+          <Text style={[styles.menuItemText,{color:colors.textColor}]}>Help & Support</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigateToScreen('ReferWin')} style={styles.menuItem}>
-          <Text style={styles.menuItemText}>Refer & Win</Text>
+        <Text style={[styles.menuItemText,{color:colors.textColor}]}>Refer & Win</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigateToScreen('AppGuide')} style={styles.menuItem}>
-          <Text style={styles.menuItemText}>Your App Guide</Text>
+        <Text style={[styles.menuItemText,{color:colors.textColor}]}>Your App Guide</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigateToScreen('ThemeSelector')} style={styles.menuItem}>
-          <Text style={styles.menuItemText}>Toggle Dark Mode</Text>
+        <Text style={[styles.menuItemText,{color:colors.textColor}]}>Change Theme</Text>
         </TouchableOpacity>
 
         {/* Logout Button */}

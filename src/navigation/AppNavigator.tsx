@@ -165,7 +165,9 @@ const AppNavigator = () => {
             title: 'Theme Selctor',
             headerStyle: {
               height: 100,
+              backgroundColor: colors.backgroundColor,
             },
+            headerTintColor: colors.textColor, // Color of the header text and icons
           }}
         />
       </Stack.Navigator>
