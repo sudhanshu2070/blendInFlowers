@@ -18,3 +18,6 @@ export const themes = {
     primaryColor: '#FF4500', // OrangeRed
   },
 };
+
+// Default theme (as a fallback)
+export const defaultTheme = themes.light;

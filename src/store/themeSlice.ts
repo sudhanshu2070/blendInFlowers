@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeType } from '../utils/types';
+import { defaultTheme } from '../utils/themes';
 
 const initialState = {
   theme: 'light' as ThemeType, // Default theme with explicit type
