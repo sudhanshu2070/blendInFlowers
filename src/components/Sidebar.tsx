@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions, Animated, PanResponder } from 'react-native';
 import { RootStackParamList } from '../utils/types';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -17,6 +17,10 @@ type SidebarProps = {
 };
 
 const Sidebar = ({ closeSidebar }: SidebarProps) => {
+
+   // State to track whether the sidebar is on the left or right
+  const [isSidebarOnRight, setIsSidebarOnRight] = useState(true);
+  
   const sidebarWidth = width * 0.5; // Sidebar takes 50% of screen width
   const animation = new Animated.Value(0); // For slide-in animation
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -40,13 +44,19 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
     onPanResponderRelease: (_, gestureState) => {
       // Snap to the nearest edge based on drag distance
       if (gestureState.dx < -sidebarWidth / 2) {
+
         // Dragged more than halfway to the left -> snap to left
+        setIsSidebarOnRight(false);
+
         Animated.spring(animation, {
           toValue: -sidebarWidth,
           useNativeDriver: false,
         }).start();
       } else if (gestureState.dx > sidebarWidth / 2) {
+
         // Dragged more than halfway to the right -> snap to right
+        setIsSidebarOnRight(true);
+        
         Animated.spring(animation, {
           toValue: sidebarWidth,
           useNativeDriver: false,
@@ -123,7 +133,7 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
         {...panResponder.panHandlers}
       >
         {/* Close Button */}
-        <TouchableOpacity onPress={closeSidebar} style={styles.closeButton}>
+        <TouchableOpacity onPress={closeSidebar} style={[styles.closeButton, {alignSelf: isSidebarOnRight ? 'flex-start' : 'flex-end'}]}>
           <Text style={[styles.closeButtonText, { color: colors.textColor }]}>×</Text>
         </TouchableOpacity>
 
