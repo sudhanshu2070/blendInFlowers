@@ -12,6 +12,7 @@ export type RootStackParamList = {
     Sidebar: undefined;
     ProfileSettings: { image: string; name: string }; // Adding params for ProfileSettings
     ThemeSelector: undefined; 
+    YourSpace: undefined;
   };
   
 export type ThemeType = 'light' | 'dark' | 'custom' | 'default'; // for theme slice

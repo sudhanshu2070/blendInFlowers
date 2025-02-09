@@ -17,6 +17,7 @@ import { profiles } from '../utils/data/profiles';
 import ProfileSettings from '../screens/pop-up/ProfileSettings';
 import ThemeSelectionScreen from '../screens/ThemeSelectionScreen';
 import { useGlobalStyles } from '../hooks/useGlobalStyles';
+import YourSpaceScreen from '../screens/YourSpaceScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -163,6 +164,19 @@ const AppNavigator = () => {
           component={ThemeSelectionScreen}
           options={{
             title: 'Theme Selctor',
+            headerStyle: {
+              height: 100,
+              backgroundColor: colors.backgroundColor,
+            },
+            headerTintColor: colors.textColor, // Color of the header text and icons
+          }}
+        />
+        {/* YourSpace Screen */}
+        <Stack.Screen
+          name="YourSpace"
+          component={YourSpaceScreen}
+          options={{
+            title: 'Your Space',
             headerStyle: {
               height: 100,
               backgroundColor: colors.backgroundColor,

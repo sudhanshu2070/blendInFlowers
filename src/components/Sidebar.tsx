@@ -159,6 +159,9 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
         <TouchableOpacity onPress={() => navigateToScreen('ThemeSelector')} style={styles.menuItem}>
           <Text style={[styles.menuItemText, { color: colors.textColor }]}>Change Theme</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigateToScreen('YourSpace')} style={styles.menuItem}>
+          <Text style={[styles.menuItemText, { color: colors.textColor }, {fontWeight:'bold'}]}>Your Space</Text>
+        </TouchableOpacity>
 
         {/* Logout Button */}
         <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
