@@ -30,16 +30,29 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (_, gestureState) => {
+      // Allow dragging only horizontally within the screen bounds
       if (gestureState.dx < 0) {
         animation.setValue(Math.max(gestureState.dx, -sidebarWidth));
+      } else {
+        animation.setValue(Math.min(gestureState.dx, sidebarWidth));
       }
     },
     onPanResponderRelease: (_, gestureState) => {
-      if (gestureState.dx < -50) {
-        // Swipe left to close
-        closeSidebar();
+      // Snap to the nearest edge based on drag distance
+      if (gestureState.dx < -sidebarWidth / 2) {
+        // Dragged more than halfway to the left -> snap to left
+        Animated.spring(animation, {
+          toValue: -sidebarWidth,
+          useNativeDriver: false,
+        }).start();
+      } else if (gestureState.dx > sidebarWidth / 2) {
+        // Dragged more than halfway to the right -> snap to right
+        Animated.spring(animation, {
+          toValue: sidebarWidth,
+          useNativeDriver: false,
+        }).start();
       } else {
-        // Snap back to open position
+        // Not dragged far enough -> snap back to initial position (right side)
         Animated.spring(animation, {
           toValue: 0,
           useNativeDriver: false,
