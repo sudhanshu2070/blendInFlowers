@@ -80,7 +80,9 @@ const AppNavigator = () => {
             headerShown: true,
             headerStyle: {
               height: 100,
+              backgroundColor: colors.backgroundColor,
             },
+            headerTintColor: colors.textColor, // Color of the header text and icons
             headerTitleStyle: {
               fontStyle: 'italic',
             },
