@@ -2,12 +2,13 @@ import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   StyleSheet,
   Dimensions,
   PanResponder,
   Animated,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { IconOutline } from '@ant-design/icons-react-native'; // Import Ant Design Icon
@@ -35,6 +36,7 @@ type AppIconProps = {
 const AppIcon = ({ id, name, icon, position, onMove }: AppIconProps) => {
   const pan = new Animated.ValueXY({ x: position.x, y: position.y });
   const [isDragging, setIsDragging] = useState(false);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => isDragging, // Only allow dragging if isDragging is true
@@ -65,17 +67,29 @@ const AppIcon = ({ id, name, icon, position, onMove }: AppIconProps) => {
       ]}
       {...panResponder.panHandlers}
     >
-      <TouchableOpacity
-        style={[
-          styles.appIcon,
-          isDragging && styles.draggingIcon, // Highlight when dragging
-        ]}
-        delayLongPress={500} // Detect long press after 500ms
-        onLongPress={() => setIsDragging(true)} // Enable drag on long press
+      <TouchableWithoutFeedback
+        onPressIn={() => {
+          // Start a timer for long press detection
+          longPressTimer.current = setTimeout(() => {
+            setIsDragging(true); // Enable drag after 500ms
+          }, 500);
+        }}
+        onPressOut={() => {
+          if (longPressTimer.current) {
+            clearTimeout(longPressTimer.current); // Clear the timer if released early
+          }
+        }}
       >
-        <Icon name={icon} size={30} color="#ffffff" />
-        <Text style={styles.appName}>{name}</Text>
-      </TouchableOpacity>
+        <View
+          style={[
+            styles.appIcon,
+            isDragging && styles.draggingIcon, // Highlight when dragging
+          ]}
+        >
+          <Icon name={icon} size={30} color="#ffffff" />
+          <Text style={styles.appName}>{name}</Text>
+        </View>
+      </TouchableWithoutFeedback>
     </Animated.View>
   );
 };
