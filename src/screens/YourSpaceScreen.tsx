@@ -119,7 +119,7 @@ const YourSpaceScreen = () => {
           style={styles.addAppsButton}
           onPress={() => setIsAppListVisible(!isAppListVisible)}
         >
-          <Icon name="add-circle-outline" size={50} color="#FFD700" />
+          <Icon name="add-circle-outline" size={50} color="#1E90FF" />
           <Text style={styles.addAppsButtonText}>Add Apps</Text>
         </TouchableOpacity>
       </View>
@@ -135,7 +135,7 @@ const YourSpaceScreen = () => {
                 style={styles.appListItem}
                 onPress={() => addApp(item)}
               >
-                <Icon name={item.icon} size={30} color="#FFD700" />
+                <Icon name={item.icon} size={30} color="#1E90FF" />
                 <Text style={styles.appListItemText}>{item.name}</Text>
               </TouchableOpacity>
             )}
@@ -149,18 +149,18 @@ const YourSpaceScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1E1E1E', // Dark background for a modern look
+    backgroundColor: '#F5F5F5', // Light gray background for a clean look
   },
   header: {
     padding: 20,
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: '#333333',
+    borderBottomColor: '#E0E0E0', // Soft border for separation
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#FFD700', // Gold text for contrast
+    color: '#1E90FF', // Vibrant blue for contrast
   },
   gridContainer: {
     flex: 1,
@@ -180,14 +180,14 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#3498db', // Vibrant blue for app icons
+    backgroundColor: '#1E90FF', // Vibrant blue for app icons
     justifyContent: 'center',
     alignItems: 'center',
   },
   appName: {
     marginTop: 5,
     fontSize: 12,
-    color: '#ffffff', // White text for visibility
+    color: '#333333', // Dark gray text for readability
     textAlign: 'center',
   },
   addAppsButton: {
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
   addAppsButtonText: {
     marginTop: 5,
     fontSize: 14,
-    color: '#FFD700', // Gold text for consistency
+    color: '#1E90FF', // Consistent blue text
     textAlign: 'center',
   },
   appListModal: {
@@ -207,10 +207,14 @@ const styles = StyleSheet.create({
     top: 100,
     left: 20,
     right: 20,
-    backgroundColor: '#2C3E50', // Dark blue for modal background
+    backgroundColor: '#FFFFFF', // White background for modal
     borderRadius: 10,
     padding: 20,
     elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
   },
   appListItem: {
     flexDirection: 'row',
@@ -220,7 +224,7 @@ const styles = StyleSheet.create({
   appListItemText: {
     marginLeft: 10,
     fontSize: 16,
-    color: '#FFD700', // Gold text for modal items
+    color: '#1E90FF', // Blue text for modal items
   },
 });
 
