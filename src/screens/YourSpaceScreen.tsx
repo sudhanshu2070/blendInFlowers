@@ -10,7 +10,8 @@ import {
   FlatList,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { IconOutline } from '@ant-design/icons-react-native'; // Import Ant Design Icon
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -138,7 +139,7 @@ const YourSpaceScreen = () => {
               transform: [{ scale: pulseAnimation }],
             }}
           >
-            <Icon name="layers-outline" size={50} color="#1E90FF" />
+          <IconOutline name="appstore" size={50} color="#1E90FF" />
           </Animated.View>
       <Text style={styles.addAppsButtonText}>Add Apps</Text>
         </TouchableOpacity>
