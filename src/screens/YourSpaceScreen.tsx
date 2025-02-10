@@ -95,10 +95,6 @@ const YourSpaceScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Your Space</Text>
-      </View>
 
       {/* Main Content */}
       <View style={styles.gridContainer}>
@@ -150,17 +146,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F5F5F5', // Light gray background for a clean look
-  },
-  header: {
-    padding: 20,
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0', // Soft border for separation
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#1E90FF', // Vibrant blue for contrast
   },
   gridContainer: {
     flex: 1,
