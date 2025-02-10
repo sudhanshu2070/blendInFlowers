@@ -12,12 +12,11 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { IconOutline } from '@ant-design/icons-react-native'; // Import Ant Design Icon
 
-
 const { width, height } = Dimensions.get('window');
 
 // Grid dimensions
 const GRID_COLUMNS = 3;
-const GRID_ROWS = 6;
+const GRID_ROWS = 4;
 
 // App data
 const APPS_LIST = [
@@ -35,24 +34,34 @@ type AppIconProps = {
 
 const AppIcon = ({ id, name, icon, position, onMove }: AppIconProps) => {
   const pan = new Animated.ValueXY({ x: position.x, y: position.y });
+  const [isDragging, setIsDragging] = useState(false);
 
   const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
+    onStartShouldSetPanResponder: () => false, // Disable immediate drag
+    onLongPress: () => setIsDragging(true), // Enable drag on long press
+    onPanResponderGrant: () => {
+      setIsDragging(true); // Start dragging
+    },
     onPanResponderMove: (_, gestureState) => {
-      pan.setValue({ x: gestureState.dx + position.x, y: gestureState.dy + position.y });
+      if (isDragging) {
+        pan.setValue({ x: gestureState.dx + position.x, y: gestureState.dy + position.y });
+      }
     },
     onPanResponderRelease: (_, gestureState) => {
-      const newX = Math.round((gestureState.dx + position.x) / (width / GRID_COLUMNS)) * (width / GRID_COLUMNS);
-      const newY = Math.round((gestureState.dy + position.y) / (height / GRID_ROWS)) * (height / GRID_ROWS);
+      if (isDragging) {
+        const newX = Math.round((gestureState.dx + position.x) / (width / GRID_COLUMNS)) * (width / GRID_COLUMNS);
+        const newY = Math.round((gestureState.dy + position.y) / (height / GRID_ROWS)) * (height / GRID_ROWS);
 
-      // Snap to grid
-      Animated.spring(pan, {
-        toValue: { x: newX, y: newY },
-        useNativeDriver: false,
-      }).start();
+        // Snap to grid
+        Animated.spring(pan, {
+          toValue: { x: newX, y: newY },
+          useNativeDriver: false,
+        }).start();
 
-      // Update position in parent
-      onMove(id, newX, newY);
+        // Update position in parent
+        onMove(id, newX, newY);
+        setIsDragging(false); // Stop dragging
+      }
     },
   });
 
@@ -64,7 +73,13 @@ const AppIcon = ({ id, name, icon, position, onMove }: AppIconProps) => {
       ]}
       {...panResponder.panHandlers}
     >
-      <TouchableOpacity style={styles.appIcon}>
+      <TouchableOpacity
+        style={[
+          styles.appIcon,
+          isDragging && styles.draggingIcon, // Highlight when dragging
+        ]}
+        onLongPress={() => setIsDragging(true)} // Enable drag on long press
+      >
         <Icon name={icon} size={30} color="#ffffff" />
         <Text style={styles.appName}>{name}</Text>
       </TouchableOpacity>
@@ -73,7 +88,9 @@ const AppIcon = ({ id, name, icon, position, onMove }: AppIconProps) => {
 };
 
 const YourSpaceScreen = () => {
-  const [apps, setApps] = useState<{ id: string; name: string; icon: string; position: { x: number; y: number } }[]>([]);
+  const [apps, setApps] = useState<
+    { id: string; name: string; icon: string; position: { x: number; y: number } }[]
+  >([]);
   const [isAppListVisible, setIsAppListVisible] = useState(false);
 
   // Add an app to the grid
@@ -95,28 +112,42 @@ const YourSpaceScreen = () => {
     );
   };
 
-    // Animation for the "Add Apps" button
-    const pulseAnimation = new Animated.Value(1);
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnimation, {
-          toValue: 1.2,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnimation, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
+  // Animation for the "Add Apps" button
+  const pulseAnimation = new Animated.Value(1);
+  Animated.loop(
+    Animated.sequence([
+      Animated.timing(pulseAnimation, {
+        toValue: 1.2,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(pulseAnimation, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+    ])
+  ).start();
 
   return (
     <View style={styles.container}>
-
       {/* Main Content */}
       <View style={styles.gridContainer}>
+        {/* Render grid placeholders */}
+        {[...Array(GRID_COLUMNS * GRID_ROWS)].map((_, index) => {
+          const row = Math.floor(index / GRID_COLUMNS);
+          const col = index % GRID_COLUMNS;
+          return (
+            <View
+              key={index}
+              style={[
+                styles.gridPlaceholder,
+                { left: col * (width / GRID_COLUMNS), top: row * (height / GRID_ROWS) },
+              ]}
+            />
+          );
+        })}
+
         {/* Render added apps */}
         {apps.map((app) => (
           <AppIcon
@@ -139,9 +170,9 @@ const YourSpaceScreen = () => {
               transform: [{ scale: pulseAnimation }],
             }}
           >
-          <IconOutline name="appstore" size={50} color="#1E90FF" />
+            <IconOutline name="appstore-add" size={50} color="#1E90FF" />
           </Animated.View>
-      <Text style={styles.addAppsButtonText}>Add Apps</Text>
+          <Text style={styles.addAppsButtonText}>Add Apps</Text>
         </TouchableOpacity>
       </View>
 
@@ -174,13 +205,18 @@ const styles = StyleSheet.create({
   },
   gridContainer: {
     flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    padding: 10,
+    position: 'relative',
+  },
+  gridPlaceholder: {
+    position: 'absolute',
+    width: width / GRID_COLUMNS,
+    height: height / GRID_ROWS,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 5,
   },
   appIconContainer: {
+    position: 'absolute',
     width: width / GRID_COLUMNS,
     height: height / GRID_ROWS,
     justifyContent: 'center',
@@ -193,6 +229,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E90FF', // Vibrant blue for app icons
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  draggingIcon: {
+    backgroundColor: '#FFD700', // Change color while dragging
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   appName: {
     marginTop: 5,
