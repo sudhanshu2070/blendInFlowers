@@ -35,47 +35,25 @@ type AppIconProps = {
 const AppIcon = ({ id, name, icon, position, onMove }: AppIconProps) => {
   const pan = new Animated.ValueXY({ x: position.x, y: position.y });
   const [isDragging, setIsDragging] = useState(false);
-  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 
   const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true, // Allow responder to start
-    onMoveShouldSetPanResponder: () => isDragging, // Only allow movement if dragging
-    onPanResponderGrant: () => {
-      // Start a timer to detect long press
-      longPressTimer.current = setTimeout(() => {
-        setIsDragging(true); // Enable drag after 500ms
-      }, 500);
-    },
+    onStartShouldSetPanResponder: () => isDragging, // Only allow dragging if isDragging is true
     onPanResponderMove: (_, gestureState) => {
-      if (isDragging) {
-        pan.setValue({ x: gestureState.dx + position.x, y: gestureState.dy + position.y });
-      }
+      pan.setValue({ x: gestureState.dx + position.x, y: gestureState.dy + position.y });
     },
     onPanResponderRelease: (_, gestureState) => {
-      if (longPressTimer.current) {
-        clearTimeout(longPressTimer.current); // Clear the timer if released early
-      }
+      const newX = Math.round((gestureState.dx + position.x) / (width / GRID_COLUMNS)) * (width / GRID_COLUMNS);
+      const newY = Math.round((gestureState.dy + position.y) / (height / GRID_ROWS)) * (height / GRID_ROWS);
 
-      if (isDragging) {
-        const newX = Math.round((gestureState.dx + position.x) / (width / GRID_COLUMNS)) * (width / GRID_COLUMNS);
-        const newY = Math.round((gestureState.dy + position.y) / (height / GRID_ROWS)) * (height / GRID_ROWS);
+      // Snap to grid
+      Animated.spring(pan, {
+        toValue: { x: newX, y: newY },
+        useNativeDriver: false,
+      }).start();
 
-        // Snap to grid
-        Animated.spring(pan, {
-          toValue: { x: newX, y: newY },
-          useNativeDriver: false,
-        }).start();
-
-        // Update position in parent
-        onMove(id, newX, newY);
-        setIsDragging(false); // Stop dragging
-      }
-    },
-    onPanResponderTerminate: () => {
-      if (longPressTimer.current) {
-        clearTimeout(longPressTimer.current); // Clear the timer if terminated
-      }
-      setIsDragging(false); // Ensure dragging stops
+      // Update position in parent
+      onMove(id, newX, newY);
+      setIsDragging(false); // Stop dragging
     },
   });
 
@@ -92,6 +70,8 @@ const AppIcon = ({ id, name, icon, position, onMove }: AppIconProps) => {
           styles.appIcon,
           isDragging && styles.draggingIcon, // Highlight when dragging
         ]}
+        delayLongPress={500} // Detect long press after 500ms
+        onLongPress={() => setIsDragging(true)} // Enable drag on long press
       >
         <Icon name={icon} size={30} color="#ffffff" />
         <Text style={styles.appName}>{name}</Text>
