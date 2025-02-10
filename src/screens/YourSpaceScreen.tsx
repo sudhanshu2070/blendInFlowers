@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -35,12 +35,16 @@ type AppIconProps = {
 const AppIcon = ({ id, name, icon, position, onMove }: AppIconProps) => {
   const pan = new Animated.ValueXY({ x: position.x, y: position.y });
   const [isDragging, setIsDragging] = useState(false);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 
   const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => false, // Disable immediate drag
-    onLongPress: () => setIsDragging(true), // Enable drag on long press
+    onStartShouldSetPanResponder: () => true, // Allow responder to start
+    onMoveShouldSetPanResponder: () => isDragging, // Only allow movement if dragging
     onPanResponderGrant: () => {
-      setIsDragging(true); // Start dragging
+      // Start a timer to detect long press
+      longPressTimer.current = setTimeout(() => {
+        setIsDragging(true); // Enable drag after 500ms
+      }, 500);
     },
     onPanResponderMove: (_, gestureState) => {
       if (isDragging) {
@@ -48,6 +52,10 @@ const AppIcon = ({ id, name, icon, position, onMove }: AppIconProps) => {
       }
     },
     onPanResponderRelease: (_, gestureState) => {
+      if (longPressTimer.current) {
+        clearTimeout(longPressTimer.current); // Clear the timer if released early
+      }
+
       if (isDragging) {
         const newX = Math.round((gestureState.dx + position.x) / (width / GRID_COLUMNS)) * (width / GRID_COLUMNS);
         const newY = Math.round((gestureState.dy + position.y) / (height / GRID_ROWS)) * (height / GRID_ROWS);
@@ -62,6 +70,12 @@ const AppIcon = ({ id, name, icon, position, onMove }: AppIconProps) => {
         onMove(id, newX, newY);
         setIsDragging(false); // Stop dragging
       }
+    },
+    onPanResponderTerminate: () => {
+      if (longPressTimer.current) {
+        clearTimeout(longPressTimer.current); // Clear the timer if terminated
+      }
+      setIsDragging(false); // Ensure dragging stops
     },
   });
 
@@ -78,7 +92,6 @@ const AppIcon = ({ id, name, icon, position, onMove }: AppIconProps) => {
           styles.appIcon,
           isDragging && styles.draggingIcon, // Highlight when dragging
         ]}
-        onLongPress={() => setIsDragging(true)} // Enable drag on long press
       >
         <Icon name={icon} size={30} color="#ffffff" />
         <Text style={styles.appName}>{name}</Text>
