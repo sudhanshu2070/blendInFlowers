@@ -10,6 +10,7 @@ import {
   FlatList,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const { width, height } = Dimensions.get('window');
 
@@ -93,6 +94,23 @@ const YourSpaceScreen = () => {
     );
   };
 
+    // Animation for the "Add Apps" button
+    const pulseAnimation = new Animated.Value(1);
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnimation, {
+          toValue: 1.2,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnimation, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+
   return (
     <View style={styles.container}>
 
@@ -115,8 +133,14 @@ const YourSpaceScreen = () => {
           style={styles.addAppsButton}
           onPress={() => setIsAppListVisible(!isAppListVisible)}
         >
-          <Icon name="add-circle-outline" size={50} color="#1E90FF" />
-          <Text style={styles.addAppsButtonText}>Add Apps</Text>
+          <Animated.View
+            style={{
+              transform: [{ scale: pulseAnimation }],
+            }}
+          >
+            <Icon name="layers-outline" size={50} color="#1E90FF" />
+          </Animated.View>
+      <Text style={styles.addAppsButtonText}>Add Apps</Text>
         </TouchableOpacity>
       </View>
 
