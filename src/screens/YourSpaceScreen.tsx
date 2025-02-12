@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated, Easing } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Use any icon set you like
 import { RootStackParamList } from '../utils/types';
 
-const HomeScreen = () => {
-  const navigation = useNavigation();
+const YourSpaceScreen = () => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const scaleValue = new Animated.Value(1);
 
   const handlePressIn = () => {
@@ -23,19 +24,18 @@ const HomeScreen = () => {
       useNativeDriver: true,
     }).start();
   };
-
-  //const navigateToScreen = (screenName: Exclude<keyof RootStackParamList, 'UserDetail'>) => {
   
-    const navigateToScreen = <T extends keyof RootStackParamList>(
-      screen: T,
-      params?: RootStackParamList[T]
-    ) => {
-      navigation.navigate(screen, params);
-    };
+  // Type-safe navigation function
+  const navigateToScreen = (screenName: keyof RootStackParamList) => {
+    if (screenName === 'AddNote' || screenName === 'Calendar' || screenName === 'ImageEditor') {
+      navigation.navigate(screenName);
+    } else {
+      console.warn(`Navigation to ${screenName} is not allowed.`);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to My App!</Text>
       <View style={styles.iconContainer}>
         {/* Add Note Icon */}
         <TouchableOpacity
@@ -87,12 +87,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 40,
-  },
   iconContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -116,4 +110,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default YourSpaceScreen;
