@@ -160,6 +160,8 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
           <Text style={[styles.menuItemText, { color: colors.textColor }]}>Change Theme</Text>
         </TouchableOpacity>
 
+        
+        {/* Conditionally rendering "Your Space" menu item for specific user IDs * */}
         {(profileData._id === 1 || profileData._id === 2) && (
         <TouchableOpacity onPress={() => navigateToScreen('YourSpace')} style={styles.menuItem}>
           <Text style={[styles.menuItemText, { color: colors.textColor }, {fontWeight:'bold'}]}>Your Space</Text>
