@@ -26,7 +26,6 @@ const AppNavigator = () => {
 
   const { colors } = useGlobalStyles();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
-  const dispatch = useDispatch();
   const { isLoggedIn, profileData } = useSelector((state: RootState) => state.auth);
 
   // Function to close the sidebar
@@ -78,7 +77,7 @@ const AppNavigator = () => {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={({ navigation }) => ({
+          options={{
             title: 'Home',
             headerStyle: {
               height: 100,
@@ -97,7 +96,7 @@ const AppNavigator = () => {
                 />
               </TouchableOpacity>
             ),
-          })}
+          }}
         />
 
         {/* User Detail Screen */}
