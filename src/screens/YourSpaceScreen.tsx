@@ -24,7 +24,7 @@ const HomeScreen = () => {
     }).start();
   };
 
-  const navigateTo = (screen: keyof RootStackParamList) => {
+  const navigateToScreen = (screenName: Exclude<keyof RootStackParamList, 'UserDetail'>) => {
     navigation.navigate(screen);
   };
 
@@ -36,7 +36,7 @@ const HomeScreen = () => {
         <TouchableOpacity
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
-          onPress={() => navigateTo('AddNote')}
+          onPress={() => navigateToScreen('AddNote')}
           activeOpacity={0.7}
         >
           <Animated.View style={[styles.iconWrapper, { transform: [{ scale: scaleValue }] }]}>
@@ -49,7 +49,7 @@ const HomeScreen = () => {
         <TouchableOpacity
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
-          onPress={() => navigateTo('Calendar')}
+          onPress={() => navigateToScreen('Calendar')}
           activeOpacity={0.7}
         >
           <Animated.View style={[styles.iconWrapper, { transform: [{ scale: scaleValue }] }]}>
@@ -62,7 +62,7 @@ const HomeScreen = () => {
         <TouchableOpacity
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
-          onPress={() => navigateTo('ImageEditor')}
+          onPress={() => navigateToScreen('ImageEditor')}
           activeOpacity={0.7}
         >
           <Animated.View style={[styles.iconWrapper, { transform: [{ scale: scaleValue }] }]}>
