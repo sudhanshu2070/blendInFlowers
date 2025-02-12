@@ -24,9 +24,14 @@ const HomeScreen = () => {
     }).start();
   };
 
-  const navigateToScreen = (screenName: Exclude<keyof RootStackParamList, 'UserDetail'>) => {
-    navigation.navigate(screen);
-  };
+  //const navigateToScreen = (screenName: Exclude<keyof RootStackParamList, 'UserDetail'>) => {
+  
+    const navigateToScreen = <T extends keyof RootStackParamList>(
+      screen: T,
+      params?: RootStackParamList[T]
+    ) => {
+      navigation.navigate(screen, params);
+    };
 
   return (
     <View style={styles.container}>
