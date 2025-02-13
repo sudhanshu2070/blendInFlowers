@@ -19,6 +19,7 @@ import ThemeSelectionScreen from '../screens/ThemeSelectionScreen';
 import { useGlobalStyles } from '../hooks/useGlobalStyles';
 import YourSpaceScreen from '../screens/YourSpaceScreen';
 import LoadingScreen from '../screens/LoadingScreen';
+import NotesScreen from '../screens/yourSpace/NotesScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -185,7 +186,18 @@ const AppNavigator = () => {
           }}
         />
 
-        <Stack.Screen name="AddNote" component={LoadingScreen} />
+        <Stack.Screen 
+          name="AddNote" 
+          component={NotesScreen} 
+          options={{
+            title: 'Your Notes',
+            headerStyle: {
+              height: 100,
+              backgroundColor: colors.backgroundColor,
+            },
+            headerTintColor: colors.textColor, // Color of the header text and icons
+          }}
+          />
         <Stack.Screen name="Calendar" component={LoadingScreen} />
         <Stack.Screen name="ImageEditor" component={LoadingScreen} />
       </Stack.Navigator>
