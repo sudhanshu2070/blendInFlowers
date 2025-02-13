@@ -27,7 +27,7 @@ const YourSpaceScreen = () => {
   
   // Type-safe navigation function
   const navigateToScreen = (screenName: keyof RootStackParamList) => {
-    if (screenName === 'AddNote' || screenName === 'Calendar' || screenName === 'ImageEditor') {
+    if (screenName === 'NotesScreen' || screenName === 'Calendar' || screenName === 'ImageEditor') {
       navigation.navigate(screenName);
     } else {
       console.warn(`Navigation to ${screenName} is not allowed.`);
@@ -41,7 +41,7 @@ const YourSpaceScreen = () => {
         <TouchableOpacity
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
-          onPress={() => navigateToScreen('AddNote')}
+          onPress={() => navigateToScreen('NotesScreen')}
           activeOpacity={0.7}
         >
           <Animated.View style={[styles.iconWrapper, { transform: [{ scale: scaleValue }] }]}>
@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 12,
     color: '#555',
+    fontFamily: 'Comico-Regular',
   },
 });
 

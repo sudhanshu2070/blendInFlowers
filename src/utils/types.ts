@@ -13,7 +13,7 @@ export type RootStackParamList = {
     ProfileSettings: { image: string; name: string }; // Adding params for ProfileSettings
     ThemeSelector: undefined; 
     YourSpace: undefined;
-    AddNote: undefined;
+    NotesScreen: undefined;
     Calendar: undefined;
     ImageEditor: undefined;
   };

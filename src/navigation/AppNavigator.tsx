@@ -187,7 +187,7 @@ const AppNavigator = () => {
         />
 
         <Stack.Screen 
-          name="AddNote" 
+          name="NotesScreen" 
           component={NotesScreen} 
           options={{
             title: 'Your Notes',

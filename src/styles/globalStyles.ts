@@ -1,4 +1,3 @@
-// src/utils/globalStyles.ts
 import { StyleSheet } from 'react-native';
 import { defaultTheme, themes } from '../utils/themes';
 import { ThemeType } from '../utils/types';

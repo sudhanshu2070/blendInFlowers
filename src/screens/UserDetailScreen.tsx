@@ -4,7 +4,6 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../utils/types';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Import FontAwesome icons
-import { globalStyles } from '../styles/globalStyles';
 
 type UserDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'UserDetail'>;
 type UserDetailScreenRouteProp = RouteProp<RootStackParamList, 'UserDetail'>;

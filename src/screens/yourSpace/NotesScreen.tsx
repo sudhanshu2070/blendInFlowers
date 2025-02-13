@@ -1,5 +1,3 @@
-// A Beginner's Guide to Destroying the Moon...
-
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -8,14 +6,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
-  Dimensions,
   Modal,
-  Animated,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-const { width, height } = Dimensions.get('window');
 
 type Note = {
   id: string;
@@ -96,7 +90,9 @@ const NotesScreen = () => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.title}>Your Notes</Text>
+        <Text style={[styles.titleText, { fontFamily: 'Playwrite' }]}>
+          A Beginner's Guide to Destroying the Moon...
+        </Text>
       </View>
 
       {/* Notes List */}
@@ -109,14 +105,18 @@ const NotesScreen = () => {
             style={styles.noteBox}
             onPress={() => openNote(item)}
           >
-            <Text style={styles.noteTitle}>{item.title}</Text>
-            <Text numberOfLines={2} style={styles.notePreview}>
+            <Text style={[styles.noteTitle, { fontFamily: 'ClashGrotesk' }]}>
+              {item.title}
+            </Text>
+            <Text numberOfLines={2} style={[styles.notePreview, { fontFamily: 'Christmas' }]}>
               {item.content || 'Empty note...'}
             </Text>
           </TouchableOpacity>
         )}
         ListEmptyComponent={
-          <Text style={styles.emptyText}>No notes yet. Tap "+" to add one!</Text>
+          <Text style={[styles.emptyText, { fontFamily: 'Rosaline-Regular' }]}>
+            No notes yet. Tap "+" to add one!
+          </Text>
         }
       />
 
@@ -129,7 +129,7 @@ const NotesScreen = () => {
       <Modal visible={isModalVisible} animationType="slide">
         <View style={styles.modalContainer}>
           <TextInput
-            style={styles.noteTitleInput}
+            style={[styles.noteTitleInput, { fontFamily: 'Stardom-Regular' }]}
             value={currentNote?.title || ''}
             onChangeText={(text) => {
               if (currentNote) {
@@ -139,7 +139,7 @@ const NotesScreen = () => {
             placeholder="Note Title"
           />
           <TextInput
-            style={styles.noteContentInput}
+            style={[styles.noteContentInput, { fontFamily: 'Comico-Regular' }]}
             value={currentNote?.content || ''}
             onChangeText={(text) => saveNote(text)}
             placeholder="Write your note here..."
@@ -147,13 +147,17 @@ const NotesScreen = () => {
           />
           <View style={styles.modalActions}>
             <TouchableOpacity style={styles.deleteButton} onPress={deleteNote}>
-              <Text style={styles.deleteButtonText}>Delete</Text>
+              <Text style={[styles.deleteButtonText, { fontFamily: 'Comico-Regular' }]}>
+                Delete
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.saveButton}
               onPress={() => setIsModalVisible(false)}
             >
-              <Text style={styles.saveButtonText}>Save</Text>
+              <Text style={[styles.saveButtonText, { fontFamily: 'Comico-Regular' }]}>
+                Save
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -173,8 +177,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
   },
-  title: {
-    fontSize: 24,
+  titleText: {
+    fontSize: 25,
     fontWeight: 'bold',
     color: '#333333',
   },
