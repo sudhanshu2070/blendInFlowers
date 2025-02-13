@@ -26,4 +26,5 @@ export const profiles = [
     { id: 25, name: 'Benjamin Perez', hobby: 'Football and community work.', image: 'https://randomuser.me/api/portraits/men/23.jpg' },
     { id: 26, name: 'Chloe Martinez', hobby: 'Running and marathon training.', image: 'https://randomuser.me/api/portraits/women/24.jpg' },
     { id: 27, name: 'Jackson Lee', hobby: 'Baking and creating new recipes.', image: 'https://randomuser.me/api/portraits/men/25.jpg' },
+    { id: 28, name: 'Chat', hobby: 'Baking and creating new recipes.', image: 'https://randomuser.me/api/portraits/men/25.jpg' },
 ];

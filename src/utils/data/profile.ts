@@ -26,4 +26,5 @@ export const users = [
     { _id: 'user25', email: 'benjamin.perez@example.com', password: 'password123', mobileNumber: '+19999999999', age: 31 },
     { _id: 'user26', email: 'chloe.martinez@example.com', password: 'password123', mobileNumber: '+11111111111', age: 26 },
     { _id: 'user27', email: 'jackson.lee@example.com', password: 'password123', mobileNumber: '+12222222222', age: 33 },
+    { _id: 'user28', email: 'Chat', password: 'Bot', mobileNumber: '+12222222222', age:51 },
   ];

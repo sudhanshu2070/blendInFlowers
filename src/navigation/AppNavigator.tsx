@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import LoginScreen from '../screens/Auth/LoginScreen';
@@ -20,6 +20,7 @@ import { useGlobalStyles } from '../hooks/useGlobalStyles';
 import YourSpaceScreen from '../screens/YourSpaceScreen';
 import LoadingScreen from '../screens/LoadingScreen';
 import NotesScreen from '../screens/yourSpace/NotesScreen';
+import { useNavigation } from '@react-navigation/native';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -28,6 +29,8 @@ const AppNavigator = () => {
   const { colors } = useGlobalStyles();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const { isLoggedIn, profileData } = useSelector((state: RootState) => state.auth);
+
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();//For the chat bot
 
   // Function to close the sidebar
   const closeSidebar = () => {
@@ -45,12 +48,33 @@ const AppNavigator = () => {
 
   const profileImageUri = getProfileImage();
 
+  //For the chat bot starts here
+  // Determine the initial route based on the logged-in user
+  useEffect(() => {
+    if (isLoggedIn && profileData) {
+      if (profileData._id === 'user28') {
+        navigation.navigate('YourSpace'); // Navigate to YourSpace
+      } else {
+        navigation.navigate('Home'); // Navigate to Home
+      }
+    } else {
+      navigation.navigate('Login'); // Navigate to Login
+    }
+  }, [isLoggedIn, profileData, navigation]);
+
+    // Force rerender when Redux state changes
+    useEffect(() => {
+    }, [isLoggedIn, profileData]);
+  
+  //For Chat Bot ends here
+
   return (
     <>
       {/* Conditional Rendering Based on Login State */}
-      <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Login'}>
+      {/* for Chat Bot */}
+      {/* <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Login'}> */}
+        <Stack.Navigator>
         {/* Login Screen */}
-
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -183,6 +207,7 @@ const AppNavigator = () => {
               backgroundColor: colors.backgroundColor,
             },
             headerTintColor: colors.textColor, // Color of the header text and icons
+            headerLeft: () => null, // Keeping it blank //For the chat bot
           }}
         />
 
