@@ -90,7 +90,7 @@ const NotesScreen = () => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={[styles.titleText, { fontFamily: 'Playwrite' }]}>
+        <Text style={styles.titleText}>
           A Beginner's Guide to Destroying the Moon...
         </Text>
       </View>
@@ -178,9 +178,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#E0E0E0',
   },
   titleText: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: '#333333',
+    fontSize: 27,
+    fontFamily: 'Rosaline-Regular',
+    color: '#808080',
   },
   notesList: {
     padding: 10,
