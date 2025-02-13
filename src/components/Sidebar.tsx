@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions, Animated, PanResponder } from 'react-native';
 import { RootStackParamList } from '../utils/types';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -162,7 +162,7 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
 
         
         {/* Conditionally rendering "Your Space" menu item for specific user IDs * */}
-        {(profileData._id === 1 || profileData._id === 2) && (
+        {(profileData._id === 'user1' || profileData._id === 'user2') && (
         <TouchableOpacity onPress={() => navigateToScreen('YourSpace')} style={styles.menuItem}>
           <Text style={[styles.menuItemText, { color: colors.textColor }, {fontWeight:'bold'}]}>Your Space</Text>
         </TouchableOpacity>

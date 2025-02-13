@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
   },
   iconWrapper: {
     alignItems: 'center',
-    padding: 20,
-    borderRadius: 20,
+    padding: 15,
+    borderRadius: 25,
     backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   iconText: {
-    marginTop: 10,
-    fontSize: 16,
+    marginTop: 4,
+    fontSize: 12,
     color: '#555',
   },
 });
