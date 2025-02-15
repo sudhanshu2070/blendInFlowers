@@ -21,6 +21,7 @@ import YourSpaceScreen from '../screens/YourSpaceScreen';
 import LoadingScreen from '../screens/LoadingScreen';
 import NotesScreen from '../screens/yourSpace/NotesScreen';
 import { useNavigation } from '@react-navigation/native';
+import AIChatScreen from '../screens/yourSpace/AlChatScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -225,7 +226,7 @@ const AppNavigator = () => {
           />
         <Stack.Screen name="Calendar" component={LoadingScreen} />
         <Stack.Screen name="ImageEditor" component={LoadingScreen} />
-        <Stack.Screen name="AIChatScreen" component={LoadingScreen} />
+        <Stack.Screen name="AIChatScreen" component={AIChatScreen} />
       </Stack.Navigator>
 
       {/* Sidebar Overlay */}
