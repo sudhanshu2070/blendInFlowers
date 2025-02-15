@@ -24,10 +24,15 @@ const YourSpaceScreen = () => {
       useNativeDriver: true,
     }).start();
   };
-  
+
   // Type-safe navigation function
   const navigateToScreen = (screenName: keyof RootStackParamList) => {
-    if (screenName === 'NotesScreen' || screenName === 'Calendar' || screenName === 'ImageEditor') {
+    if (
+      screenName === 'NotesScreen' ||
+      screenName === 'Calendar' ||
+      screenName === 'ImageEditor' ||
+      screenName === 'AIChatScreen'
+    ) {
       navigation.navigate(screenName);
     } else {
       console.warn(`Navigation to ${screenName} is not allowed.`);
@@ -73,6 +78,19 @@ const YourSpaceScreen = () => {
           <Animated.View style={[styles.iconWrapper, { transform: [{ scale: scaleValue }] }]}>
             <Icon name="image-edit" size={40} color="#FF0266" />
             <Text style={styles.iconText}>Image Editor</Text>
+          </Animated.View>
+        </TouchableOpacity>
+
+        {/* AI Chat Bot Icon */}
+        <TouchableOpacity
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
+          onPress={() => navigateToScreen('AIChatScreen')}
+          activeOpacity={0.7}
+        >
+          <Animated.View style={[styles.iconWrapper, { transform: [{ scale: scaleValue }] }]}>
+            <Icon name="robot" size={40} color="#FFC107" />
+            <Text style={styles.iconText}>AI Chat Bot</Text>
           </Animated.View>
         </TouchableOpacity>
       </View>

@@ -225,6 +225,7 @@ const AppNavigator = () => {
           />
         <Stack.Screen name="Calendar" component={LoadingScreen} />
         <Stack.Screen name="ImageEditor" component={LoadingScreen} />
+        <Stack.Screen name="AIChatScreen" component={LoadingScreen} />
       </Stack.Navigator>
 
       {/* Sidebar Overlay */}
