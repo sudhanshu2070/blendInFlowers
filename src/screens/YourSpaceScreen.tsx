@@ -90,7 +90,7 @@ const YourSpaceScreen = () => {
         >
           <Animated.View style={[styles.iconWrapper, { transform: [{ scale: scaleValue }] }]}>
             <Icon name="robot" size={40} color="#FFC107" />
-            <Text style={styles.iconText}>AI Chat Bot</Text>
+            <Text style={styles.iconText}>Eazy A</Text>
           </Animated.View>
         </TouchableOpacity>
       </View>
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   iconText: {
     marginTop: 4,
-    fontSize: 12,
+    fontSize: 10,
     color: '#555',
     fontFamily: 'Comico-Regular',
   },
