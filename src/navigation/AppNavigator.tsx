@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import LoginScreen from '../screens/Auth/LoginScreen';
 import RegisterScreen from '../screens/Auth/RegisterScreen';
@@ -226,6 +226,7 @@ const AppNavigator = () => {
           />
         <Stack.Screen name="Calendar" component={LoadingScreen} />
         <Stack.Screen name="ImageEditor" component={LoadingScreen} />
+        <Stack.Screen name="UserChatScreen" component={LoadingScreen} />
         <Stack.Screen name="AIChatScreen" 
           component={AIChatScreen}
           options={{

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 
-const ChatScreen = () => {
+const UserChatScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.messages}>
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatScreen;
+export default UserChatScreen;

@@ -17,6 +17,7 @@ export type RootStackParamList = {
     Calendar: undefined;
     ImageEditor: undefined;
     AIChatScreen: undefined;
+    UserChatScreen: undefined;
   };
   
 export type ThemeType = 'light' | 'dark' | 'custom' | 'default'; // for theme slice

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Animated, Dimensions, Easing } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../utils/types';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Import FontAwesome icons
@@ -12,24 +12,24 @@ interface UserDetailScreenProps {
   navigation: UserDetailScreenNavigationProp;
   route: UserDetailScreenRouteProp;
 }
-// Get the screen dimensions to place the heart in the center
-const { width, height } = Dimensions.get('window');
 
 const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
+ 
+  const navigation = useNavigation<UserDetailScreenNavigationProp>(); // Initialize navigation
+
   // Access route params (name, hobby, image)
   const { name, hobby, image } = route.params;
+
   // State to track heart count
   const [heartCount, setHeartCount] = useState(0);
 
   // State to control the visibility of the heart
   const [heartVisible, setHeartVisible] = useState(false);
 
-
   // Animated value for heart animation
   const heartAnim = useRef(new Animated.Value(0)).current;
 
   // State to handle the double-tap detection
-
   const lastTap = useRef(Date.now());
 
   // Function to handle double tap
@@ -61,6 +61,13 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
     lastTap.current = now;
   };
 
+  // Function to navigate to ChatScreen
+
+  const handleMessagePress = () => {
+    console.log('Message Pressed');
+    navigation.navigate('UserChatScreen'); // Navigate to ChatScreen
+  };
+
   return (
     <View style={styles.container}>
 
@@ -72,7 +79,17 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
       <View style={styles.bioContainer}>
         <View style={styles.headerContainer}>
           <Text style={styles.nameText}>{name}</Text>
+
+          <View style={styles.heartAndMessageContainer}>
+
+          {/* Message Icon */}
+          <TouchableOpacity onPress={handleMessagePress}>
+          <Icon name="comment" size={24} color="#333" style={styles.messageIcon} />
+          </TouchableOpacity>
+          {/* Heart Count */}
           <Text style={styles.heartCountText}>&hearts;: {heartCount}</Text>
+          </View>
+
         </View>
         <View style={styles.hobbyContainer}>
           <Text style={styles.hobbyText}>{hobby}</Text>
@@ -145,6 +162,14 @@ const styles = StyleSheet.create({
     color: '#333',
     fontFamily: 'Stardom-Regular', 
     // fontFamily: 'Comico-Regular', 
+  },
+  
+  heartAndMessageContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  messageIcon: {
+    marginRight: 10, // Space between the message icon and heart count
   },
   heartCountText: {
     fontSize: 18,
