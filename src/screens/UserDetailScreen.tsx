@@ -83,8 +83,12 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
           <View style={styles.heartAndMessageContainer}>
 
           {/* Message Icon */}
-          <TouchableOpacity onPress={handleMessagePress}>
-          <Icon name="comment" size={24} color="#333" style={styles.messageIcon} />
+          <TouchableOpacity 
+            onPress={handleMessagePress}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} // Increase touchable area
+            style={{ backgroundColor: 'rgba(255, 0, 0, 0.3)', padding: 10 }} // Temporary background color
+>
+          <Icon name="comment" size={50} color="#333" style={styles.messageIcon} />
           </TouchableOpacity>
           {/* Heart Count */}
           <Text style={styles.heartCountText}>&hearts;: {heartCount}</Text>
@@ -170,6 +174,7 @@ const styles = StyleSheet.create({
   },
   messageIcon: {
     marginRight: 10, // Space between the message icon and heart count
+    zIndex: 1, // Bring the icon to the front
   },
   heartCountText: {
     fontSize: 18,
@@ -200,6 +205,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    zIndex: 0, // Ensure it stays behind other components
   },
 });
 
