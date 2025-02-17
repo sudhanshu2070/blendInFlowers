@@ -226,7 +226,16 @@ const AppNavigator = () => {
           />
         <Stack.Screen name="Calendar" component={LoadingScreen} />
         <Stack.Screen name="ImageEditor" component={LoadingScreen} />
-        <Stack.Screen name="AIChatScreen" component={AIChatScreen} />
+        <Stack.Screen name="AIChatScreen" 
+          component={AIChatScreen}
+          options={{
+            title: 'AI Chat Screen',
+            headerStyle: {
+              height: 100,
+              backgroundColor: colors.backgroundColor,
+            },
+            headerTintColor: colors.textColor, // Color of the header text and icons
+          }} />
       </Stack.Navigator>
 
       {/* Sidebar Overlay */}
