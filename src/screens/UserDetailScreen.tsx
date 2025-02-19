@@ -97,6 +97,7 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
         </View>
         <View style={styles.hobbyContainer}>
           <Text style={styles.hobbyText}>{hobby}</Text>
+          <TouchableOpacity onPress={handleDoubleTap} style={styles.tapArea} />
         </View>
           {heartVisible && (
             <Animated.View
@@ -118,7 +119,7 @@ const UserDetailScreen: React.FC<UserDetailScreenProps> = ({ route }) => {
       </View>
 
       {/* Handle double tap anywhere on the screen (Below bio) */}
-      <TouchableOpacity onPress={handleDoubleTap} style={styles.tapArea} />
+      {/* <TouchableOpacity onPress={handleDoubleTap} style={styles.tapArea} /> */}
     </View>
   );
 };
