@@ -18,6 +18,7 @@ export type RootStackParamList = {
     ImageEditor: undefined;
     AIChatScreen: undefined;
     UserChatScreen: undefined;
+    WeatherScreen: undefined;
   };
   
 export type ThemeType = 'light' | 'dark' | 'custom' | 'default'; // for theme slice

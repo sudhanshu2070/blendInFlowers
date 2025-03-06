@@ -31,7 +31,8 @@ const YourSpaceScreen = () => {
       screenName === 'NotesScreen' ||
       screenName === 'Calendar' ||
       screenName === 'ImageEditor' ||
-      screenName === 'AIChatScreen'
+      screenName === 'AIChatScreen' ||
+      screenName === 'WeatherScreen'
     ) {
       navigation.navigate(screenName);
     } else {
@@ -93,6 +94,20 @@ const YourSpaceScreen = () => {
             <Text style={styles.iconText}>Eazy A</Text>
           </Animated.View>
         </TouchableOpacity>
+
+         {/* Weather Icon */}
+          <TouchableOpacity
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}
+            onPress={() => navigateToScreen('WeatherScreen')} // Navigate to WeatherScreen
+            activeOpacity={0.7}
+            >
+
+            <Animated.View style={[styles.iconWrapper, { transform: [{ scale: scaleValue }] }]}>
+              <Icon name="weather-partly-cloudy" size={40} color="#00BFFF" /> {/* Weather icon */}
+              <Text style={styles.iconText}>Weather</Text>
+            </Animated.View>
+          </TouchableOpacity>
       </View>
     </View>
   );
@@ -108,7 +123,8 @@ const styles = StyleSheet.create({
   iconContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: '80%',
+    width: '90%',
+    flexWrap:'wrap',
   },
   iconWrapper: {
     alignItems: 'center',
@@ -120,6 +136,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 5,
+    margin: 1.5,
   },
   iconText: {
     marginTop: 4,
