@@ -50,7 +50,7 @@ interface ForecastCardProps {
   temp: string;
 }
 
-const API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with your API key
+const API_KEY = process.env.OPEN_WEATHER_API_KEY; // Replace with your API key
 
 const WeatherScreen = () => {
   const [location, setLocation] = useState('');
