@@ -96,15 +96,15 @@ const YourSpaceScreen = () => {
         </TouchableOpacity>
 
          {/* Weather Icon */}
-          <TouchableOpacity
+         <TouchableOpacity
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
-            onPress={() => navigateToScreen('WeatherScreen')} // Navigate to WeatherScreen
+            onPress={() => navigateToScreen('WeatherScreen')} 
             activeOpacity={0.7}
             >
 
             <Animated.View style={[styles.iconWrapper, { transform: [{ scale: scaleValue }] }]}>
-              <Icon name="weather-partly-cloudy" size={40} color="#00BFFF" /> {/* Weather icon */}
+              <Icon name="weather-partly-cloudy" size={40} color="#00BFFF" /> 
               <Text style={styles.iconText}>Weather</Text>
             </Animated.View>
           </TouchableOpacity>

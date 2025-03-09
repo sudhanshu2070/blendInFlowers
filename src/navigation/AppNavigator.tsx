@@ -22,6 +22,7 @@ import LoadingScreen from '../screens/LoadingScreen';
 import NotesScreen from '../screens/yourSpace/NotesScreen';
 import { useNavigation } from '@react-navigation/native';
 import AIChatScreen from '../screens/yourSpace/AlChatScreen';
+import WeatherScreen from '../screens/yourSpace/WeatherScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -227,7 +228,7 @@ const AppNavigator = () => {
         <Stack.Screen name="Calendar" component={LoadingScreen} />
         <Stack.Screen name="ImageEditor" component={LoadingScreen} />
         <Stack.Screen name="UserChatScreen" component={LoadingScreen} />
-        <Stack.Screen name="WeatherScreen" component={YourSpaceScreen} />
+        <Stack.Screen name="WeatherScreen" component={WeatherScreen} />
         <Stack.Screen name="AIChatScreen" 
           component={AIChatScreen}
           options={{
