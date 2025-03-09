@@ -227,6 +227,7 @@ const AppNavigator = () => {
         <Stack.Screen name="Calendar" component={LoadingScreen} />
         <Stack.Screen name="ImageEditor" component={LoadingScreen} />
         <Stack.Screen name="UserChatScreen" component={LoadingScreen} />
+        <Stack.Screen name="WeatherScreen" component={YourSpaceScreen} />
         <Stack.Screen name="AIChatScreen" 
           component={AIChatScreen}
           options={{
