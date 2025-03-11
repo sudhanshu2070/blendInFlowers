@@ -57,7 +57,12 @@ const WeatherScreen = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const scale = useSharedValue<number>(1);
+  // const scale = useSharedValue<number>(1);
+  const scale = useSharedValue(1);
+
+  useEffect(() => {
+    scale.value = withTiming(1.1, { duration: 1000 });
+  }, [scale]);
 
   const handleSearch = async () => {
     if (!location) return;
@@ -121,14 +126,22 @@ const WeatherScreen = () => {
 
       {/* Error State */}
       {error && (
-        <Animated.View 
-          style={styles.errorContainer} 
-          entering={FadeIn} 
-          exiting={FadeOut}
-        >
-          <Icon name="alert-circle" size={40} color="#ff4444" />
-          <Text style={styles.errorText}>{error}</Text>
-        </Animated.View>
+        // <Animated.View 
+        //   style={styles.errorContainer} 
+        //   entering={FadeIn} 
+        //   exiting={FadeOut}
+        // >
+        //   <Icon name="alert-circle" size={40} color="#ff4444" />
+        //   <Text style={styles.errorText}>{error}</Text>
+        // </Animated.View>
+        <Animated.View
+        style={{
+          transform: [{ scale }],
+        backgroundColor: 'red',
+        width: 100,
+        height: 100,
+      }}
+      />
       )}
 
       {/* Weather Display */}
