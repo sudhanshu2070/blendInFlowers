@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  StyleSheet, 
-  ScrollView, 
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  ScrollView,
   ActivityIndicator,
   Platform,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Keyboard
+  Keyboard,
 } from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient'; // Changed import
-import Animated, { 
-  FadeIn, 
-  FadeInDown, 
-  FadeOut, 
-  useAnimatedStyle, 
-  useSharedValue, 
-  withTiming 
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeOut,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
 
 // Define weather data types
@@ -66,10 +66,12 @@ const WeatherScreen = () => {
     Keyboard.dismiss(); // Added keyboard dismissal
     setLoading(true);
     setError('');
-    
+
     try {
       const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&appid=${API_KEY}&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
+          location
+        )}&appid=${API_KEY}&units=metric`
       );
       setWeather(response.data);
       setLoading(false);
@@ -81,7 +83,7 @@ const WeatherScreen = () => {
   };
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }]
+    transform: [{ scale: scale.value }],
   }));
 
   useEffect(() => {
@@ -91,15 +93,17 @@ const WeatherScreen = () => {
   }, [weather]);
 
   return (
-    <KeyboardAvoidingView 
+    <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.rootContainer}>
-        <LinearGradient 
-          colors={weather?.weather?.[0]?.main 
-            ? getBackgroundColors(weather.weather[0].main) 
-            : ['#000033', '#000066']}
+        <LinearGradient
+          colors={
+            weather?.weather?.[0]?.main
+              ? getBackgroundColors(weather.weather[0].main)
+              : ['#000033', '#000066']
+          }
           style={styles.container}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
@@ -116,8 +120,8 @@ const WeatherScreen = () => {
               autoCorrect={false}
               clearButtonMode="always"
             />
-            <TouchableOpacity 
-              onPress={handleSearch} 
+            <TouchableOpacity
+              onPress={handleSearch}
               style={styles.searchButton}
               disabled={loading}
             >
@@ -135,9 +139,9 @@ const WeatherScreen = () => {
 
           {/* Error State */}
           {error && (
-            <Animated.View 
-              style={styles.errorContainer} 
-              entering={FadeIn} 
+            <Animated.View
+              style={styles.errorContainer}
+              entering={FadeIn}
               exiting={FadeOut}
             >
               <Icon name="alert-circle" size={40} color="#ff4444" />
@@ -147,21 +151,19 @@ const WeatherScreen = () => {
 
           {/* Weather Display */}
           {weather && (
-            <Animated.ScrollView 
+            <Animated.ScrollView
               contentContainerStyle={styles.weatherContainer}
               entering={FadeInDown}
               showsVerticalScrollIndicator={false}
             >
               {/* Current Weather */}
-              <Animated.View 
-                style={[styles.currentWeather, animatedStyle]}
-              >
+              <Animated.View style={[styles.currentWeather, animatedStyle]}>
                 <Text style={styles.city}>{weather.name}</Text>
                 <Text style={styles.temp}>{Math.round(weather.main.temp)}°C</Text>
-                <Icon 
+                <Icon
                   name={getWeatherIcon(weather.weather[0].main)}
-                  size={120} 
-                  color="#00BFFF" 
+                  size={120}
+                  color="#00BFFF"
                 />
                 <Text style={styles.description}>
                   {weather.weather[0].description}
@@ -170,19 +172,19 @@ const WeatherScreen = () => {
 
               {/* Details Section */}
               <View style={styles.detailsContainer}>
-                <WeatherDetail 
-                  icon="speedometer" 
-                  label="Wind" 
+                <WeatherDetail
+                  icon="speedometer"
+                  label="Wind"
                   value={`${weather.wind.speed} m/s`}
                 />
-                <WeatherDetail 
-                  icon="water" 
-                  label="Humidity" 
+                <WeatherDetail
+                  icon="water"
+                  label="Humidity"
                   value={`${weather.main.humidity}%`}
                 />
-                <WeatherDetail 
-                  icon="speedometer-slow" 
-                  label="Pressure" 
+                <WeatherDetail
+                  icon="speedometer-slow"
+                  label="Pressure"
                   value={`${weather.main.pressure} hPa`}
                 />
               </View>
@@ -190,16 +192,16 @@ const WeatherScreen = () => {
               {/* 5-Day Forecast */}
               <View style={styles.forecastContainer}>
                 <Text style={styles.forecastTitle}>5-Day Forecast</Text>
-                <ScrollView 
-                  horizontal 
+                <ScrollView
+                  horizontal
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.forecastScrollView}
                 >
                   {Array.from({ length: 5 }).map((_, index) => (
-                    <ForecastCard 
-                      key={index} 
-                      day={getDay(index)} 
-                      temp={getForecastTemp(index).toString()} 
+                    <ForecastCard
+                      key={index}
+                      day={getDay(index)}
+                      temp={getForecastTemp(index).toString()}
                     />
                   ))}
                 </ScrollView>
@@ -231,11 +233,15 @@ const ForecastCard: React.FC<ForecastCardProps> = ({ day, temp }) => (
 
 // Helper Functions
 const getWeatherIcon = (condition: string): string => {
-  switch(condition) {
-    case 'Clear': return 'weather-sunny';
-    case 'Rain': return 'weather-rainy';
-    case 'Clouds': return 'weather-cloudy';
-    default: return 'weather-partly-cloudy';
+  switch (condition) {
+    case 'Clear':
+      return 'weather-sunny';
+    case 'Rain':
+      return 'weather-rainy';
+    case 'Clouds':
+      return 'weather-cloudy';
+    default:
+      return 'weather-partly-cloudy';
   }
 };
 
@@ -249,15 +255,18 @@ const getForecastTemp = (offset: number): number => {
   return Math.floor(Math.random() * 10 + 20);
 };
 
-const getBackgroundColors = (condition: string): string[] => {
-  const colors: { [key: string]: string[] } = {
-    Clear: ['#FFD700', '#FFA500'],
-    Rain: ['#1E90FF', '#00BFFF'],
-    Clouds: ['#A9A9A9', '#696969'],
-  };
-  return colors[condition] || ['#000033', '#000066'];
+const getBackgroundColors = (weatherMain: string): [string, string, ...string[]] => {
+  switch (weatherMain) {
+    case 'Clear':
+      return ['#87CEEB', '#FFD700']; // Example colors
+    case 'Clouds':
+      return ['#A9A9A9', '#D3D3D3'];
+    default:
+      return ['#000033', '#000066'];
+  }
 };
 
+// Styles
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
@@ -301,11 +310,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     borderRadius: 15,
   },
+  loadingText: {
+    color: '#fff',
+    fontSize: 16,
+    marginTop: 10,
+    fontWeight: '500',
+  },
   errorContainer: {
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+  },
+  errorText: {
+    color: '#ff4444',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 10,
+    textAlign: 'center',
   },
   weatherContainer: {
     alignItems: 'center',
@@ -390,3 +412,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default WeatherScreen; // Ensure this is exported
