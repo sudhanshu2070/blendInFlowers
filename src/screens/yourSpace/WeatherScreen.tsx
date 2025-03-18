@@ -69,9 +69,10 @@ const WeatherScreen = () => {
 
     try {
       const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
-          location
-        )}&appid=${API_KEY}&units=metric`
+      //   `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
+      //     location
+      //   )}&appid=${API_KEY}&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?q=London&appid=${API_KEY}&units=metric`
       );
       setWeather(response.data);
       setLoading(false);
