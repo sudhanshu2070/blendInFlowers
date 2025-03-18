@@ -52,7 +52,7 @@ interface ForecastCardProps {
   temp: string;
 }
 
-const API_KEY = process.env.EXPO_PUBLIC_OPEN_WEATHER_API_KEY; // Updated for Expo
+const API_KEY = process.env.EXPO_PUBLIC_OPEN_WEATHER_API_KEY || ''; // Ensure fallback to empty string
 
 const WeatherScreen = () => {
   const [location, setLocation] = useState('');
@@ -68,12 +68,9 @@ const WeatherScreen = () => {
     setError('');
 
     try {
-      const response = await axios.get(
-      //   `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
-      //     location
-      //   )}&appid=${API_KEY}&units=metric`
-      `https://api.openweathermap.org/data/2.5/weather?q=London&appid=${API_KEY}&units=metric`
-      );
+      const finalApi = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&appid=${API_KEY}&units=metric`;
+
+      const response = await axios.get(finalApi);
       setWeather(response.data);
       setLoading(false);
     } catch (err) {
@@ -344,6 +341,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textTransform: 'uppercase',
     marginBottom: 8,
+    marginTop:20
   },
   temp: {
     color: '#fff',
