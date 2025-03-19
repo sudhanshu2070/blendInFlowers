@@ -13,17 +13,16 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { LinearGradient } from 'expo-linear-gradient'; // Changed import
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
   FadeIn,
   FadeInDown,
   FadeOut,
   useAnimatedStyle,
   useSharedValue,
-  withTiming,
+  withSpring,
 } from 'react-native-reanimated';
 
-// Define weather data types
 interface WeatherData {
   name: string;
   main: {
@@ -40,7 +39,6 @@ interface WeatherData {
   };
 }
 
-// Component props types
 interface WeatherDetailProps {
   icon: string;
   label: string;
@@ -50,34 +48,53 @@ interface WeatherDetailProps {
 interface ForecastCardProps {
   day: string;
   temp: string;
+  icon: string;
 }
 
-const API_KEY = process.env.EXPO_PUBLIC_OPEN_WEATHER_API_KEY || ''; // Ensure fallback to empty string
+const API_KEY = process.env.EXPO_PUBLIC_OPEN_WEATHER_API_KEY || '';
 
 const WeatherScreen = () => {
   const [location, setLocation] = useState('');
   const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [forecast, setForecast] = useState<any[]>([]); // Store 5-day forecast data
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const scale = useSharedValue<number>(1);
+  const [unit, setUnit] = useState<'metric' | 'imperial'>('metric'); // Celsius or Fahrenheit
+  const scale = useSharedValue(1);
 
   const handleSearch = async () => {
     if (!location.trim()) return;
-    Keyboard.dismiss(); // Added keyboard dismissal
+    Keyboard.dismiss();
     setLoading(true);
     setError('');
 
     try {
-      const finalApi = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&appid=${API_KEY}&units=metric`;
-
+      const finalApi = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&appid=${API_KEY}&units=${unit}`;
       const response = await axios.get(finalApi);
+
+      // console.log("fetch5daysTemp function called");
+      // const final5daysApi = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${API_KEY}&units=${unit}`;
+      // console.log("Final API:", final5daysApi);
+      // const response5days = await axios.get(finalApi);
+      // console.log("5 days:", response5days.data);
+
+      // fetch5daysTemp(location, unit);
+      
       setWeather(response.data);
+            // Fetch 5-day forecast
+            const forecastData = await getForecastTemp(location, 'metric');
+            setForecast(forecastData);
       setLoading(false);
     } catch (err) {
-      setError('Location not found');
+      setError('Location not found. Try again!');
       setLoading(false);
       setWeather(null);
     }
+  };
+
+  const toggleUnit = () => {
+    setUnit(unit === 'metric' ? 'imperial' : 'metric');
+    if (weather) handleSearch(); // Refresh weather with new unit
   };
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -86,21 +103,18 @@ const WeatherScreen = () => {
 
   useEffect(() => {
     if (weather) {
-      scale.value = withTiming(1.1, { duration: 1000 });
+      scale.value = withSpring(1.05, { duration: 300 }); // Subtle spring animation
     }
   }, [weather]);
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.rootContainer}>
         <LinearGradient
           colors={
             weather?.weather?.[0]?.main
               ? getBackgroundColors(weather.weather[0].main)
-              : ['#000033', '#000066']
+              : ['#2C3E50', '#4CA1AF']
           }
           style={styles.container}
           start={{ x: 0, y: 0 }}
@@ -110,39 +124,36 @@ const WeatherScreen = () => {
           <View style={styles.searchContainer}>
             <TextInput
               style={styles.searchInput}
-              placeholder="Enter location..."
-              placeholderTextColor="#888"
+              placeholder="Enter a city..."
+              placeholderTextColor="#A0A0A0"
               value={location}
               onChangeText={setLocation}
               onSubmitEditing={handleSearch}
               autoCorrect={false}
               clearButtonMode="always"
             />
-            <TouchableOpacity
-              onPress={handleSearch}
-              style={styles.searchButton}
-              disabled={loading}
-            >
-              <Icon name="magnify" size={24} color="#fff" />
+            <TouchableOpacity onPress={handleSearch} style={styles.searchButton} disabled={loading}>
+              <Icon name="magnify" size={26} color="#fff" />
             </TouchableOpacity>
           </View>
 
+          {/* Unit Toggle */}
+          <TouchableOpacity onPress={toggleUnit} style={styles.unitToggle}>
+            <Text style={styles.unitText}>{unit === 'metric' ? '°C' : '°F'}</Text>
+          </TouchableOpacity>
+
           {/* Loading State */}
           {loading && (
-            <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#00BFFF" />
-              <Text style={styles.loadingText}>Fetching weather data...</Text>
-            </View>
+            <Animated.View entering={FadeIn} style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#fff" />
+              <Text style={styles.loadingText}>Loading weather...</Text>
+            </Animated.View>
           )}
 
           {/* Error State */}
           {error && (
-            <Animated.View
-              style={styles.errorContainer}
-              entering={FadeIn}
-              exiting={FadeOut}
-            >
-              <Icon name="alert-circle" size={40} color="#ff4444" />
+            <Animated.View entering={FadeIn} exiting={FadeOut} style={styles.errorContainer}>
+              <Icon name="alert-circle-outline" size={40} color="#FF6B6B" />
               <Text style={styles.errorText}>{error}</Text>
             </Animated.View>
           )}
@@ -151,37 +162,37 @@ const WeatherScreen = () => {
           {weather && (
             <Animated.ScrollView
               contentContainerStyle={styles.weatherContainer}
-              entering={FadeInDown}
+              entering={FadeInDown.delay(100)}
               showsVerticalScrollIndicator={false}
             >
               {/* Current Weather */}
               <Animated.View style={[styles.currentWeather, animatedStyle]}>
                 <Text style={styles.city}>{weather.name}</Text>
-                <Text style={styles.temp}>{Math.round(weather.main.temp)}°C</Text>
+                <Text style={styles.temp}>
+                  {Math.round(weather.main.temp)}°{unit === 'metric' ? 'C' : 'F'}
+                </Text>
                 <Icon
                   name={getWeatherIcon(weather.weather[0].main)}
-                  size={120}
-                  color="#00BFFF"
+                  size={100}
+                  color="#fff"
                 />
-                <Text style={styles.description}>
-                  {weather.weather[0].description}
-                </Text>
+                <Text style={styles.description}>{weather.weather[0].description}</Text>
               </Animated.View>
 
               {/* Details Section */}
               <View style={styles.detailsContainer}>
                 <WeatherDetail
-                  icon="speedometer"
+                  icon="weather-windy"
                   label="Wind"
-                  value={`${weather.wind.speed} m/s`}
+                  value={`${weather.wind.speed} ${unit === 'metric' ? 'm/s' : 'mph'}`}
                 />
                 <WeatherDetail
-                  icon="water"
+                  icon="water-outline"
                   label="Humidity"
                   value={`${weather.main.humidity}%`}
                 />
                 <WeatherDetail
-                  icon="speedometer-slow"
+                  icon="gauge"
                   label="Pressure"
                   value={`${weather.main.pressure} hPa`}
                 />
@@ -195,13 +206,17 @@ const WeatherScreen = () => {
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.forecastScrollView}
                 >
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <ForecastCard
-                      key={index}
-                      day={getDay(index)}
-                      temp={getForecastTemp(index).toString()}
+                {forecast.map((item, index) => (
+                  <ForecastCard
+                    key={index}
+                    day={item.day}
+                    temp={`${item.temp}°C`}
+                    icon={item.icon}
+                  />
+                ))}
+                      {/* icon={getWeatherIcon(weather.weather[0].main)} // Placeholder; use real forecast data
                     />
-                  ))}
+                  ))} */}
                 </ScrollView>
               </View>
             </Animated.ScrollView>
@@ -215,52 +230,82 @@ const WeatherScreen = () => {
 // Helper Components
 const WeatherDetail: React.FC<WeatherDetailProps> = ({ icon, label, value }) => (
   <View style={styles.detailCard}>
-    <Icon name={icon} size={30} color="#00BFFF" />
+    <Icon name={icon} size={28} color="#fff" />
     <Text style={styles.detailLabel}>{label}</Text>
     <Text style={styles.detailValue}>{value}</Text>
   </View>
 );
 
-const ForecastCard: React.FC<ForecastCardProps> = ({ day, temp }) => (
+const ForecastCard: React.FC<ForecastCardProps> = ({ day, temp, icon }) => (
   <View style={styles.forecastCard}>
     <Text style={styles.forecastDay}>{day}</Text>
-    <Icon name="weather-cloudy" size={40} color="#00BFFF" />
-    <Text style={styles.forecastTemp}>{temp}°C</Text>
+    <Icon name={icon} size={36} color="#fff" />
+    <Text style={styles.forecastTemp}>{temp}°</Text>
   </View>
 );
 
-// Helper Functions
+// Utility Functions
 const getWeatherIcon = (condition: string): string => {
-  switch (condition) {
-    case 'Clear':
-      return 'weather-sunny';
-    case 'Rain':
-      return 'weather-rainy';
-    case 'Clouds':
-      return 'weather-cloudy';
-    default:
-      return 'weather-partly-cloudy';
+  switch (condition.toLowerCase()) {
+    case 'clear': return 'weather-sunny';
+    case 'rain': return 'weather-rainy';
+    case 'clouds': return 'weather-cloudy';
+    case 'snow': return 'weather-snowy';
+    default: return 'weather-partly-cloudy';
   }
 };
 
 const getDay = (offset: number): string => {
-  const days = ['Today', 'Tomorrow', 'Day 3', 'Day 4', 'Day 5'];
-  return days[offset];
+  const date = new Date();
+  date.setDate(date.getDate() + offset);
+  return offset === 0 ? 'Today' : date.toLocaleDateString('en-US', { weekday: 'short' });
 };
 
-const getForecastTemp = (offset: number): number => {
-  // Dummy data - replace with real API call for 5-day forecast
-  return Math.floor(Math.random() * 10 + 20);
+// const getForecastTemp = (offset: number): number => {
+//   // Dummy data; replace with real 5-day forecast API
+//   return Math.floor(Math.random() * 10 + 20);
+// };
+
+const getForecastTemp = async (location: string, unit: 'metric' | 'imperial') => {
+  try {
+    const finalApi = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(location)}&appid=${API_KEY}&units=${unit}`;
+    const response = await axios.get(finalApi);
+    const forecastData = response.data.list;
+
+    // Group forecast data by day
+    const dailyForecast: { [key: string]: { temp: number; icon: string } } = {};
+
+    forecastData.forEach((item: any) => {
+      const date = new Date(item.dt_txt).toLocaleDateString('en-US', { weekday: 'short' });
+      if (!dailyForecast[date]) {
+        dailyForecast[date] = {
+          temp: item.main.temp,
+          icon: item.weather[0].main,
+        };
+      }
+    });
+
+    // Return first 5 days of forecast
+    return Object.entries(dailyForecast)
+      .slice(0, 5)
+      .map(([day, data]: [string, { temp: number; icon: string }]) => ({
+        day,
+        temp: Math.round(data.temp),
+        icon: getWeatherIcon(data.icon),
+      }));
+  } catch (error) {
+    console.error("Error fetching 5-day forecast:", error);
+    return [];
+  }
 };
 
-const getBackgroundColors = (weatherMain: string): [string, string, ...string[]] => {
-  switch (weatherMain) {
-    case 'Clear':
-      return ['#87CEEB', '#FFD700']; // Example colors
-    case 'Clouds':
-      return ['#A9A9A9', '#D3D3D3'];
-    default:
-      return ['#000033', '#000066'];
+const getBackgroundColors = (weatherMain: string): [string, string] => {
+  switch (weatherMain.toLowerCase()) {
+    case 'clear': return ['#74B9FF', '#A3DFFA'];
+    case 'clouds': return ['#636E72', '#B2BEC3'];
+    case 'rain': return ['#2D3436', '#636E72'];
+    case 'snow': return ['#DFE6E9', '#F1F2F6'];
+    default: return ['#2C3E50', '#4CA1AF'];
   }
 };
 
@@ -272,41 +317,48 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'android' ? 30 : 0,
+    paddingTop: Platform.OS === 'android' ? 40 : 60,
     paddingBottom: 20,
-    minHeight: '100%', // Added for proper layout
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    position: 'relative',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    borderRadius: 12,
+    paddingHorizontal: 10,
   },
   searchInput: {
     flex: 1,
-    height: 50,
-    borderColor: '#00BFFF',
-    borderWidth: 1,
-    borderRadius: 25,
-    paddingHorizontal: 20,
+    height: 48,
+    paddingHorizontal: 15,
     color: '#fff',
     fontSize: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    fontWeight: '500',
   },
   searchButton: {
-    position: 'absolute',
-    right: 0,
-    padding: 10,
-    backgroundColor: '#00BFFF',
-    borderRadius: 25,
-    margin: 5,
+    padding: 12,
+    backgroundColor: '#0984E3',
+    borderRadius: 10,
+  },
+  unitToggle: {
+    alignSelf: 'flex-end',
+    padding: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 20,
+    marginBottom: 20,
+  },
+  unitText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
   },
   loadingContainer: {
-    ...StyleSheet.absoluteFillObject,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    borderRadius: 15,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 12,
   },
   loadingText: {
     color: '#fff',
@@ -315,15 +367,16 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   errorContainer: {
-    ...StyleSheet.absoluteFillObject,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 12,
   },
   errorText: {
-    color: '#ff4444',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: '#FF6B6B',
+    fontSize: 18,
+    fontWeight: '600',
     marginTop: 10,
     textAlign: 'center',
   },
@@ -333,83 +386,88 @@ const styles = StyleSheet.create({
   },
   currentWeather: {
     alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    padding: 20,
+    borderRadius: 16,
     marginBottom: 30,
   },
   city: {
     color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    marginBottom: 8,
-    marginTop:20
+    fontSize: 28,
+    fontWeight: '700',
+    marginBottom: 10,
   },
   temp: {
     color: '#fff',
-    fontSize: 64,
-    fontWeight: '300',
-    marginBottom: 16,
+    fontSize: 72,
+    fontWeight: '200',
+    marginBottom: 10,
   },
   description: {
-    color: '#d0d0d0',
+    color: '#fff',
     fontSize: 18,
-    marginBottom: 24,
+    fontWeight: '500',
     textTransform: 'capitalize',
+    opacity: 0.9,
   },
   detailsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     width: '100%',
+    paddingHorizontal: 10,
     marginBottom: 30,
   },
   detailCard: {
     alignItems: 'center',
     padding: 15,
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
     borderRadius: 12,
+    width: '30%',
   },
   detailLabel: {
-    color: '#d0d0d0',
-    fontSize: 16,
-    marginTop: 8,
+    color: '#fff',
+    fontSize: 14,
     fontWeight: '500',
+    marginTop: 8,
+    opacity: 0.8,
   },
   detailValue: {
     color: '#fff',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   forecastContainer: {
     width: '100%',
-    marginTop: 20,
   },
   forecastTitle: {
     color: '#fff',
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '600',
     marginBottom: 15,
   },
   forecastScrollView: {
-    alignItems: 'center',
+    paddingVertical: 10,
   },
   forecastCard: {
-    width: 120,
+    width: 100,
     padding: 15,
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
     borderRadius: 12,
     marginHorizontal: 8,
   },
   forecastDay: {
-    color: '#d0d0d0',
-    fontSize: 16,
+    color: '#fff',
+    fontSize: 14,
     fontWeight: '500',
     marginBottom: 8,
+    opacity: 0.8,
   },
   forecastTemp: {
     color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: '700',
   },
 });
 
-export default WeatherScreen; // Ensure this is exported
+export default WeatherScreen;
