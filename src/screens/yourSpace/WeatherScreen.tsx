@@ -71,14 +71,6 @@ const WeatherScreen = () => {
     try {
       const finalApi = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&appid=${API_KEY}&units=${unit}`;
       const response = await axios.get(finalApi);
-
-      // console.log("fetch5daysTemp function called");
-      // const final5daysApi = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${API_KEY}&units=${unit}`;
-      // console.log("Final API:", final5daysApi);
-      // const response5days = await axios.get(finalApi);
-      // console.log("5 days:", response5days.data);
-
-      // fetch5daysTemp(location, unit);
       
       setWeather(response.data);
             // Fetch 5-day forecast
