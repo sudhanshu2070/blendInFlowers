@@ -206,9 +206,6 @@ const WeatherScreen = () => {
                     icon={item.icon}
                   />
                 ))}
-                      {/* icon={getWeatherIcon(weather.weather[0].main)} // Placeholder; use real forecast data
-                    />
-                  ))} */}
                 </ScrollView>
               </View>
             </Animated.ScrollView>
